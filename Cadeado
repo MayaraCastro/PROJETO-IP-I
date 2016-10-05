@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<windows.h>
+
+int main()
+
+{
+    int i=0;
+
+do
+{
+
+i++;
+    printf("\n\n");
+    printf("     .--------.\n");
+    printf("    / .------. \\ \n");
+    printf("   \/ \/        \\ \\\n");
+    printf("   | |        | |\n");
+    printf("  _| |________| |_\n");
+    printf(".' |_|        |_| '.\n");
+    printf("'._____ ____ _____.'\n");
+    printf("|     .'____'.     |\n");
+    printf("'.__.'.'    '.'.__.'\n");
+    printf("'.__  |STEAM |  __.'\n");
+    printf("|   '.'.____.'.'   |\n");
+    printf("'.____'.____.'____.'\n");
+    printf("'.________________.'\n");
+
+    Sleep(500);
+    system("cls");
+
+
+
+
+
+    printf("     .--------.\n");
+    printf("    / .------. \\ \n");
+    printf("   \/ \/        \\ \\\n");
+    printf("   | |        | |\n");
+    printf("   | |        |_|\n");
+    printf("   | |            \n");
+    printf("  _| |____________\n");
+    printf(".' |_|            '.\n");
+    printf("'._____ ____ _____.'\n");
+    printf("|     .'____'.     |\n");
+    printf("'.__.'.'    '.'.__.'\n");
+    printf("'.__  |STEAM |  __.'\n");
+    printf("|   '.'.____.'.'   |\n");
+    printf("'.____'.____.'____.'\n");
+    printf("'.________________.'\n");
+
+    Sleep(500);
+    system("cls");
+
+}while(i!=20);
+}
