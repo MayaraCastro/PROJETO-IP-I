@@ -11,44 +11,68 @@ void gotoxy(int x,int y)
 
 int main()
 {
+
     char jogo[4][40],opcao;
-    int i,j,x=55,var=0, percentual=23,num=0,p=0,points=0, erro=0;
+    int i,j,x=55,var=0, percentual=19,num=0,p=0,points=0, erro=0;
     bool fecha=true;
-/*
-    for(i=0;i<4;i++)
+
+    for(i=1;i<20;i++)
     {
-        for(j=0;j<40;j++)
-        {
-            jogo[i][j]=' ';
-        }
+        gotoxy(0,i);
+        printf("%c",186);
+    }
+    gotoxy(0,20);
+    printf("%c",200);
+    gotoxy(0,0);
+    printf("%c",201);
+    for(i=1;i<61;i++)
+    {
+        gotoxy(i,0);
+        printf("%c",205);
+    }
+    for(i=1;i<61;i++)
+    {
+        gotoxy(i,20);
+        printf("%c",205);
     }
 
-    jogo[3][x]='^';*/
+    gotoxy(61,20);
+    printf("%c",188);
+
+    gotoxy(61,0);
+    printf("%c",187);
+    for(i=1;i<20;i++)
+    {
+        gotoxy(61,i);
+        printf("%c",186);
+    }
 
 do
 {
 
+
     while(!kbhit()&&num<=100)
     {
 
-        gotoxy(32,7);
+
+        gotoxy(28,7);
         printf("PROJETO");
 
         if(num<=100)
         {
-            gotoxy(22,9);
-            printf("-----------------------------");
-            gotoxy(22,10);
+            gotoxy(18,9);
+            printf("_____________________________");
+            gotoxy(18,10);
             printf("|");
-            gotoxy(22,11);
-            printf("-----------------------------");
-            gotoxy(50,10);
+            gotoxy(18,11);
+            printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238);
+            gotoxy(46,10);
             printf("|");
 
 
             gotoxy(percentual,10);
             printf("%c",219);
-            gotoxy(52,10);
+            gotoxy(48,10);
             printf("%i%%",num);
 
             num++;
@@ -62,100 +86,75 @@ do
                 percentual++;
             }
 
-
-
         }
-        gotoxy(22,13);
+        gotoxy(9,17);
+        printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178);
+        gotoxy(18,13);
         printf("Points:%i",points);
 
         if(opcao==' ')
         {
 
-            gotoxy(14,15);
+            gotoxy(10,15);
             printf(" ");
-            gotoxy(15,15);
+            gotoxy(11,15);
             printf(" ");
-            gotoxy(16,15);
+            gotoxy(12,15);
             printf(" ");
-            gotoxy(14,16);
+            gotoxy(10,16);
             printf(" ");
-            gotoxy(16,16);
+            gotoxy(12,16);
             printf(" ");
-           /* jogo[1][5]=' ';
-            jogo[2][4]=' ';
-            jogo[2][5]=' ';
-            jogo[2][6]=' ';
-            jogo[3][4]=' ';
-            jogo[3][6]=' ';
-*/
-            gotoxy(15,13);
+
+            gotoxy(11,13);
             printf("%c",1);
-            gotoxy(14,13);
+            gotoxy(10,13);
             printf("\\");
-            gotoxy(16,13);
+            gotoxy(12,13);
             printf("/");
-            gotoxy(14,14);
+            gotoxy(10,14);
             printf("_");
-            gotoxy(15,14);
+            gotoxy(11,14);
             printf("|");
-            gotoxy(16,14);
+            gotoxy(12,14);
             printf("_");
-            //jogo[0][5]=1;
-            //jogo[0][4]='\\';
-            //jogo[0][6]='/';
-            //jogo[1][4]='_';
-            //jogo[1][5]='|';
-            //jogo[1][6]='_';
 
-
-            if(x==15)
+            if(x==11)
             {
                 points++;
             }
         }
         else
         {
-            gotoxy(15,13);
+            gotoxy(11,13);
             printf(" ");
-            gotoxy(14,13);
+            gotoxy(10,13);
             printf(" ");
-            gotoxy(16,13);
+            gotoxy(12,13);
             printf(" ");
-            gotoxy(14,14);
+            gotoxy(10,14);
             printf(" ");
-            gotoxy(16,14);
+            gotoxy(12,14);
             printf(" ");
-           /* jogo[0][5]=' ';
-            jogo[0][4]=' ';
-            jogo[0][6]=' ';
-            jogo[1][4]=' ';
-            jogo[1][5]=' ';
-            jogo[1][6]=' ';*/
 
-            gotoxy(15,14);
+            gotoxy(11,14);
             printf("%c",1);
-            gotoxy(14,15);
+            gotoxy(10,15);
             printf("/");
-            gotoxy(15,15);
+            gotoxy(11,15);
             printf("|");
-            gotoxy(16,15);
+            gotoxy(12,15);
             printf("\\");
-            gotoxy(14,16);
+            gotoxy(10,16);
             printf("/");
-            gotoxy(16,16);
+            gotoxy(12,16);
             printf("\\");
 
-           /* jogo[1][5]=1;
-            jogo[2][4]='/';
-            jogo[2][5]='|';
-            jogo[2][6]='\\';
-            jogo[3][4]='/';
-            jogo[3][6]='\\';*/
             if(erro==0)
             {
-                if(x==15||x==14||x==16)
+                if(x==11||x==10||x==12)
                 {
-                        gotoxy(22,14);
+                        gotoxy(18,14);
                         printf("You hit the block. -2pts.");
                         points-=2;
 
@@ -165,40 +164,27 @@ do
 
 
         }
-        if(x<14)
+        if(x<10)
         {
             erro=0;
         }
-        if(x==20)
+        if(x==16)
         {
-            gotoxy(22,14);
+            gotoxy(18,14);
             printf("                         ");
         }
 
 
         if(x>0)
         {
-          x--; gotoxy(x,16); printf("^");//jogo[3][x]='^';
+          x--; gotoxy(x,16); printf("^");
           gotoxy(x+1,16); printf(" ");
-
-            //jogo[3][x+1]=' ';
         }
-        if(x==12)
-        { gotoxy(x,16); printf(" ");
-
-            //jogo[3][x]=' ';
-            x=55;
+        if(x==8)
+        {   gotoxy(x,16);
+            printf(" ");
+            x=51;
         }
-
-/*
-        for(i=0;i<4;i++)
-        {
-            for(j=0;j<40;j++)
-            {
-                printf("%c",jogo[i][j]);
-            }
-            printf("\n");
-        }*/
 
         if(var==5)
         {
@@ -219,9 +205,10 @@ do
 
 
 }while(num<100);
-
-    gotoxy(22,14);
-    printf("O CARREGAMENTO FOI FINALIZADO. DESEJA CONTINUAR A JOGAR?(S/N)");
+    gotoxy(18,11);
+    printf("O CARREGAMENTO FOI FINALIZADO.");
+    gotoxy(18,14);
+    printf("DESEJA CONTINUAR A JOGAR?(S/N)");
     opcao=getch();
     system("cls");
 
