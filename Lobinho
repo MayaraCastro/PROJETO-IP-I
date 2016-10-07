@@ -1,0 +1,25 @@
+
+main()
+{
+
+
+               printf("         _\n");
+               printf("       _/ \      _-'\n");
+               printf("      _/|  \-''- _ /\n");
+               printf("__-'  { |         \\\n");
+               printf("     /             \\\n");
+               printf("     /      ''o. |o }\n");
+               printf("     |           \\  ;\n");
+               printf("                   ',\n");
+               printf("        \_         __ \\\n");
+               printf("          ''-_    \\. /\n");
+               printf("            / '-____'\n");
+               printf("           /\n");
+               printf("         _'\n");
+               printf("       _-'\n");
+
+
+
+
+        printf("Wolfes");
+}
