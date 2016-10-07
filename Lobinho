@@ -1,4 +1,3 @@
-
 main()
 {
 
@@ -12,7 +11,7 @@ main()
                printf("     |           \\  ;\n");
                printf("                   ',\n");
                printf("        \_         __ \\\n");
-               printf("          ''-_    \\. /\n");
+               printf("          ''-_    \\.//\n");
                printf("            / '-____'\n");
                printf("           /\n");
                printf("         _'\n");
@@ -22,4 +21,6 @@ main()
 
 
         printf("Wolfes");
+
+
 }
