@@ -43,40 +43,158 @@ void Janela()
 }
 void Cadeado_Fechado()
 {
-    printf("\n\n");
-    printf("     .--------.\n");
-    printf("    / .------. \\ \n");
-    printf("   \/ \/        \\ \\\n");
-    printf("   | |        | |\n");
-    printf("  _| |________| |_\n");
-    printf(".' |_|        |_| '.\n");
-    printf("'._____ ____ _____.'\n");
-    printf("|     .'____'.     |\n");
-    printf("'.__.'.'    '.'.__.'\n");
-    printf("'.__  |STEAM |  __.'\n");
-    printf("|   '.'.____.'.'   |\n");
-    printf("'.____'.____.'____.'\n");
-    printf("'.________________.'\n");
+    int i=3,j=38;
 
+    gotoxy(j,i);i++;
+    printf("     .--------.");
+    gotoxy(j,i);i++;
+    printf("    / .------. \\ ");
+    gotoxy(j,i);i++;
+    printf("   \/ \/        \\ \\");
+    gotoxy(j,i);i++;
+    printf("   | |        | |");
+    gotoxy(j,i);i++;
+    printf("  _| |________| |_");
+    gotoxy(j,i);i++;
+    printf(".' |_|        |_| '.");
+    gotoxy(j,i);i++;
+    printf("'._____ ____ _____.'");
+    gotoxy(j,i);i++;
+    printf("|     .'____'.     |");
+    gotoxy(j,i);i++;
+    printf("'.__.'.'    '.'.__.'");
+    gotoxy(j,i);i++;
+    printf("'.__  |STEAM |  __.'");
+    gotoxy(j,i);i++;
+    printf("|   '.'.____.'.'   |");
+    gotoxy(j,i);i++;
+    printf("'.____'.____.'____.'");
+    gotoxy(j,i);i++;
+    printf("'.________________.'");
+
+}
+void Cadeado_abrindo()
+{
+    int i=3,j=38;
+
+
+    gotoxy(j,i);i++;
+    printf("     .--------.");
+    gotoxy(j,i);i++;
+    printf("    / .------. \\ ");
+    gotoxy(j,i);i++;
+    printf("   \/ \/        \\ \\");
+    gotoxy(j,i);i++;
+    printf("   | |        | |");
+    gotoxy(j,i);i++;
+    printf("  _| |________| |_");
+    gotoxy(j,i);i++;
+    printf(".' |_|        |_| '.");
+    gotoxy(j,i);i++;
+    printf("'._____ ____ _____.'");
+    gotoxy(j,i);i++;
+    printf("|     .'____'.     |");
+    gotoxy(j,i);i++;
+    printf("'.__.'.'    '.'.__.'");
+    gotoxy(j,i);i++;
+    printf("'.__  |STEAM |  __.'");
+    gotoxy(j,i);i++;
+    printf("|   '.'.____.'.'   |");
+    gotoxy(j,i);i++;
+    printf("'.____'.____.'____.'");
+    gotoxy(j,i);i++;
+    printf("'.________________.'");
+
+    Sleep(500);
+
+     i=3,j=38;
+
+
+    gotoxy(j,i);i++;
+    printf("               ");
+    gotoxy(j,i);i++;
+    printf("                  ");
+    gotoxy(j,i);i++;
+    printf("                     ");
+    gotoxy(j,i);i++;
+    printf("                 ");
+    gotoxy(j,i);i++;
+    printf("                  ");
+    gotoxy(j,i);i++;
+    printf("                    ");
+    gotoxy(j,i);i++;
+    printf("                    ");
+    gotoxy(j,i);i++;
+    printf("                    ");
+    gotoxy(j,i);i++;
+    printf("                    ");
+    gotoxy(j,i);i++;
+    printf("                    ");
+    gotoxy(j,i);i++;
+    printf("                    ");
+    gotoxy(j,i);i++;
+    printf("                    ");
+    gotoxy(j,i);i++;
+    printf("                    ");
+
+    i=3;
+    j=35;
+
+    gotoxy(j,i);i++;
+    printf("     .--------.");
+    gotoxy(j,i);i++;
+    printf("    / .------. \\ ");
+    gotoxy(j,i);i++;
+    printf("   \/ \/        \\ \\");
+    gotoxy(j,i);i++;
+    printf("   | |        | |");
+    gotoxy(j,i);i++;
+    printf("   | |        |_|");
+    gotoxy(j,i);i++;
+    printf("   | |            ");
+    gotoxy(j,i);i++;
+    printf("  _| |____________");
+    gotoxy(j,i);i++;
+    printf(".' |_|            '.");
+    gotoxy(j,i);i++;
+    printf("'._____ ____ _____.'");
+    gotoxy(j,i);i++;
+    printf("|     .'____'.     |");
+    gotoxy(j,i);i++;
+    printf("'.__.'.'    '.'.__.'");
+    gotoxy(j,i);i++;
+    printf("'.__  |STEAM |  __.'");
+    gotoxy(j,i);i++;
+    printf("|   '.'.____.'.'   |");
+    gotoxy(j,i);i++;
+    printf("'.____'.____.'____.'");
+    gotoxy(j,i);i++;
+    printf("'.________________.'");
+
+
+    Sleep(500);
 }
 
 void gotoxy(int x,int y)
 {	COORD p={x,y};
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),p);
 }
-int Login(TUsuario adm)
+void Login(TUsuario adm)
 {
     TUsuario usuario;
+    Janela();
+    gotoxy(20,11);
+    printf("Usuario:");
+    gotoxy(20,13);
+    printf("Senha:");
+
+    Cadeado_Fechado();
+
     do
-    {   system("cls");
-
-
-        Janela();
-        gotoxy(20,11);
-        printf("Usuario:");
+    {
+        gotoxy(29,11);
         gets(usuario.usuario);
-        gotoxy(20,13);
-        printf("Senha:");
+        gotoxy(27,13);
         gets(usuario.senha);
         if(strcmp(usuario.usuario,adm.usuario)!=0 || strcmp(usuario.senha,adm.senha)!=0)
         {
@@ -85,9 +203,18 @@ int Login(TUsuario adm)
             gotoxy(20,16);
             printf("Tente novamente");
             system("pause");
+            gotoxy(29,11);
+            //Para apagar as linhas
+            printf("          ");
+            gotoxy(27,13);
+            printf("          ");
+            gotoxy(20,15);
+            printf("                            ");
+            gotoxy(20,16);
+            printf("               ");
         }
     }while(strcmp(usuario.usuario,adm.usuario)!=0 || strcmp(usuario.senha,adm.senha)!=0);
-
+    Cadeado_abrindo();
 }
 
 void Jogo()
@@ -445,8 +572,8 @@ int main()
     strcpy(adm.usuario,"admin");
     strcpy(adm.senha,"admin");
 
-    Tela_de_Carregamento();
+   Tela_de_Carregamento();
     system("cls");
-    int Login(TUsuario adm);
+    Login(adm);
 
 }
