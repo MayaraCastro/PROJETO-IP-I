@@ -1,0 +1,4 @@
+#define ACIMA 72
+#define ABAIXO 80
+#define DIREITA 77
+#define ESQUERDA 75
