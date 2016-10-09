@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<windows.h>
+#include <string.h>
+#include<conio.h>
+
+	void gotoxy(int x,int y)
+	{	COORD p={x,y};
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),p);
+	}
+	
+
+main()
+{
+		int resposta,enter, movimento=0,movimentosubir=0,auxiliar,y;
+		char resp;
+	
+			system("cls");
+			gotoxy(10,4);
+			printf("Cadastrar Usuario;");
+			gotoxy(10,5);
+			printf("Cadastrar funcionarios;");
+			gotoxy(10,6);
+			printf("Cadastrar de fornecedor;");
+			gotoxy(10,7);
+			printf("Cadastrar de jogos;") ;
+			gotoxy(10,8);
+		    printf("Produtos;");
+
+					gotoxy(6,4);
+					printf("%c",175);
+					auxiliar=4;
+				
+			do{
+					resp=getch();
+					if(resp=='s')
+					{
+						++movimento;
+						y=auxiliar+movimento;
+						if(y>8)
+					    {
+					    	movimento=0;
+					    	movimento++;
+					    	auxiliar=3;
+					    	y=auxiliar+movimento;
+						}
+						system("cls");
+						gotoxy(6,y);
+						printf("%c",175);
+						gotoxy(10,4);
+						printf("Cadastrar Usuario;");
+						gotoxy(10,5);
+						printf("Cadastrar funcionarios;");
+						gotoxy(10,6);
+						printf("Cadastrar de fornecedor;");
+						gotoxy(10,7);
+						printf("Cadastrar de jogos;") ;
+						gotoxy(10,8);
+					    printf("Produtos;");
+						
+					}
+					else if(resp=='w')
+					{
+						++movimentosubir;
+						y=auxiliar-movimentosubir;
+						if(y<4)
+					    {
+					    	movimentosubir=0;
+					    	++movimentosubir;
+					    	auxiliar=9;
+					    	y=auxiliar-movimentosubir;
+						}
+						system("cls");
+						gotoxy(6,y);
+						printf("%c",175);
+						gotoxy(10,4);
+						printf("Cadastrar Usuario;");
+						gotoxy(10,5);
+						printf("Cadastrar funcionarios;");
+						gotoxy(10,6);
+						printf("Cadastrar de fornecedor;");
+						gotoxy(10,7);
+						printf("Cadastrar de jogos;") ;
+						gotoxy(10,8);
+					    printf("Produtos;");
+						
+					}
+				}while(resp!='o');
+				if(resp=='o')
+				{
+					system("cls");
+					exit;
+				}
+		
+}
+	
