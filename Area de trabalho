@@ -2,38 +2,40 @@
 #include <stdlib.h>
 #include<windows.h>
 #include <string.h>
-#include<conio.h>
+#include <conio.h>
+
+
 
 	void gotoxy(int x,int y)
 	{	COORD p={x,y};
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),p);
 	}
-	
+
+
+
+	void textcolor(int newcolor)
+{
+   CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+   GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+      (csbi.wAttributes & 0xf0) | newcolor);
+
+}
+
 
 main()
 {
 		int resposta,enter, movimento=0,movimentosubir=0,auxiliar,y;
 		char resp;
-	
-			system("cls");
-			gotoxy(10,4);
-			printf("Cadastrar Usuario;");
-			gotoxy(10,5);
-			printf("Cadastrar funcionarios;");
-			gotoxy(10,6);
-			printf("Cadastrar de fornecedor;");
-			gotoxy(10,7);
-			printf("Cadastrar de jogos;") ;
-			gotoxy(10,8);
-		    printf("Produtos;");
 
 					gotoxy(6,4);
 					printf("%c",175);
 					auxiliar=4;
-				
+
 			do{
-					resp=getch();
-					if(resp=='s')
+
+					if(resp==80)
 					{
 						++movimento;
 						y=auxiliar+movimento;
@@ -44,22 +46,9 @@ main()
 					    	auxiliar=3;
 					    	y=auxiliar+movimento;
 						}
-						system("cls");
-						gotoxy(6,y);
-						printf("%c",175);
-						gotoxy(10,4);
-						printf("Cadastrar Usuario;");
-						gotoxy(10,5);
-						printf("Cadastrar funcionarios;");
-						gotoxy(10,6);
-						printf("Cadastrar de fornecedor;");
-						gotoxy(10,7);
-						printf("Cadastrar de jogos;") ;
-						gotoxy(10,8);
-					    printf("Produtos;");
-						
+
 					}
-					else if(resp=='w')
+					else if(resp==72)
 					{
 						++movimentosubir;
 						y=auxiliar-movimentosubir;
@@ -70,27 +59,61 @@ main()
 					    	auxiliar=9;
 					    	y=auxiliar-movimentosubir;
 						}
-						system("cls");
+
+					}
+					system("cls");
 						gotoxy(6,y);
+						textcolor(6);
+
 						printf("%c",175);
 						gotoxy(10,4);
+						textcolor(15);
+						if(y==4)
+                        {
+                           textcolor(6);
+                        }
+
+
 						printf("Cadastrar Usuario;");
+						textcolor(15);
+
 						gotoxy(10,5);
+						if(y==5)
+                        {
+                           textcolor(6);
+                        }
 						printf("Cadastrar funcionarios;");
+
+						textcolor(15);
 						gotoxy(10,6);
+						if(y==6)
+                        {
+                           textcolor(6);
+                        }
 						printf("Cadastrar de fornecedor;");
+
+						textcolor(15);
 						gotoxy(10,7);
+						if(y==7)
+                        {
+                           textcolor(6);
+                        }
 						printf("Cadastrar de jogos;") ;
+
+						textcolor(15);
+						if(y==8)
+                        {
+                           textcolor(6);
+                        }
 						gotoxy(10,8);
 					    printf("Produtos;");
-						
-					}
+
+					resp=getch();
 				}while(resp!='o');
 				if(resp=='o')
 				{
 					system("cls");
 					exit;
 				}
-		
+
 }
-	
