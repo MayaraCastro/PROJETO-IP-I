@@ -1,0 +1,215 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<windows.h>
+#include <string.h>
+#include<conio.h>
+
+	void gotoxy(int x,int y)
+	{	COORD p={x,y};
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),p);
+	}
+
+
+main()
+{
+		int resposta,enter, movimento=0,movimentosubir=0,auxiliar,y,i=0;
+		char resp;
+
+			system("cls");
+			gotoxy(10,4);
+			printf("Cadastrar Usuario;");
+			gotoxy(10,5);
+			printf("Cadastrar funcionarios;");
+			gotoxy(10,6);
+			printf("Cadastrar de fornecedor;");
+			gotoxy(10,7);
+			printf("Cadastrar de jogos;") ;
+			gotoxy(10,8);
+		    printf("Produtos;");
+
+					gotoxy(6,4);
+					printf("%c",175);
+					y=4;
+
+			do{
+					resp=getch();
+					if(resp=='s')
+					{
+						auxiliar=y;
+						y=auxiliar+1;
+						if(y>8)
+					    {
+					    	y=3;
+					    	auxiliar=y;
+					    	y=auxiliar+1;
+						}
+						system("cls");
+						gotoxy(6,y);
+						printf("%c",175);
+						gotoxy(10,4);
+						printf("Cadastrar Usuario;");
+						gotoxy(10,5);
+						printf("Cadastrar funcionarios;");
+						gotoxy(10,6);
+						printf("Cadastrar de fornecedor;");
+						gotoxy(10,7);
+						printf("Cadastrar de jogos;") ;
+						gotoxy(10,8);
+					    printf("Produtos;");
+
+					}
+					else if(resp=='w')
+					{
+						auxiliar=y;
+						y=auxiliar-1;
+						if(y<4)
+					    {
+					    	y=9;
+					    	auxiliar=y;
+					    	y=auxiliar-1;
+						}
+						system("cls");
+						gotoxy(6,y);
+						printf("%c",175);
+						gotoxy(10,4);
+						printf("Cadastrar Usuario;");
+						gotoxy(10,5);
+						printf("Cadastrar funcionarios;");
+						gotoxy(10,6);
+						printf("Cadastrar de fornecedor;");
+						gotoxy(10,7);
+						printf("Cadastrar de jogos;") ;
+						gotoxy(10,8);
+					    printf("Produtos;");
+
+					}
+				}while(resp!='o');
+				if(resp=='o')
+				{
+
+					system("cls");
+					do
+                    {
+
+                        if(y==4)
+                        {
+
+                            system("cls");
+                            gotoxy(6,y);
+                            printf("%c",175);
+                            gotoxy(6,y);
+                            gotoxy(10,4);
+                            printf("Cadastrar Usuario;");
+                            gotoxy(10,5);
+                            printf("                       ");
+                            gotoxy(10,6);
+                            printf("                        ");
+                            gotoxy(10,7);
+                            printf("                   ") ;
+                            gotoxy(10,8);
+                            printf("         ");
+
+                        }
+                        else if(y==5)
+                        {
+                            system("cls");
+                            gotoxy(6,y);
+                            printf("%c",175);
+                            gotoxy(6,y);
+                            printf("%c",175);
+                            gotoxy(10,4);
+                            printf("                  ");
+                            gotoxy(10,5);
+                            printf("Cadastrar funcionarios;");
+                            gotoxy(10,6);
+                            printf("                        ");
+                            gotoxy(10,7);
+                            printf("                   ") ;
+                            gotoxy(10,8);
+                            printf("         ");
+
+                        }
+                        else if(y==6)
+                        {
+                            system("cls");
+                            gotoxy(6,y);
+                            printf("%c",175);
+                            gotoxy(6,y);
+                            printf("%c",175);
+                            gotoxy(10,4);
+                            printf("                  ");
+                            gotoxy(10,5);
+                            printf("                       ");
+                            gotoxy(10,6);
+                            printf("Cadastrar de fornecedor;");
+                            gotoxy(10,7);
+                            printf("                   ") ;
+                            gotoxy(10,8);
+                            printf("         ");
+
+                        }
+                        else if(y==7)
+                        {
+                            system("cls");
+                            gotoxy(6,y);
+                            printf("%c",175);
+                            gotoxy(6,y);
+                            printf("%c",175);
+                            gotoxy(10,4);
+                            printf("                  ");
+                            gotoxy(10,5);
+                            printf("                       ");
+                            gotoxy(10,6);
+                            printf("                        ");
+                            gotoxy(10,7);
+                            printf("Cadastrar de jogos;") ;
+                            gotoxy(10,8);
+                            printf("         ");
+
+                        }
+                        else if(y==8)
+                        {
+                            system("cls");
+                            gotoxy(6,y);
+                            printf("%c",175);
+                            gotoxy(6,y);
+                            printf("%c",175);
+                            gotoxy(10,4);
+                            printf("                  ");
+                            gotoxy(10,5);
+                            printf("                       ");
+                            gotoxy(10,6);
+                            printf("                        ");
+                            gotoxy(10,7);
+                            printf("                   ") ;
+                            gotoxy(10,8);
+                            printf("Produtos;");
+
+                        }
+                        Sleep(200);
+                        system("cls");
+
+                        gotoxy(10,4);
+                        printf("Cadastrar Usuario;");
+                        gotoxy(10,5);
+                        printf("Cadastrar funcionarios;");
+                        gotoxy(10,6);
+                        printf("Cadastrar de fornecedor;");
+                        gotoxy(10,7);
+                        printf("Cadastrar de jogos;") ;
+                        gotoxy(10,8);
+                        printf("Produtos;");
+
+                        gotoxy(6,y);
+                        printf("%c",175);
+                        y=4;
+
+
+                        Sleep(200);
+                        system("cls");
+                        i++;
+                    }while(i!=2);
+
+				}
+
+}
