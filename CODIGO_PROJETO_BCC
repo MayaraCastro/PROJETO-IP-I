@@ -137,8 +137,7 @@ void Cadeado_abrindo()
     gotoxy(j,i);i++;
     printf("                    ");
 
-    i=3;
-    j=38;
+     i=3,j=38;
 
     gotoxy(j,i);i++;
     printf("     .--------.");
