@@ -29,20 +29,19 @@ main()
 
 					gotoxy(6,4);
 					printf("%c",175);
-					auxiliar=4;
+					y=4;
 				
 			do{
 					resp=getch();
 					if(resp=='s')
 					{
-						++movimento;
-						y=auxiliar+movimento;
+						auxiliar=y;
+						y=auxiliar+1;
 						if(y>8)
 					    {
-					    	movimento=0;
-					    	movimento++;
-					    	auxiliar=3;
-					    	y=auxiliar+movimento;
+					    	y=3;
+					    	auxiliar=y;
+					    	y=auxiliar+1;
 						}
 						system("cls");
 						gotoxy(6,y);
@@ -61,14 +60,13 @@ main()
 					}
 					else if(resp=='w')
 					{
-						++movimentosubir;
-						y=auxiliar-movimentosubir;
+						auxiliar=y;
+						y=auxiliar-1;
 						if(y<4)
 					    {
-					    	movimentosubir=0;
-					    	++movimentosubir;
-					    	auxiliar=9;
-					    	y=auxiliar-movimentosubir;
+					    	y=9;
+					    	auxiliar=y;
+					    	y=auxiliar-1;
 						}
 						system("cls");
 						gotoxy(6,y);
@@ -93,4 +91,3 @@ main()
 				}
 		
 }
-	
