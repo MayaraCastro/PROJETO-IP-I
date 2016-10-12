@@ -3,13 +3,37 @@
 #include <conio.h>
 #include <stdbool.h>
 #include <windows.h>
+int cor;
+
 typedef struct{
     char usuario[10];
     char senha[10];
 }TUsuario;
+void gotoxy(int x,int y)
+{	COORD p={x,y};
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),p);
+}
+void textcolor(int newcolor)
+{
+   CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+   GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+      (csbi.wAttributes & 0xf0) | newcolor);
+
+}
+void textbackground(int newcolor)
+{
+   CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+   GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+      (csbi.wAttributes & 0x0f) | (newcolor << 4));
+
+}
 void Janela()
 {
-    int i;
+    int i,j;
     for(i=1;i<20;i++)
     {
         gotoxy(0,i);
@@ -40,11 +64,15 @@ void Janela()
         gotoxy(61,i);
         printf("%c",186);
     }
+
 }
 void Cadeado_Fechado()
 {
     int i=3,j=38;
-
+    gotoxy(j,i);i++;
+    printf("               ");
+    gotoxy(j,i);i++;
+    printf("                  ");
     gotoxy(j,i);i++;
     printf("     .--------.");
     gotoxy(j,i);i++;
@@ -77,7 +105,10 @@ void Cadeado_abrindo()
 {
     int i=3,j=38;
 
-
+    gotoxy(j,i);i++;
+    printf("               ");
+    gotoxy(j,i);i++;
+    printf("                  ");
     gotoxy(j,i);i++;
     printf("     .--------.");
     gotoxy(j,i);i++;
@@ -173,56 +204,112 @@ void Cadeado_abrindo()
 
     Sleep(500);
 }
-
-void gotoxy(int x,int y)
-{	COORD p={x,y};
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),p);
-}
 void Login(TUsuario adm)
 {
+
+
     TUsuario usuario;
+
     Janela();
-    gotoxy(20,11);
+    Cor_do_BG(15);
+
+    textcolor(0);
+    //Janela do usuario e senha
+    {
+        int i;
+
+    gotoxy(9,11);
+    printf("%c",186);
+
+    gotoxy(9,12);
+    printf("%c",204);
+    gotoxy(9,10);
+    printf("%c",201);
+    for(i=10;i<35;i++)
+    {
+        gotoxy(i,10);
+        printf("%c",205);
+    }
+    for(i=10;i<35;i++)
+    {
+        gotoxy(i,12);
+        printf("%c",205);
+    }
+
+    gotoxy(35,12);
+    printf("%c",185);
+
+    gotoxy(35,10);
+    printf("%c",187);
+
+    gotoxy(35,11);
+    printf("%c",186);
+
+    //Janela senha
+    for(i=10;i<35;i++)
+    {
+        gotoxy(i,14);
+        printf("%c",205);
+    }
+
+    gotoxy(35,14);
+    printf("%c",188);
+
+    gotoxy(35,13);
+    printf("%c",186);
+
+    gotoxy(9,13);
+    printf("%c",186);
+
+    gotoxy(9,14);
+    printf("%c",200);
+
+    }
+
+
+
+    gotoxy(10,11);
     printf("Usuario:");
-    gotoxy(20,13);
+    gotoxy(10,13);
     printf("Senha:");
 
     Cadeado_Fechado();
 
     do
     {
-        gotoxy(29,11);
+
+        gotoxy(19,11);
         gets(usuario.usuario);
-        gotoxy(27,13);
+        gotoxy(17,13);
         gets(usuario.senha);
         if(strcmp(usuario.usuario,adm.usuario)!=0 || strcmp(usuario.senha,adm.senha)!=0)
         {
-            gotoxy(20,15);
+            gotoxy(10,15);
             printf("Usuario ou senha incorretos.");
-            gotoxy(20,16);
-            printf("Tente novamente");
+            gotoxy(10,16);
+            printf("Tente novamente\n\n\n\n\n\n");
             system("pause");
-            gotoxy(29,11);
+            gotoxy(19,11);
             //Para apagar as linhas
             printf("          ");
-            gotoxy(27,13);
+            gotoxy(17,13);
             printf("          ");
-            gotoxy(20,15);
+            gotoxy(10,15);
             printf("                            ");
-            gotoxy(20,16);
+            gotoxy(10,16);
             printf("               ");
         }
     }while(strcmp(usuario.usuario,adm.usuario)!=0 || strcmp(usuario.senha,adm.senha)!=0);
     Cadeado_abrindo();
 }
-
 void Jogo()
 {
     char opcao;
     int i,j,x=55,var=0, percentual=19,num=0,p=0,points=0, erro=0;
     bool fecha=true;
 
-    Janela();
+
+
 
     do
     {
@@ -230,9 +317,11 @@ void Jogo()
 
     while(!kbhit())
     {
+        textcolor(2);
 
         gotoxy(9,17);
         printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178);
+        textcolor(0);
         gotoxy(18,13);
         printf("            ",points);
 
@@ -283,6 +372,7 @@ void Jogo()
             printf(" ");
             gotoxy(12,14);
             printf(" ");
+
 
             gotoxy(11,14);
             printf("%c",1);
@@ -355,12 +445,14 @@ void Jogo()
 }while(fecha);
 
 }
-
 void Tela_de_Carregamento()
 {
+
     char opcao;
     int i,j,x=55,var=0, percentual=19,num=0,p=0,points=0, erro=0;
     bool fecha=true;
+    textcolor(0);
+    Cor_do_BG(15);
 
     Janela();
 do
@@ -403,8 +495,11 @@ do
             }
 
         }
+        textcolor(2);
         gotoxy(9,17);
+
         printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178);
+        textcolor(0);
         gotoxy(18,13);
         printf("            ",points);
         gotoxy(18,13);
@@ -424,6 +519,7 @@ do
             gotoxy(12,16);
             printf(" ");
 
+            textcolor(0);
             gotoxy(11,13);
             printf("%c",1);
             gotoxy(10,13);
@@ -455,6 +551,7 @@ do
             gotoxy(12,14);
             printf(" ");
 
+            textcolor(0);
             gotoxy(11,14);
             printf("%c",1);
             gotoxy(10,15);
@@ -529,10 +626,14 @@ do
     gotoxy(18,14);
     printf("DESEJA CONTINUAR A JOGAR?(S/N)");
     opcao=getch();
-    system("cls");
+
 
     if(opcao=='s'||opcao=='S')
     {
+        Cor_do_BG(15);
+
+        textcolor(0);
+
         p=0;
         percentual=19;
 
@@ -564,6 +665,162 @@ do
     }
 
 }
+void Cor_do_BG(int cor)
+{
+    int i,j;
+    textbackground(cor);
+    for(i=1;i<20;i++)
+    {
+        for(j=1;j<61;j++)
+        {
+            gotoxy(j,i);
+            printf(" ");
+        }
+
+    }
+}
+void Area_de_Trabalho()
+{
+
+    Janela();
+    Cor_do_BG(15);
+
+
+    int resposta,enter, movimento=0,movimentosubir=0,auxiliar,y;
+    bool fecha=true;
+		char resp;
+
+					gotoxy(6,4);
+					printf("%c",175);
+					y=4;
+
+			do{
+
+
+						textcolor(0);
+                        gotoxy(6,y);
+						printf("%c",175);
+						if(y==4)
+                        {
+                            textcolor(13);
+                        }
+						gotoxy(10,4);
+						printf("Cadastrar Usuario;");
+						textcolor(0);
+
+						if(y==5)
+                        {
+                            textcolor(13);
+                        }
+						gotoxy(10,5);
+						printf("Cadastrar funcionarios;");
+						textcolor(0);
+
+						if(y==6)
+                        {
+                            textcolor(13);
+                        }
+						gotoxy(10,6);
+						printf("Cadastrar de fornecedor;");
+						textcolor(0);
+
+						if(y==7)
+                        {
+                            textcolor(13);
+                        }
+						gotoxy(10,7);
+						printf("Cadastrar de jogos;") ;
+						textcolor(0);
+
+						if(y==8)
+                        {
+                            textcolor(13);
+                        }
+						gotoxy(10,8);
+					    printf("Produtos;");
+					    textcolor(0);
+
+					    if(y==9)
+                        {
+                            textcolor(13);
+                        }
+						gotoxy(10,9);
+						printf("Sair");
+						textcolor(0);
+
+                            gotoxy(0,20);
+                            resp=getch();
+
+
+                            if(resp==80)
+                            {
+                                gotoxy(6,y);
+                                printf(" ");
+                                auxiliar=y;
+                                y=auxiliar+1;
+                                if(y>9)
+                                {
+                                    y=3;
+                                    auxiliar=y;
+                                    y=auxiliar+1;
+                                }
+
+
+                            }
+                            else if(resp==72)
+                            {
+                                gotoxy(6,y);
+                                printf(" ");
+                                auxiliar=y;
+                                y=auxiliar-1;
+                                if(y<4)
+                                {
+                                    y=10;
+                                    auxiliar=y;
+                                    y=auxiliar-1;
+                                }
+                            }
+                            else if(resp==13)
+                            {
+                                switch(y)
+                                {
+                                case 4:
+                                    {
+
+                                        break;
+                                    }
+                                case 5:
+                                    {
+                                        break;
+                                    }
+                                case 6:
+                                    {
+                                        break;
+                                    }
+                                case 7:
+                                    {
+                                        break;
+                                    }
+                                case 8:
+                                    {
+                                        break;
+                                    }
+                                default:
+                                    {
+                                       fecha=false;
+                                    }
+                                }
+                        }
+
+
+
+
+
+
+
+				}while(fecha);
+
+}
 
 int main()
 {
@@ -572,7 +829,9 @@ int main()
     strcpy(adm.senha,"admin");
 
    Tela_de_Carregamento();
-    system("cls");
+
     Login(adm);
+
+   Area_de_Trabalho();
 
 }
