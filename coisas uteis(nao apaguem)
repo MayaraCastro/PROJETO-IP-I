@@ -1,0 +1,27 @@
+#define ACIMA 72
+#define ABAIXO 80
+#define DIREITA 77
+#define ESQUERDA 75
+
+http://187.7.106.14/marcelo/org_comp/tabelaASCII.pdf
+
+http://www.hardware.com.br/comunidade/tutorial-simples/1252370/
+
+http://personalizandoc.blogspot.com.br/2012/10/mudar-cor-da-saida-em-ccprintf.html
+Codigo Da Cor    Nome Da Cor
+0    Preto
+1    Azul
+2    Verde
+3    Verde-Água
+4    Vermelho
+5    Roxo
+6    Amarelo
+7    Branco
+8    Cinza
+9    Azul-Claro
+10    Verde-Claro
+11    Verde-Água-Claro
+12    Vermelho-Claro
+13    Lilás
+14    Amarelo-Claro
+15    Branco-Brilhante
