@@ -3,6 +3,8 @@
 #include <conio.h>
 #include <stdbool.h>
 #include <windows.h>
+#include <process.h> //para usar o _beginthread()
+
 int cor;
 
 typedef struct{
@@ -477,9 +479,10 @@ do
             gotoxy(46,10);
             printf("|");
 
-
+            textbackground(0);
             gotoxy(percentual,10);
             printf("%c",219);
+            textbackground(15);
             gotoxy(48,10);
             printf("%i%%",num);
 
@@ -494,6 +497,7 @@ do
                 percentual++;
             }
 
+
         }
         textcolor(2);
         gotoxy(9,17);
@@ -507,6 +511,7 @@ do
 
         if(opcao==' ')
         {
+
 
             gotoxy(10,15);
             printf(" ");
@@ -537,6 +542,9 @@ do
             {
                 points++;
             }
+
+
+
         }
         else
         {
@@ -649,10 +657,11 @@ do
             printf("|");
 
             for(percentual=19;percentual<46;percentual++)
-            {
+            {       textbackground(0);
                     gotoxy(percentual,10);
                     printf("%c",219);
             }
+            textbackground(15);
             num=100;
             gotoxy(48,10);
             printf("%i%%",num);
@@ -821,17 +830,64 @@ void Area_de_Trabalho()
 				}while(fecha);
 
 }
+void Logo()
+{      int j=10,i=2;
+        gotoxy(j,i);i++;
+        printf("         _\n");
+        gotoxy(j,i);i++;
+        printf("       _/ \      _-'\n");
+        gotoxy(j,i);i++;
+        printf("      _/|  \-''- _ /\n");
+        gotoxy(j,i);i++;
+        printf("__-'  { |         \\\n");
+        gotoxy(j,i);i++;
+        printf("     /             \\\n");
+        gotoxy(j,i);i++;
+        printf("     /      ''o. |o }\n");
+        gotoxy(j,i);i++;
+        printf("     |           \\  ;\n");
+        gotoxy(j,i);i++;
+        printf("                   ',\n");
+        gotoxy(j,i);i++;
+        printf("        \_         __ \\\n");
+        gotoxy(j,i);i++;
+        printf("          ''-_    \\.//\n");
+        gotoxy(j,i);i++;
+        printf("            / '-____'\n");
+        gotoxy(j,i);i++;
+        printf("           /\n");
+        gotoxy(j,i);i++;
+        printf("         _'\n");
+        gotoxy(j,i);i++;
+        printf("       _-'\n");
 
+}
+void musica(){
+    Beep(660,500);
+}
+
+//Define o tamanho da tela com chamada do sistema
+void redefine(void){
+    system("color f0"); //Padroniza a cor do sistema, aqui nem influencia muito.
+    system("MODE con cols=63 lines=21"); //Redimensiona a tela
+    system("title STEAM - by: LGMT"); //Dá título a tela
+}
 int main()
 {
     TUsuario adm;
     strcpy(adm.usuario,"admin");
     strcpy(adm.senha,"admin");
 
-   Tela_de_Carregamento();
+    redefine();
 
-    Login(adm);
+    Tela_de_Carregamento();
 
-   Area_de_Trabalho();
+    //Login(adm);
+
+   //Area_de_Trabalho();
+
+   //Logo();
+
+   //musica();
 
 }
