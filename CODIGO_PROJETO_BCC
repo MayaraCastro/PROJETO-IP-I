@@ -5,12 +5,16 @@
 #include <windows.h>
 #include <process.h> //para usar o _beginthread()
 
-int cor;
+int cor,music;
 
 typedef struct{
     char usuario[10];
     char senha[10];
 }TUsuario;
+void Musica(){
+     //musica do salto do jogo
+    Beep(860,500);
+}
 void gotoxy(int x,int y)
 {	COORD p={x,y};
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),p);
@@ -36,34 +40,34 @@ void textbackground(int newcolor)
 void Janela()
 {
     int i,j;
-    for(i=1;i<20;i++)
+    for(i=1;i<27;i++)
     {
         gotoxy(0,i);
         printf("%c",186);
     }
-    gotoxy(0,20);
+    gotoxy(0,27);
     printf("%c",200);
     gotoxy(0,0);
     printf("%c",201);
-    for(i=1;i<61;i++)
+    for(i=1;i<121;i++)
     {
         gotoxy(i,0);
         printf("%c",205);
     }
-    for(i=1;i<61;i++)
+    for(i=1;i<121;i++)
     {
-        gotoxy(i,20);
+        gotoxy(i,27);
         printf("%c",205);
     }
 
-    gotoxy(61,20);
+    gotoxy(121,27);
     printf("%c",188);
 
-    gotoxy(61,0);
+    gotoxy(121,0);
     printf("%c",187);
-    for(i=1;i<20;i++)
+    for(i=1;i<27;i++)
     {
-        gotoxy(61,i);
+        gotoxy(121,i);
         printf("%c",186);
     }
 
@@ -208,12 +212,14 @@ void Cadeado_abrindo()
 }
 void Login(TUsuario adm)
 {
+    system("cls");
 
 
     TUsuario usuario;
 
     Janela();
-    Cor_do_BG(15);
+    //Cor_do_BG(15);
+    system("color F0");
 
     textcolor(0);
     //Janela do usuario e senha
@@ -277,123 +283,163 @@ void Login(TUsuario adm)
 
     Cadeado_Fechado();
 
+    int cont=0,i,j;
+
     do
     {
+        cont=0;
+
+        for(i=0;i<10;i++)
+        {
+           usuario.senha[i]=' ';
+        }
 
         gotoxy(19,11);
         gets(usuario.usuario);
-        gotoxy(17,13);
-        gets(usuario.senha);
-        if(strcmp(usuario.usuario,adm.usuario)!=0 || strcmp(usuario.senha,adm.senha)!=0)
+        j=17;
+        for(i=0;i<10;i++)
+        {
+
+            gotoxy(j,13);
+            usuario.senha[i]=getch();
+
+            if(usuario.senha[i]==13)
+            {
+                break;
+            }
+            else
+            {
+               printf("*");
+            }
+            cont++;
+            j++;
+        }
+        j=0;
+        for(i=0;i<cont;i++)
+        {
+            if(adm.senha[i]!=usuario.senha[i])
+            {
+                j++;
+            }
+
+        }
+        if(strcmp(usuario.usuario,adm.usuario)!=0 || j!=0)
         {
             gotoxy(10,15);
             printf("Usuario ou senha incorretos.");
             gotoxy(10,16);
             printf("Tente novamente\n\n\n\n\n\n");
-            system("pause");
-            gotoxy(19,11);
+
+            Sleep(1000);
             //Para apagar as linhas
-            printf("          ");
+            gotoxy(19,11);
+            printf("              ");
             gotoxy(17,13);
-            printf("          ");
+            printf("               ");
             gotoxy(10,15);
             printf("                            ");
             gotoxy(10,16);
             printf("               ");
         }
-    }while(strcmp(usuario.usuario,adm.usuario)!=0 || strcmp(usuario.senha,adm.senha)!=0);
+    }while(strcmp(usuario.usuario,adm.usuario)!=0 || j!=0);
     Cadeado_abrindo();
 }
 void Jogo()
 {
     char opcao;
-    int i,j,x=55,var=0, percentual=19,num=0,p=0,points=0, erro=0;
+    int i,j,x=55,var=0,points=0, erro=0;
     bool fecha=true;
 
 
 
 
-    do
-    {
+    int correcao_coluna=30;
+
+do
+{
 
 
     while(!kbhit())
     {
         textcolor(2);
+        gotoxy(9+correcao_coluna,23);
 
-        gotoxy(9,17);
         printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178);
         textcolor(0);
-        gotoxy(18,13);
+        gotoxy(18+correcao_coluna,19);
         printf("            ",points);
-
-        gotoxy(18,13);
+        gotoxy(18+correcao_coluna,19);
         printf("Points:%i",points);
 
         if(opcao==' ')
         {
 
-            gotoxy(10,15);
+
+            gotoxy(10+correcao_coluna,21);
             printf(" ");
-            gotoxy(11,15);
+            gotoxy(11+correcao_coluna,21);
             printf(" ");
-            gotoxy(12,15);
+            gotoxy(12+correcao_coluna,21);
             printf(" ");
-            gotoxy(10,16);
+            gotoxy(10+correcao_coluna,22);
             printf(" ");
-            gotoxy(12,16);
+            gotoxy(12+correcao_coluna,22);
             printf(" ");
 
-            gotoxy(11,13);
+            textcolor(0);
+            gotoxy(11+correcao_coluna,19);
             printf("%c",1);
-            gotoxy(10,13);
+            gotoxy(10+correcao_coluna,19);
             printf("\\");
-            gotoxy(12,13);
+            gotoxy(12+correcao_coluna,19);
             printf("/");
-            gotoxy(10,14);
+            gotoxy(10+correcao_coluna,20);
             printf("_");
-            gotoxy(11,14);
+            gotoxy(11+correcao_coluna,20);
             printf("|");
-            gotoxy(12,14);
+            gotoxy(12+correcao_coluna,20);
             printf("_");
 
-            if(x==11)
+            if(x==11+correcao_coluna)
             {
                 points++;
             }
+
+
+
         }
         else
         {
-            gotoxy(11,13);
+            gotoxy(11+correcao_coluna,19);
             printf(" ");
-            gotoxy(10,13);
+            gotoxy(10+correcao_coluna,19);
             printf(" ");
-            gotoxy(12,13);
+            gotoxy(12+correcao_coluna,19);
             printf(" ");
-            gotoxy(10,14);
+            gotoxy(10+correcao_coluna,20);
             printf(" ");
-            gotoxy(12,14);
+            gotoxy(12+correcao_coluna,20);
             printf(" ");
 
-
-            gotoxy(11,14);
+            textcolor(0);
+            gotoxy(11+correcao_coluna,20);
             printf("%c",1);
-            gotoxy(10,15);
+            gotoxy(10+correcao_coluna,21);
             printf("/");
-            gotoxy(11,15);
+            gotoxy(11+correcao_coluna,21);
             printf("|");
-            gotoxy(12,15);
+            gotoxy(12+correcao_coluna,21);
             printf("\\");
-            gotoxy(10,16);
+            gotoxy(10+correcao_coluna,22);
             printf("/");
-            gotoxy(12,16);
+            gotoxy(12+correcao_coluna,22);
             printf("\\");
 
             if(erro==0)
             {
-                if(x==11||x==10||x==12)
+                if(x==11+correcao_coluna||x==10+correcao_coluna||x==12+correcao_coluna)
                 {
-                        gotoxy(18,14);
+                        gotoxy(18+correcao_coluna,20);
                         printf("You hit the block. -2pts.");
                         points-=2;
 
@@ -403,26 +449,26 @@ void Jogo()
 
 
         }
-        if(x<10)
+        if(x<10+correcao_coluna)
         {
             erro=0;
         }
-        if(x==16)
+        if(x==16+correcao_coluna)
         {
-            gotoxy(18,14);
+            gotoxy(18+correcao_coluna,20);
             printf("                         ");
         }
 
 
-        if(x>0)
+        if(x>correcao_coluna)
         {
-          x--; gotoxy(x,16); printf("^");
-          gotoxy(x+1,16); printf(" ");
+          x--; gotoxy(x,22); printf("^");
+          gotoxy(x+1,22); printf(" ");
         }
-        if(x==8)
-        {   gotoxy(x,16);
+        if(x==8+correcao_coluna)
+        {   gotoxy(x,22);
             printf(" ");
-            x=51;
+            x=51+correcao_coluna;
         }
 
         if(var==5)
@@ -436,14 +482,21 @@ void Jogo()
 
 
     }
+
         opcao=getch();
         var=0;
-    if(opcao=='x'||opcao=='X')
-    {
-        fecha=false;
-        break;
 
-    }
+        if(opcao=='x'||opcao=='X')
+        {
+            fecha=false;
+            break;
+        }
+        else
+        {
+            _beginthread(Musica,0,NULL);
+        }
+
+
 }while(fecha);
 
 }
@@ -451,12 +504,16 @@ void Tela_de_Carregamento()
 {
 
     char opcao;
-    int i,j,x=55,var=0, percentual=19,num=0,p=0,points=0, erro=0;
+    int i,j,x=55,var=0, percentual=45,num=0,p=0,points=0, erro=0;
     bool fecha=true;
     textcolor(0);
-    Cor_do_BG(15);
-
+    //Cor_do_BG(15);
+    system("color F0");
     Janela();
+    Logo();
+
+    int correcao_coluna=30;
+
 do
 {
 
@@ -464,26 +521,22 @@ do
     while(!kbhit()&&num<=100)
     {
 
-
-        gotoxy(28,7);
-        printf("PROJETO");
-
         if(num<=100)
         {
-            gotoxy(18,9);
+            gotoxy(14+correcao_coluna,15);
             printf("_____________________________");
-            gotoxy(18,10);
+            gotoxy(14+correcao_coluna,16);
             printf("|");
-            gotoxy(18,11);
+            gotoxy(14+correcao_coluna,17);
             printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238);
-            gotoxy(46,10);
+            gotoxy(42+correcao_coluna,6);
             printf("|");
 
             textbackground(0);
-            gotoxy(percentual,10);
+            gotoxy(percentual,16);
             printf("%c",219);
             textbackground(15);
-            gotoxy(48,10);
+            gotoxy(44+correcao_coluna,16);
             printf("%i%%",num);
 
             num++;
@@ -500,45 +553,45 @@ do
 
         }
         textcolor(2);
-        gotoxy(9,17);
+        gotoxy(9+correcao_coluna,23);
 
         printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178);
         textcolor(0);
-        gotoxy(18,13);
+        gotoxy(18+correcao_coluna,19);
         printf("            ",points);
-        gotoxy(18,13);
+        gotoxy(18+correcao_coluna,19);
         printf("Points:%i",points);
 
         if(opcao==' ')
         {
 
 
-            gotoxy(10,15);
+            gotoxy(10+correcao_coluna,21);
             printf(" ");
-            gotoxy(11,15);
+            gotoxy(11+correcao_coluna,21);
             printf(" ");
-            gotoxy(12,15);
+            gotoxy(12+correcao_coluna,21);
             printf(" ");
-            gotoxy(10,16);
+            gotoxy(10+correcao_coluna,22);
             printf(" ");
-            gotoxy(12,16);
+            gotoxy(12+correcao_coluna,22);
             printf(" ");
 
             textcolor(0);
-            gotoxy(11,13);
+            gotoxy(11+correcao_coluna,19);
             printf("%c",1);
-            gotoxy(10,13);
+            gotoxy(10+correcao_coluna,19);
             printf("\\");
-            gotoxy(12,13);
+            gotoxy(12+correcao_coluna,19);
             printf("/");
-            gotoxy(10,14);
+            gotoxy(10+correcao_coluna,20);
             printf("_");
-            gotoxy(11,14);
+            gotoxy(11+correcao_coluna,20);
             printf("|");
-            gotoxy(12,14);
+            gotoxy(12+correcao_coluna,20);
             printf("_");
 
-            if(x==11)
+            if(x==11+correcao_coluna)
             {
                 points++;
             }
@@ -548,36 +601,36 @@ do
         }
         else
         {
-            gotoxy(11,13);
+            gotoxy(11+correcao_coluna,19);
             printf(" ");
-            gotoxy(10,13);
+            gotoxy(10+correcao_coluna,19);
             printf(" ");
-            gotoxy(12,13);
+            gotoxy(12+correcao_coluna,19);
             printf(" ");
-            gotoxy(10,14);
+            gotoxy(10+correcao_coluna,20);
             printf(" ");
-            gotoxy(12,14);
+            gotoxy(12+correcao_coluna,20);
             printf(" ");
 
             textcolor(0);
-            gotoxy(11,14);
+            gotoxy(11+correcao_coluna,20);
             printf("%c",1);
-            gotoxy(10,15);
+            gotoxy(10+correcao_coluna,21);
             printf("/");
-            gotoxy(11,15);
+            gotoxy(11+correcao_coluna,21);
             printf("|");
-            gotoxy(12,15);
+            gotoxy(12+correcao_coluna,21);
             printf("\\");
-            gotoxy(10,16);
+            gotoxy(10+correcao_coluna,22);
             printf("/");
-            gotoxy(12,16);
+            gotoxy(12+correcao_coluna,22);
             printf("\\");
 
             if(erro==0)
             {
-                if(x==11||x==10||x==12)
+                if(x==11+correcao_coluna||x==10+correcao_coluna||x==12+correcao_coluna)
                 {
-                        gotoxy(18,14);
+                        gotoxy(18+correcao_coluna,20);
                         printf("You hit the block. -2pts.");
                         points-=2;
 
@@ -587,26 +640,26 @@ do
 
 
         }
-        if(x<10)
+        if(x<10+correcao_coluna)
         {
             erro=0;
         }
-        if(x==16)
+        if(x==16+correcao_coluna)
         {
-            gotoxy(18,14);
+            gotoxy(18+correcao_coluna,20);
             printf("                         ");
         }
 
 
-        if(x>0)
+        if(x>correcao_coluna)
         {
-          x--; gotoxy(x,16); printf("^");
-          gotoxy(x+1,16); printf(" ");
+          x--; gotoxy(x,22); printf("^");
+          gotoxy(x+1,22); printf(" ");
         }
-        if(x==8)
-        {   gotoxy(x,16);
+        if(x==8+correcao_coluna)
+        {   gotoxy(x,22);
             printf(" ");
-            x=51;
+            x=51+correcao_coluna;
         }
 
         if(var==5)
@@ -624,50 +677,52 @@ do
     {
         opcao=getch();
         var=0;
+        _beginthread(Musica,0,NULL);
     }
 
 
 }while(num<100);
 
-    gotoxy(18,11);
+    gotoxy(18+correcao_coluna,17);
     printf("O CARREGAMENTO FOI FINALIZADO.");
-    gotoxy(18,14);
+    gotoxy(18+correcao_coluna,20);
     printf("DESEJA CONTINUAR A JOGAR?(S/N)");
     opcao=getch();
 
 
     if(opcao=='s'||opcao=='S')
     {
-        Cor_do_BG(15);
+        system("cls");
+        system("color F0");
 
         textcolor(0);
 
         p=0;
-        percentual=19;
+        percentual=45;
 
-        gotoxy(28,7);
-        printf("PROJETO");
-        gotoxy(18,9);
+
+        gotoxy(14+correcao_coluna,15);
             printf("_____________________________");
-            gotoxy(18,10);
+            gotoxy(14+correcao_coluna,16);
             printf("|");
-            gotoxy(18,11);
+            gotoxy(14+correcao_coluna,17);
             printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238,238);
-            gotoxy(46,10);
+            gotoxy(42+correcao_coluna,16);
             printf("|");
 
-            for(percentual=19;percentual<46;percentual++)
+            for(percentual=45;percentual<72;percentual++)
             {       textbackground(0);
-                    gotoxy(percentual,10);
+                    gotoxy(percentual,16);
                     printf("%c",219);
             }
             textbackground(15);
             num=100;
-            gotoxy(48,10);
+            gotoxy(44+correcao_coluna,16);
             printf("%i%%",num);
-            gotoxy(15,19);
+            gotoxy(15+correcao_coluna,25);
         printf("Para parar de jogar aperte X");
 
+        Logo();
         Jogo();
 
 
@@ -677,10 +732,11 @@ do
 void Cor_do_BG(int cor)
 {
     int i,j;
+
     textbackground(cor);
-    for(i=1;i<20;i++)
+    for(i=1;i<27;i++)
     {
-        for(j=1;j<61;j++)
+        for(j=1;j<121;j++)
         {
             gotoxy(j,i);
             printf(" ");
@@ -831,7 +887,7 @@ void Area_de_Trabalho()
 
 }
 void Logo()
-{      int j=10,i=2;
+{      int j=50,i=1;
         gotoxy(j,i);i++;
         printf("         _\n");
         gotoxy(j,i);i++;
@@ -862,14 +918,12 @@ void Logo()
         printf("       _-'\n");
 
 }
-void musica(){
-    Beep(660,500);
-}
+
 
 //Define o tamanho da tela com chamada do sistema
 void redefine(void){
-    system("color f0"); //Padroniza a cor do sistema, aqui nem influencia muito.
-    system("MODE con cols=63 lines=21"); //Redimensiona a tela
+    system("color F0"); //Padroniza a cor do sistema, aqui nem influencia muito.
+    system("MODE con cols=123 lines=28"); //Redimensiona a tela
     system("title STEAM - by: LGMT"); //Dá título a tela
 }
 int main()
@@ -882,12 +936,12 @@ int main()
 
     Tela_de_Carregamento();
 
-    //Login(adm);
+    Login(adm);
 
-   //Area_de_Trabalho();
+   Area_de_Trabalho();
 
-   //Logo();
 
-   //musica();
+
+
 
 }
