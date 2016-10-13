@@ -11,6 +11,10 @@ typedef struct{
     char usuario[10];
     char senha[10];
 }TUsuario;
+void Musica_opcao()
+{
+    Beep(300,300);
+}
 void Musica(){
      //musica do salto do jogo
     Beep(860,500);
@@ -819,7 +823,7 @@ void Area_de_Trabalho()
 
                             if(resp==80)
                             {
-                                Beep(408,100);
+                                _beginthread(Musica_opcao,0,NULL);
                                 gotoxy(6,y);
                                 printf(" ");
                                 auxiliar=y;
@@ -835,7 +839,8 @@ void Area_de_Trabalho()
                             }
                             else if(resp==72)
                             {
-                                Beep(408,100);
+                                _beginthread(Musica_opcao,0,NULL);
+
                                 gotoxy(6,y);
                                 printf(" ");
                                 auxiliar=y;
@@ -942,9 +947,6 @@ int main()
     Login(adm);
 
    Area_de_Trabalho();
-
-
-
 
 
 }
