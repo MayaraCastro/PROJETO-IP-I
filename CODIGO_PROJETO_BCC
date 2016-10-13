@@ -819,6 +819,7 @@ void Area_de_Trabalho()
 
                             if(resp==80)
                             {
+                                Beep(408,100);
                                 gotoxy(6,y);
                                 printf(" ");
                                 auxiliar=y;
@@ -834,6 +835,7 @@ void Area_de_Trabalho()
                             }
                             else if(resp==72)
                             {
+                                Beep(408,100);
                                 gotoxy(6,y);
                                 printf(" ");
                                 auxiliar=y;
@@ -847,6 +849,7 @@ void Area_de_Trabalho()
                             }
                             else if(resp==13)
                             {
+                                Beep(408,100);
                                 switch(y)
                                 {
                                 case 4:
