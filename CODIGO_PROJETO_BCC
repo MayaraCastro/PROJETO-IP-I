@@ -311,12 +311,21 @@ void Login(TUsuario adm)
             {
                 break;
             }
+            else if(usuario.senha[i]==8)
+            {
+                gotoxy(j-1,13);
+                printf(" ");
+                j--;
+                i--;
+            }
+
             else
             {
+                cont++;
+                j++;
                printf("*");
             }
-            cont++;
-            j++;
+
         }
         j=0;
         for(i=0;i<cont;i++)
@@ -940,6 +949,7 @@ int main()
     strcpy(adm.usuario,"admin");
     strcpy(adm.senha,"admin");
 
+   
     redefine();
 
     Tela_de_Carregamento();
