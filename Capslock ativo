@@ -1,0 +1,30 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+char x_toupper(char valor)
+{
+    if(valor>='a' && valor<='z')
+    {
+        return valor + 'A' - 'a';
+    }
+    else
+    {
+        return valor;
+    }
+}
+
+
+main()
+{
+    int saida;
+    do
+    {
+        int valor;
+        valor=getch();
+        if(x_toupper(valor)==valor)
+        {
+            printf("capslock ativado");
+        }
+    }
+    while(saida!=1);
+}
