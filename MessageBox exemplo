@@ -1,0 +1,25 @@
+#include <stdio.h> // printf()
+#include <windows.h> // MessageBox()
+
+void msgbox();
+
+int main()
+{
+     msgbox();
+}
+
+void msgbox()
+{
+
+
+       if(MessageBox(0,"termos de uso:\n voce aceita usahsaudhauanddddddddddddddddddddddddddddddds\nsuahudhsudhaudhau\n sauhudshdudhsuadha","TERMOS DE USO",4)==6)
+       {
+           printf("\n vc aceitou!");
+       }
+       else
+       {
+           MessageBox(0,"Nao aceitou. O programa será fechado","",0);
+
+       }
+
+}
