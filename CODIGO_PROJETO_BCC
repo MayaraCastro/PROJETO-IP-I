@@ -13,7 +13,7 @@ typedef struct{
 }TUsuario;
 void Musica_opcao()
 {
-    Beep(300,300);
+    Beep(100,300);
 }
 void Musica(){
      //musica do salto do jogo
@@ -761,130 +761,502 @@ void Area_de_Trabalho()
 {
 
     Janela();
-    Cor_do_BG(15);
+
+    //Cor_do_BG(15);
+    system("Color 3F");
 
 
-    int resposta,enter, movimento=0,movimentosubir=0,auxiliar,y;
+
+
+    int resposta,enter, movimento=0,movimentosubir=0,auxiliar,x,y,i,j;
     bool fecha=true;
 		char resp;
 
+                    textbackground(7);
+                    for(i=3;i<6;i++)
+                    {
+                        for(j=1;j<121;j++)
+                        {
+                            gotoxy(j,i);
+                            printf(" ");
+                        }
+                    }
+
 					gotoxy(6,4);
 					printf("%c",175);
-					y=4;
+					x=10;
 
 			do{
+                            textcolor(15);
 
+                            textbackground(8);
+                            for(i=3;i<6;i++)
+                            {
+                                for(j=x-5;j<x+15;j++)
+                                {
+                                    gotoxy(j,i);
+                                    printf(" ");
+                                }
+                            }
 
-						textcolor(0);
-                        gotoxy(6,y);
-						printf("%c",175);
-						if(y==4)
-                        {
-                            textcolor(13);
-                        }
-						gotoxy(10,4);
-						printf("Cadastrar Usuario;");
-						textcolor(0);
+                     textbackground(7);
+                    if(x==10)
+                    {
+                            textbackground(8);
+                    }
+                    gotoxy(10,4);
+                    printf("FUNCIONARIOS");
+                    textbackground(7);
 
-						if(y==5)
-                        {
-                            textcolor(13);
-                        }
-						gotoxy(10,5);
-						printf("Cadastrar funcionarios;");
-						textcolor(0);
+                    if(x==30)
+                    {
+                            textbackground(8);
 
-						if(y==6)
-                        {
-                            textcolor(13);
-                        }
-						gotoxy(10,6);
-						printf("Cadastrar de fornecedor;");
-						textcolor(0);
+                    }
 
-						if(y==7)
-                        {
-                            textcolor(13);
-                        }
-						gotoxy(10,7);
-						printf("Cadastrar de jogos;") ;
-						textcolor(0);
+                    gotoxy(30,4);
+                    printf("FORNECEDORES");
 
-						if(y==8)
-                        {
-                            textcolor(13);
-                        }
-						gotoxy(10,8);
-					    printf("Produtos;");
-					    textcolor(0);
+                    textbackground(7);
 
-					    if(y==9)
-                        {
-                            textcolor(13);
-                        }
-						gotoxy(10,9);
-						printf("Sair");
-						textcolor(0);
+                    if(x==50)
+                    {
+                            textbackground(8);
 
-                            gotoxy(0,20);
+                    }
+
+                    gotoxy(50,4);
+                    printf("PRODUTOS");
+
+                    textbackground(7);
+
+                    if(x==70)
+                    {
+                            textbackground(8);
+
+                    }
+
+                    gotoxy(70,4);
+                    printf("SAIR");
+
+                    textbackground(7);
+
+                            gotoxy(0,26);
                             resp=getch();
 
 
-                            if(resp==80)
+                            if(resp==75)
                             {
+
                                 _beginthread(Musica_opcao,0,NULL);
-                                gotoxy(6,y);
-                                printf(" ");
-                                auxiliar=y;
-                                y=auxiliar+1;
-                                if(y>9)
+
+                                textbackground(7);
+                                for(i=3;i<6;i++)
                                 {
-                                    y=3;
-                                    auxiliar=y;
-                                    y=auxiliar+1;
+                                    for(j=x-5;j<x+15;j++)
+                                    {
+                                        gotoxy(j,i);
+                                        printf(" ");
+                                    }
+                                }
+
+                                x=x-20;
+                                if(x<10)
+                                {
+                                    x=70;
+
                                 }
 
 
                             }
-                            else if(resp==72)
+                            else if(resp==77)
                             {
                                 _beginthread(Musica_opcao,0,NULL);
 
-                                gotoxy(6,y);
-                                printf(" ");
-                                auxiliar=y;
-                                y=auxiliar-1;
-                                if(y<4)
+                                textbackground(7);
+                                for(i=3;i<6;i++)
                                 {
-                                    y=10;
-                                    auxiliar=y;
-                                    y=auxiliar-1;
+                                    for(j=x-5;j<x+15;j++)
+                                    {
+                                        gotoxy(j,i);
+                                        printf(" ");
+                                    }
+                                }
+
+                                x=x+20;
+                                if(x>70)
+                                {
+                                    x=10;
                                 }
                             }
                             else if(resp==13)
                             {
                                 Beep(408,100);
-                                switch(y)
+                                switch(x)
                                 {
-                                case 4:
+                                case 10:
                                     {
+                                        y=6;
+                                        do
+                                        {
+                                            textbackground(8);
+                                                for(i=6;i<12;i++)
+                                                {
+                                                    for(j=x-5;j<x+15;j++)
+                                                    {
+                                                        gotoxy(j,i);
+                                                        printf(" ");
+                                                    }
+                                                }
+
+                                                textbackground(7);
+                                                for(i=y;i<y+2;i++)
+                                                {
+                                                    for(j=x-5;j<x+15;j++)
+                                                    {
+                                                        gotoxy(j,i);
+                                                        printf(" ");
+                                                    }
+                                                }
+                                                textbackground(8);
+                                                 if(y==6)
+                                                 {
+                                                     textbackground(7);
+                                                 }
+                                                gotoxy(x,6);
+                                                printf("CADASTRAR");
+
+                                                textbackground(8);
+
+                                                if(y==8)
+                                                 {
+                                                     textbackground(7);
+                                                 }
+
+                                                gotoxy(x,8);
+                                                printf("CONSULTAR");
+
+                                                textbackground(8);
+
+                                                if(y==10)
+                                                 {
+                                                     textbackground(7);
+                                                 }
+
+                                                gotoxy(x,10);
+                                                printf("RETORNAR");
+
+                                                textbackground(8);
+
+                                                gotoxy(0,25);
+                                                resp=getch();
+
+                                                if(resp==72)
+                                                {
+                                                    _beginthread(Musica_opcao,0,NULL);
+                                                    textbackground(8);
+                                                    for(i=y;i<y+2;i++)
+                                                    {
+                                                        for(j=x-5;j<x+15;j++)
+                                                        {
+                                                            gotoxy(j,i);
+                                                            printf(" ");
+                                                        }
+                                                    }
+                                                    y=y-2;
+                                                    if(y<6)
+                                                    {
+                                                        y=10;
+                                                    }
+                                                }
+                                                else if(resp==80)
+                                                {
+                                                    _beginthread(Musica_opcao,0,NULL);
+                                                    textbackground(8);
+                                                    for(i=y;i<y+2;i++)
+                                                    {
+                                                        for(j=x-5;j<x+15;j++)
+                                                        {
+                                                            gotoxy(j,i);
+                                                            printf(" ");
+                                                        }
+                                                    }
+                                                    y=y+2;
+                                                    if(y>10)
+                                                    {
+                                                        y=6;
+                                                    }
+                                                }
+                                                else if(resp==13)
+                                                {
+                                                    switch(y)
+                                                    {
+                                                    case 6:
+                                                        {
+                                                           break;
+                                                        }
+                                                    case 8:
+                                                        {
+                                                            break;
+                                                        }
+
+                                                    }
+                                                }
+                                        }while(resp!=13||y!=10);
+
+                                        textbackground(3);
+                                                for(i=6;i<12;i++)
+                                                {
+                                                    for(j=x-5;j<x+15;j++)
+                                                    {
+                                                        gotoxy(j,i);
+                                                        printf(" ");
+                                                    }
+                                                }
+
 
                                         break;
                                     }
-                                case 5:
+                                case 30:
                                     {
+                                        y=6;
+                                        do
+                                        {
+                                            textbackground(8);
+                                                for(i=6;i<12;i++)
+                                                {
+                                                    for(j=x-5;j<x+15;j++)
+                                                    {
+                                                        gotoxy(j,i);
+                                                        printf(" ");
+                                                    }
+                                                }
+
+                                                textbackground(7);
+                                                for(i=y;i<y+2;i++)
+                                                {
+                                                    for(j=x-5;j<x+15;j++)
+                                                    {
+                                                        gotoxy(j,i);
+                                                        printf(" ");
+                                                    }
+                                                }
+                                                textbackground(8);
+                                                 if(y==6)
+                                                 {
+                                                     textbackground(7);
+                                                 }
+                                                gotoxy(x,6);
+                                                printf("CADASTRAR");
+
+                                                textbackground(8);
+
+                                                if(y==8)
+                                                 {
+                                                     textbackground(7);
+                                                 }
+
+                                                gotoxy(x,8);
+                                                printf("CONSULTAR");
+
+                                                textbackground(8);
+
+                                                if(y==10)
+                                                 {
+                                                     textbackground(7);
+                                                 }
+
+                                                gotoxy(x,10);
+                                                printf("RETORNAR");
+
+                                                textbackground(8);
+
+                                                gotoxy(0,25);
+                                                resp=getch();
+
+                                                if(resp==72)
+                                                {
+                                                    _beginthread(Musica_opcao,0,NULL);
+                                                    textbackground(8);
+                                                    for(i=y;i<y+2;i++)
+                                                    {
+                                                        for(j=x-5;j<x+15;j++)
+                                                        {
+                                                            gotoxy(j,i);
+                                                            printf(" ");
+                                                        }
+                                                    }
+                                                    y=y-2;
+                                                    if(y<6)
+                                                    {
+                                                        y=10;
+                                                    }
+                                                }
+                                                else if(resp==80)
+                                                {
+                                                    _beginthread(Musica_opcao,0,NULL);
+                                                    textbackground(8);
+                                                    for(i=y;i<y+2;i++)
+                                                    {
+                                                        for(j=x-5;j<x+15;j++)
+                                                        {
+                                                            gotoxy(j,i);
+                                                            printf(" ");
+                                                        }
+                                                    }
+                                                    y=y+2;
+                                                    if(y>10)
+                                                    {
+                                                        y=6;
+                                                    }
+                                                }
+                                                else if(resp==13)
+                                                {
+                                                    switch(y)
+                                                    {
+                                                    case 6:
+                                                        {
+                                                           break;
+                                                        }
+                                                    case 8:
+                                                        {
+                                                            break;
+                                                        }
+
+                                                    }
+                                                }
+                                        }while(resp!=13||y!=10);
+
+                                        textbackground(3);
+                                                for(i=6;i<12;i++)
+                                                {
+                                                    for(j=x-5;j<x+15;j++)
+                                                    {
+                                                        gotoxy(j,i);
+                                                        printf(" ");
+                                                    }
+                                                }
                                         break;
                                     }
-                                case 6:
+                                case 50:
                                     {
-                                        break;
-                                    }
-                                case 7:
-                                    {
-                                        break;
-                                    }
-                                case 8:
-                                    {
+                                        y=6;
+                                        do
+                                        {
+                                            textbackground(8);
+                                                for(i=6;i<12;i++)
+                                                {
+                                                    for(j=x-5;j<x+15;j++)
+                                                    {
+                                                        gotoxy(j,i);
+                                                        printf(" ");
+                                                    }
+                                                }
+
+                                                textbackground(7);
+                                                for(i=y;i<y+2;i++)
+                                                {
+                                                    for(j=x-5;j<x+15;j++)
+                                                    {
+                                                        gotoxy(j,i);
+                                                        printf(" ");
+                                                    }
+                                                }
+                                                textbackground(8);
+                                                 if(y==6)
+                                                 {
+                                                     textbackground(7);
+                                                 }
+                                                gotoxy(x,6);
+                                                printf("CADASTRAR");
+
+                                                textbackground(8);
+
+                                                if(y==8)
+                                                 {
+                                                     textbackground(7);
+                                                 }
+
+                                                gotoxy(x,8);
+                                                printf("CONSULTAR");
+
+                                                textbackground(8);
+
+                                                if(y==10)
+                                                 {
+                                                     textbackground(7);
+                                                 }
+
+                                                gotoxy(x,10);
+                                                printf("RETORNAR");
+
+                                                textbackground(8);
+
+                                                gotoxy(0,25);
+                                                resp=getch();
+
+                                                if(resp==72)
+                                                {
+                                                    _beginthread(Musica_opcao,0,NULL);
+                                                    textbackground(8);
+                                                    for(i=y;i<y+2;i++)
+                                                    {
+                                                        for(j=x-5;j<x+15;j++)
+                                                        {
+                                                            gotoxy(j,i);
+                                                            printf(" ");
+                                                        }
+                                                    }
+                                                    y=y-2;
+                                                    if(y<6)
+                                                    {
+                                                        y=10;
+                                                    }
+                                                }
+                                                else if(resp==80)
+                                                {
+                                                    _beginthread(Musica_opcao,0,NULL);
+                                                    textbackground(8);
+                                                    for(i=y;i<y+2;i++)
+                                                    {
+                                                        for(j=x-5;j<x+15;j++)
+                                                        {
+                                                            gotoxy(j,i);
+                                                            printf(" ");
+                                                        }
+                                                    }
+                                                    y=y+2;
+                                                    if(y>10)
+                                                    {
+                                                        y=6;
+                                                    }
+                                                }
+                                                else if(resp==13)
+                                                {
+                                                    switch(y)
+                                                    {
+                                                    case 6:
+                                                        {
+                                                           break;
+                                                        }
+                                                    case 8:
+                                                        {
+                                                            break;
+                                                        }
+
+                                                    }
+                                                }
+                                        }while(resp!=13||y!=10);
+
+                                        textbackground(3);
+                                                for(i=6;i<12;i++)
+                                                {
+                                                    for(j=x-5;j<x+15;j++)
+                                                    {
+                                                        gotoxy(j,i);
+                                                        printf(" ");
+                                                    }
+                                                }
                                         break;
                                     }
                                 default:
@@ -893,13 +1265,6 @@ void Area_de_Trabalho()
                                     }
                                 }
                         }
-
-
-
-
-
-
-
 				}while(fecha);
 
 }
@@ -949,14 +1314,16 @@ int main()
     strcpy(adm.usuario,"admin");
     strcpy(adm.senha,"admin");
 
-   
+
     redefine();
 
-    Tela_de_Carregamento();
+   //Tela_de_Carregamento();
 
-    Login(adm);
+   //Login(adm);
+   //system("cls");
 
    Area_de_Trabalho();
+
 
 
 }
