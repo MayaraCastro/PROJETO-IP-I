@@ -13,18 +13,19 @@ typedef struct{
 }TUsuario;
 void Musica_opcao()
 {
-    Beep(100,300);
+    Beep(380,300);
 }
 void Musica(){
      //musica do salto do jogo
     Beep(860,500);
 }
 void gotoxy(int x,int y)
-{	COORD p={x,y};
+{	//pra posicionar com coordenadas
+    COORD p={x,y};
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),p);
 }
 void textcolor(int newcolor)
-{
+{   //pra mudar a cor da letra
    CONSOLE_SCREEN_BUFFER_INFO csbi;
 
    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
@@ -33,7 +34,7 @@ void textcolor(int newcolor)
 
 }
 void textbackground(int newcolor)
-{
+{   //pra mudar a cor de fundo da letra
    CONSOLE_SCREEN_BUFFER_INFO csbi;
 
    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
@@ -42,7 +43,7 @@ void textbackground(int newcolor)
 
 }
 void Janela()
-{
+{   //desenho da borda da janela
     int i,j;
     for(i=1;i<27;i++)
     {
@@ -523,7 +524,7 @@ void Tela_de_Carregamento()
     //Cor_do_BG(15);
     system("color F0");
     Janela();
-    Logo();
+    Logo(50,1);
 
     int correcao_coluna=30;
 
@@ -735,7 +736,7 @@ do
             gotoxy(15+correcao_coluna,25);
         printf("Para parar de jogar aperte X");
 
-        Logo();
+        Logo(50,1);
         Jogo();
 
 
@@ -758,12 +759,13 @@ void Cor_do_BG(int cor)
     }
 }
 void Area_de_Trabalho()
-{
+{   //area que tem os menus
 
     Janela();
 
     //Cor_do_BG(15);
     system("Color 3F");
+    Logo(50,12);
 
 
 
@@ -1261,15 +1263,19 @@ void Area_de_Trabalho()
                                     }
                                 default:
                                     {
-                                       fecha=false;
+                                        if(MessageBox(0,"Deseja sair mesmo?","",4)==6)
+                                        {
+                                            exit(0);
+                                            fecha=false;
+                                        }
                                     }
                                 }
                         }
 				}while(fecha);
 
 }
-void Logo()
-{      int j=50,i=1;
+void Logo(int j, int i)
+{      //int j=50,i=1;
         gotoxy(j,i);i++;
         printf("         _\n");
         gotoxy(j,i);i++;
@@ -1300,8 +1306,6 @@ void Logo()
         printf("       _-'\n");
 
 }
-
-
 //Define o tamanho da tela com chamada do sistema
 void redefine(void){
     system("color F0"); //Padroniza a cor do sistema, aqui nem influencia muito.
