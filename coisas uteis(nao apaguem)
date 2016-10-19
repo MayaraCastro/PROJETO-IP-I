@@ -1,12 +1,19 @@
+//codigo das setas direcionais
 #define ACIMA 72
 #define ABAIXO 80
 #define DIREITA 77
 #define ESQUERDA 75
 
+//Tabelas ascii
 http://187.7.106.14/marcelo/org_comp/tabelaASCII.pdf
+http://www.fattep.com.br/midia/avisos/1281674224_aviso.pdf
 
+
+//tutorial de como usar a função _beginthread()
 http://www.hardware.com.br/comunidade/tutorial-simples/1252370/
 
+
+//cores para usar com o textcolor ou textbackgroundcolor
 http://personalizandoc.blogspot.com.br/2012/10/mudar-cor-da-saida-em-ccprintf.html
 Codigo Da Cor    Nome Da Cor
 0    Preto
