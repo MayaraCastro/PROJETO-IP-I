@@ -1,0 +1,214 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <stdbool.h>
+#include <windows.h>
+#include <process.h> //para usar o _beginthread()
+
+void gotoxy(int x,int y)
+{	//pra posicionar com coordenadas
+    COORD p={x,y};
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),p);
+}
+void textcolor(int newcolor)
+{   //pra mudar a cor da letra
+   CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+   GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+      (csbi.wAttributes & 0xf0) | newcolor);
+
+}
+void textbackground(int newcolor)
+{   //pra mudar a cor de fundo da letra
+   CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+   GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+      (csbi.wAttributes & 0x0f) | (newcolor << 4));
+
+}
+void Janela()
+{   //desenho da borda da janela
+    int i,j;
+    for(i=1;i<27;i++)
+    {
+        gotoxy(0,i);
+        printf("%c",186);
+    }
+    gotoxy(0,27);
+    printf("%c",200);
+    gotoxy(0,0);
+    printf("%c",201);
+    for(i=1;i<121;i++)
+    {
+        gotoxy(i,0);
+        printf("%c",205);
+    }
+    for(i=1;i<121;i++)
+    {
+        gotoxy(i,27);
+        printf("%c",205);
+    }
+
+    gotoxy(121,27);
+    printf("%c",188);
+
+    gotoxy(121,0);
+    printf("%c",187);
+    for(i=1;i<27;i++)
+    {
+        gotoxy(121,i);
+        printf("%c",186);
+    }
+
+}
+void Logo(int j, int i)
+{      //int j=50,i=1;
+        gotoxy(j,i);i++;
+        printf("         _\n");
+        gotoxy(j,i);i++;
+        printf("       _/ \      _-'\n");
+        gotoxy(j,i);i++;
+        printf("      _/|  \-''- _ /\n");
+        gotoxy(j,i);i++;
+        printf("__-'  { |         \\\n");
+        gotoxy(j,i);i++;
+        printf("     /             \\\n");
+        gotoxy(j,i);i++;
+        printf("     /      ''o. |o }\n");
+        gotoxy(j,i);i++;
+        printf("     |           \\  ;\n");
+        gotoxy(j,i);i++;
+        printf("                   ',\n");
+        gotoxy(j,i);i++;
+        printf("        \_         __ \\\n");
+        gotoxy(j,i);i++;
+        printf("          ''-_    \\.//\n");
+        gotoxy(j,i);i++;
+        printf("            / '-____'\n");
+        gotoxy(j,i);i++;
+        printf("           /\n");
+        gotoxy(j,i);i++;
+        printf("         _'\n");
+        gotoxy(j,i);i++;
+        printf("       _-'\n");
+
+}
+
+void Consulta()
+{
+    system("Color 3F");
+    Logo(50,1);
+    Janela();
+    //Borda
+    {
+     int i,j;
+
+        gotoxy(34,17);
+        printf("%c",186);
+
+    gotoxy(34,18);
+    printf("%c",200);
+    gotoxy(34,16);
+    printf("%c",201);
+    for(i=35;i<85;i++)
+    {
+        gotoxy(i,16);
+        printf("%c",205);
+        gotoxy(i,18);
+        printf("%c",205);
+    }
+
+    gotoxy(85,18);
+    printf("%c",188);
+
+    gotoxy(85,16);
+    printf("%c",187);
+
+        gotoxy(85,17);
+        printf("%c",186);
+
+    }
+
+    textbackground(15);
+    int i;
+
+    for(i=35;i<85;i++)
+    {
+        gotoxy(i,17);
+        printf(" ");
+    }
+    textbackground(3);
+
+}
+void redefine(void){
+    system("color F0"); //Padroniza a cor do sistema.
+    system("MODE con cols=123 lines=28"); //Redimensiona a tela
+    system("title STEAM - by: LGMT"); //Dá título a tela
+}
+
+struct TRegistro
+{
+char Mat[4];
+char Nome[40];
+float SalarioBruto;
+};
+/*Função que cria um arquivo em disco, deixando-o apto a armazenar dados */
+FILE *CriaArquivo(char s[12])
+{
+FILE *p;
+p = fopen(s, "wb");
+return(p);
+}
+/*Função que grava dados armazenados numa estrutura em um arquivo*/
+void GravaRegistros(char s[12])
+{
+FILE *p;
+struct TRegistro r;
+printf("Matricula (para encerrar, digite matricula 0): ");
+fflush(stdin);
+gets(r.Mat);
+while ((r.Mat)[0] != '0')
+{
+printf("Nome: ");
+fflush(stdin);
+gets(r.Nome);
+printf("Salario bruto: ");
+scanf("%f", &r.SalarioBruto);
+fwrite(&r, sizeof(r), 1, p);
+printf("Matricula (para encerrar, digite matricula 0): ");
+fflush(stdin);
+gets(r. Mat);
+}
+fclose(p);
+}
+void ExibeArquivo(char s[12])
+{
+FILE *p;
+struct TRegistro r;
+p = fopen(s, "rb");
+fread(&r, sizeof(r), 1, p);
+while (feof(p) == 0) /*Ou, o que é o mais utilizado, while (!feof(p))*/
+{
+printf("%s \b %s \b %f \n", r.Mat, r.Nome, r.SalarioBruto);
+fread(&r, sizeof(r), 1, p);
+}
+fclose(p);
+}
+main()
+{
+/*FILE *PontArquivo;
+char NomeArq[12];
+printf("Digite o nome do arquivo");
+gets(NomeArq);
+PontArquivo = CriaArquivo(NomeArq);
+if (PontArquivo != NULL)
+GravaRegistros(NomeArq);
+else
+printf("O arquivo %s nao pode ser criado \n", NomeArq);
+
+ExibeArquivo(NomeArq);*/
+redefine();
+Consulta();
+}
