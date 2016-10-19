@@ -1,0 +1,21 @@
+#include <windows.h>
+#include <stdio.h>
+#include<stdbool.h>
+int main()
+{
+POINT Coordenadas;
+
+while(true)
+{
+/*Passamos o endereço da variável Coordenadas para a função GetCursorPos que por sua vez setará os campos
+x e y da estrutura Coordenadas com os respectivos valores das coordenadas do mouse*/
+GetCursorPos(&Coordenadas);
+
+printf("X: %dnY: %dn", Coordenadas.x, Coordenadas.y); //Imprime as coordenadas capturadas.
+
+Sleep(50); //Pausa de 50 milésimos para não consumir muito processamento
+system("cls"); //Limpa a tela para não ficar igual a uma lista rolando…
+}
+
+return 0;
+}
