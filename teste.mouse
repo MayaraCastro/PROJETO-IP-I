@@ -8,7 +8,20 @@
 typedef struct{
     char usuario[10];
     char senha[10];
+    char nome[50];
 }TUsuario;
+
+typedef struct{
+    char nome[10];
+    char senha[10];
+}TFuncionario;
+
+typedef struct{
+    char nome[10];
+    char senha[10];
+}TProduto;
+
+
 void Musica_opcao()
 {
     Beep(380,300);
@@ -962,6 +975,7 @@ void Quadro_colorido(int cor,int x_comeco,int x,int y_comeco, int y)
 void Area_de_Trabalho()
 {   //area que tem os menus
 
+    system("cls");
     Janela();
     system("Color 3F");
     Logo(50,12);
@@ -970,7 +984,7 @@ void Area_de_Trabalho()
     int ativou=0,att1=0,att2=0,att3=0,att4=0,att5=0,x_antigo,y_antigo;
 
     //as variaveis att sao pra o menu n ficar piscando, ai so imprime uma vez e pronto e as variaveis com o nome entra tbm sao
-    
+
 
     int movimento=0,movimentosubir=0,auxiliar,x,y,i,j;
     bool fecha=true,entra1=true,entra2=true;
@@ -1003,6 +1017,10 @@ void Area_de_Trabalho()
                             printf("FUNCIONARIOS");
                             do
                             {
+                                if(kbhit())
+                                {
+                                    resp=getch();
+                                }
 
                                     x_antigo=Coordenadas.x;
                                     y_antigo=Coordenadas.y;
@@ -1023,6 +1041,13 @@ void Area_de_Trabalho()
                                                         gotoxy(10,6);
                                                         printf("CADASTRAR");
                                                         textbackground(8);
+                                                    }
+
+                                                    if(resp==13)
+                                                    {
+                                                        //so pra testar
+                                                        system("cls");
+                                                        resp=' ';
                                                     }
 
 
@@ -1055,6 +1080,14 @@ void Area_de_Trabalho()
                                                         printf("CONSULTAR");
                                                         textbackground(8);
                                                     }
+                                                    if(resp==13)
+                                                    {
+                                                        //so pra testar
+                                                        Consulta();
+                                                        resp=' ';
+                                                        Area_de_Trabalho();
+                                                        break;
+                                                    }
 
 
 
@@ -1073,31 +1106,6 @@ void Area_de_Trabalho()
                                                     printf("CONSULTAR");
                                                  }
 
-
-
-                                                gotoxy(0,25);
-                                                if(kbhit())
-                                                {
-                                                    resp=getch();
-                                                }
-
-
-
-                                                if(resp==13)
-                                                {
-                                                    switch(y)
-                                                    {
-                                                    case 6:
-                                                        {
-                                                           break;
-                                                        }
-                                                    case 8:
-                                                        {
-                                                            break;
-                                                        }
-
-                                                    }
-                                                }
 
                     }while((Coordenadas.x>=60&&Coordenadas.x<=278 && Coordenadas.y<=260&&Coordenadas.y>=100));
 
@@ -1577,9 +1585,241 @@ void Logo(int j, int i)
         printf("       _-'\n");
 
 }
+void Consulta()
+{//aba de consulta de funcionarios
+    POINT Coordenadas;
+    bool entra=true;
+    int ativou=0,achou=0;
+    char resp;
+    system("cls");
+    system("Color 3F");
+    Logo(50,1);
+    Janela();
+    //Borda
+    {
+     int i,j;
+
+        gotoxy(34,17);
+        printf("%c",186);
+
+    gotoxy(34,18);
+    printf("%c",200);
+    gotoxy(34,16);
+    printf("%c",201);
+    for(i=35;i<85;i++)
+    {
+        gotoxy(i,16);
+        printf("%c",205);
+        gotoxy(i,18);
+        printf("%c",205);
+    }
+
+    gotoxy(85,18);
+    printf("%c",188);
+
+    gotoxy(85,16);
+    printf("%c",187);
+
+        gotoxy(85,17);
+        printf("%c",186);
+
+    }
+    textbackground(15);
+    int i;
+
+    for(i=35;i<85;i++)
+    {
+        gotoxy(i,17);
+        printf(" ");
+    }
+
+    FILE *p;
+    fpos_t byte;
+    TFuncionario consulta;
+    char arquivo[12]="Funcionarios";
+
+    do
+    {
+        if(kbhit())
+        {
+            resp=getch();
+
+            if(resp==13 && Coordenadas.x<940 &&Coordenadas.x>388 &&Coordenadas.y<470 && Coordenadas.y>423)
+            {
+                textbackground(15);
+                textcolor(8);
+                char procura[200];
+                gotoxy(35,17);
+                gets(procura);
+                fflush(stdin);
+                resp=' ';
+
+                p=fopen(arquivo,"rb");
+                if(p!=NULL)
+                {
+                    fread(&consulta,sizeof(consulta),1,p);
+                    while(!feof(p)&&achou==0)
+                    {
+                        if(strcmp(procura,consulta.nome)==0)
+                        {
+                            fgetpos(p,&byte);
+                            achou++;
+
+                            Resultado_consulta_funcionario(consulta);
+                            break;
+
+                        }
+                        fread(&consulta,sizeof(consulta),1,p);
+                    }
+                    if(achou==0)
+                    {
+                        gotoxy(50,19);
+                        printf("Resultado nao encontrado");
+
+                    }
+
+                    fclose(p);
+
+                }
+                else
+                {
+                    gotoxy(50,19);
+                    printf("Resultado nao encontrado");
+                }
+            }
+        }
+
+
+        textbackground(3);
+        gotoxy(20,10);
+        printf("x: %d  y: %d ",Coordenadas.x,Coordenadas.y);
+        GetCursorPos(&Coordenadas);
+        if(Coordenadas.x<775 &&Coordenadas.x>555 &&Coordenadas.y<580 && Coordenadas.y>510)
+        {
+            if(ativou==0)
+            {   textcolor(15);
+                Quadro_colorido(8,50,70,20,23);
+                gotoxy(56,21);
+                printf("RETORNAR");
+            }
+            entra=true;
+            ativou++;
+            if(resp==13)
+            {
+                resp=' ';
+                break;
+            }
+
+        }
+        else if(entra)
+        {
+            Quadro_colorido(7,50,70,20,23);
+            textcolor(8);
+            gotoxy(56,21);
+            printf("RETORNAR");
+            entra=false;
+            ativou=0;
+        }
+
+    }while(1);
+
+
+
+}
+void Resultado_consulta_funcionario(TFuncionario consulta)
+{
+    system("cls");
+    Janela();
+    system("Color 3F");
+
+    POINT Coordenadas;
+    bool button1=true;
+    int ativado=0;
+
+    Logo(4,1);
+    gotoxy(58,2);
+    printf("FUNCIONARIO");
+    Quadro_colorido(15,38,90,4,25);
+
+    textcolor(3);
+
+    //desenho da borda da janela
+    {
+    int i,j;
+    for(i=5;i<25;i++)
+    {
+        gotoxy(38,i);
+        printf("%c",186);
+    }
+    gotoxy(38,25);
+    printf("%c",200);
+    gotoxy(38,4);
+    printf("%c",201);
+    for(i=39;i<90;i++)
+    {
+        gotoxy(i,4);
+        printf("%c",205);
+    }
+    for(i=39;i<90;i++)
+    {
+        gotoxy(i,25);
+        printf("%c",205);
+    }
+
+    gotoxy(90,25);
+    printf("%c",188);
+
+    gotoxy(90,4);
+    printf("%c",187);
+    for(i=5;i<25;i++)
+    {
+        gotoxy(90,i);
+        printf("%c",186);
+    }
+}
+
+    gotoxy(40,6);
+    printf("NOME");
+
+    gotoxy(40,8);
+    printf("IDADE");
+
+    do
+    {   gotoxy(50,10);
+        printf("x: %d  y: %d ",Coordenadas.x,Coordenadas.y);
+        GetCursorPos(&Coordenadas);
+
+        if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>150&&Coordenadas.y<220)
+        {
+            if(ativado==0)
+            {
+                Quadro_colorido(8,95,118,5,8);
+                gotoxy(103,6);
+                textcolor(15);
+                printf("EDITAR");
+            }
+            button1=true;
+            ativado++;
+
+        }
+        else if(button1)
+        {
+            button1=false;
+            Quadro_colorido(7,95,118,5,8);
+            gotoxy(103,6);
+            textcolor(8);
+            printf("EDITAR");
+            ativado=0;
+        }
+
+
+
+    }while(1);
+
+}
 //Define o tamanho da tela com chamada do sistema
 void redefine(void){
-    system("color F0"); //Padroniza a cor do sistema.
+    system("color 3F"); //Padroniza a cor do sistema.
     system("MODE con cols=123 lines=28"); //Redimensiona a tela
     system("title STEAM - by: LGMT"); //Dá título a tela
 }
@@ -1588,8 +1828,8 @@ int main()
     TUsuario adm;
     strcpy(adm.usuario,"admin");
     strcpy(adm.senha,"admin");
-    
-    
+
+
     redefine();
 
     //Tela_de_Carregamento();
@@ -1597,5 +1837,24 @@ int main()
     //Login(adm);
     //system("cls");
 
-    Area_de_Trabalho();
+    //Area_de_Trabalho();
+     FILE *teste;
+    teste=fopen("Funcionarios","rb");TFuncionario r;
+                if(teste==NULL)
+                {
+
+
+                    fopen("Funcionarios","wb");
+                    gets(r.nome);
+                    fflush(stdin);
+                    fwrite(&r,sizeof(r),1,teste);
+
+
+                }
+                fclose(teste);
+Resultado_consulta_funcionario(r);
+    //Consulta();
+
+
+
 }
