@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <windows.h>
 #include <process.h> //para usar o _beginthread()
+#include <string.h>
 
 typedef struct{
     char usuario[10];
@@ -996,8 +997,9 @@ void Area_de_Trabalho()
 					printf("%c",175);
 					x=10;
 
-			do{
-                            textcolor(15);
+			do
+            {
+                    textcolor(15);
 
 
 
@@ -1046,8 +1048,10 @@ void Area_de_Trabalho()
                                                     if(resp==13)
                                                     {
                                                         //so pra testar
-                                                        system("cls");
+                                                        Cadastro_funcionario();
                                                         resp=' ';
+                                                        Area_de_Trabalho();
+                                                        break;
                                                     }
 
 
@@ -1083,7 +1087,8 @@ void Area_de_Trabalho()
                                                     if(resp==13)
                                                     {
                                                         //so pra testar
-                                                        Consulta();
+                                                        Consulta_funcionario();
+
                                                         resp=' ';
                                                         Area_de_Trabalho();
                                                         break;
@@ -1585,7 +1590,8 @@ void Logo(int j, int i)
         printf("       _-'\n");
 
 }
-void Consulta()
+
+void Consulta_funcionario()
 {//aba de consulta de funcionarios
     POINT Coordenadas;
     bool entra=true;
@@ -1635,8 +1641,8 @@ void Consulta()
 
     FILE *p;
     fpos_t byte;
-    TFuncionario consulta;
-    char arquivo[12]="Funcionarios";
+    TFuncionario consulta[20];
+    char arquivo[16]="Funcionarios.txt";
 
     do
     {
@@ -1653,24 +1659,30 @@ void Consulta()
                 gets(procura);
                 fflush(stdin);
                 resp=' ';
+                int i=0;
 
                 p=fopen(arquivo,"rb");
-                if(p!=NULL)
-                {
-                    fread(&consulta,sizeof(consulta),1,p);
-                    while(!feof(p)&&achou==0)
+
+                    fread(consulta,sizeof(consulta),20,p);
+                    gotoxy(40,18);
+
+                    while(i<20&&achou==0)
                     {
-                        if(strcmp(procura,consulta.nome)==0)
+                        printf("%s", consulta[i].nome);
+
+                        if(strcmp(procura,consulta[i].nome)==0)
                         {
-                            fgetpos(p,&byte);
-                            achou++;
+                            //fgetpos(p,&byte);
+                            achou=1;
 
                             Resultado_consulta_funcionario(consulta);
+                            //return(consulta);
                             break;
-
                         }
-                        fread(&consulta,sizeof(consulta),1,p);
+                        i++;
+
                     }
+
                     if(achou==0)
                     {
                         gotoxy(50,19);
@@ -1680,12 +1692,7 @@ void Consulta()
 
                     fclose(p);
 
-                }
-                else
-                {
-                    gotoxy(50,19);
-                    printf("Resultado nao encontrado");
-                }
+
             }
         }
 
@@ -1779,10 +1786,10 @@ void Resultado_consulta_funcionario(TFuncionario consulta)
 }
 
     gotoxy(40,6);
-    printf("NOME");
+    printf("NOME: %s",consulta.nome);
 
     gotoxy(40,8);
-    printf("IDADE");
+    printf("IDADE: ");
 
     do
     {   gotoxy(50,10);
@@ -1817,6 +1824,72 @@ void Resultado_consulta_funcionario(TFuncionario consulta)
     }while(1);
 
 }
+void Cadastro_funcionario()
+{
+    system("cls");
+    Janela();
+    system("Color 3F");
+
+    Logo(4,1);
+    gotoxy(50,2);
+    printf("CADASTRAR FUNCIONARIO");
+    Quadro_colorido(15,38,90,4,25);
+
+    textcolor(3);
+
+    //desenho da borda da janela
+    {
+    int i,j;
+    for(i=5;i<25;i++)
+    {
+        gotoxy(38,i);
+        printf("%c",186);
+    }
+    gotoxy(38,25);
+    printf("%c",200);
+    gotoxy(38,4);
+    printf("%c",201);
+    for(i=39;i<90;i++)
+    {
+        gotoxy(i,4);
+        printf("%c",205);
+    }
+    for(i=39;i<90;i++)
+    {
+        gotoxy(i,25);
+        printf("%c",205);
+    }
+
+    gotoxy(90,25);
+    printf("%c",188);
+
+    gotoxy(90,4);
+    printf("%c",187);
+    for(i=5;i<25;i++)
+    {
+        gotoxy(90,i);
+        printf("%c",186);
+    }
+}
+
+    FILE* f;
+    TFuncionario funcionario[20];
+
+    f=fopen("Funcionarios","rb");
+    if(f==NULL)
+    {
+        f=fopen("Funcionarios","wb");
+    }
+        gotoxy(40,6);
+        printf("Nome");
+        gets(funcionario[0].nome);
+
+        fwrite(&funcionario,sizeof(funcionario),20,f);
+
+        fclose(f);
+
+    MessageBox(0,"CADASTRO REALIZADO COM SUCESSO!","CADASTRO DE FUNCIONARIO",0);
+}
 //Define o tamanho da tela com chamada do sistema
 void redefine(void){
     system("color 3F"); //Padroniza a cor do sistema.
@@ -1837,24 +1910,13 @@ int main()
     //Login(adm);
     //system("cls");
 
-    //Area_de_Trabalho();
-     FILE *teste;
-    teste=fopen("Funcionarios","rb");TFuncionario r;
-                if(teste==NULL)
-                {
+    Area_de_Trabalho();
 
 
-                    fopen("Funcionarios","wb");
-                    gets(r.nome);
-                    fflush(stdin);
-                    fwrite(&r,sizeof(r),1,teste);
+    //Consulta_funcionario();
 
 
-                }
-                fclose(teste);
-Resultado_consulta_funcionario(r);
-    //Consulta();
-
+//MessageBox(0,"CADASTRO REALIZADO COM SUCESSO!","CADASTRO DE FUNCIONARIO",0);
 
 
 }
