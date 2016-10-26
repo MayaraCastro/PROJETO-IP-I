@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <stdbool.h>
+#include <windows.h>
+#include <process.h> //para usar o _beginthread()
+#include <string.h>
+
+void gotoxy(int x,int y)
+{	//pra posicionar com coordenadas
+    COORD p={x,y};
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),p);
+}
+int main()
+{
+    int i,j;
+    for(j=5;j<15;j++)
+    {
+        gotoxy(30,j);
+        printf("|");
+
+    }
+     for(j=31;j<80;j++)
+    {
+        gotoxy(j,14);
+        printf("_");
+    }
+    j=31;
+    while(j<49)
+    {
+        j++;
+        gotoxy(10,3);
+        scanf("%i",&i);
+        i=14-(i/50);
+        gotoxy(j,i);
+        printf(".");
+    }
+
+}
