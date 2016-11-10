@@ -108,7 +108,7 @@ void Cadeado_Fechado()
     gotoxy(j,i);i++;
     printf("    / .------. \\ ");
     gotoxy(j,i);i++;
-    printf("   \\/ \\/        \\ \\");
+    printf("   /  /       \\ \\");
     gotoxy(j,i);i++;
     printf("   | |        | |");
     gotoxy(j,i);i++;
@@ -144,7 +144,7 @@ void Cadeado_abrindo()
     gotoxy(j,i);i++;
     printf("    / .------. \\ ");
     gotoxy(j,i);i++;
-    printf("   \\/ \\/        \\ \\");
+    printf("   /  /       \\ \\");
     gotoxy(j,i);i++;
     printf("   | |        | |");
     gotoxy(j,i);i++;
@@ -1202,7 +1202,7 @@ void Area_de_Trabalho()
                                                         printf("CADASTRAR");
                                                         textbackground(8);
                                                     }
-                                                    
+
 
 
                                                  }
@@ -1235,7 +1235,7 @@ void Area_de_Trabalho()
                                                         textbackground(8);
                                                     }
 
-												
+
 
 
                                                  }
@@ -1279,8 +1279,6 @@ void Area_de_Trabalho()
                                                             Aba_Consulta(2);
                                                         	resp=' ';
                                                         	Area_de_Trabalho();
-                                                            break;
-
                                                             break;
                                                         }
 
@@ -1405,13 +1403,13 @@ void Area_de_Trabalho()
                                                     {
                                                     case 6:
                                                         {
-                                                        
-                                                        
+
+
                                                            break;
                                                         }
                                                     case 8:
                                                         {
-                                                        
+
                                                         }
 
                                                     }
@@ -1641,6 +1639,7 @@ int Logo(int j, int i)
 }
 int Consulta_funcionario(char procura[200])
 {
+
     FILE *p;
     int achou=0;
     TFuncionario consulta;
@@ -1668,36 +1667,38 @@ int Consulta_funcionario(char procura[200])
 }
 int Consulta_user(char pesquisa[200])
 {
+
 	FILE* pesquisar;
 	TUsuario usuario;
 	int resultado;
 	int find=0;
-	fpos_t Byte;	
-	
-	pesquisar=fopen("Usuario","rb");
-	fread((&usuario),sizeof(usuario),1,pesquisar);
+	fpos_t Byte;
 
-	while(!feof(pesquisar) && find==0)
+	pesquisar=fopen("Usuario","rb");
+	fread(&usuario,sizeof(usuario),1,pesquisar);
+
+    while(!feof(pesquisar)&&find==0)
 	{
-		if(strcmp(pesquisa,usuario.nome)==0)
+
+		if(strcmp(usuario.nome,pesquisa)==0)
 		{
+
 			find=1;
 			fgetpos(pesquisar,&Byte);
 			fclose(pesquisar);
 			return (Byte);
 		}
 		fread(&usuario,sizeof(usuario),1,pesquisar);
-	}	
+	}
 	if(find==0)
     {
-
         fclose(pesquisar);
         return(0);
     }
-    
+
 }
 int Aba_Consulta(int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos*/)
-{//aba de consulta de funcionarios
+{
     POINT Coordenadas;
     bool entra=true;
     int ativou=0;
@@ -1756,6 +1757,7 @@ int Aba_Consulta(int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos*/)
                 textbackground(15);
                 textcolor(8);
                 char procura[200];
+                char pesquisa[200];
                 gotoxy(35,17);
                 gets(procura);
                 fflush(stdin);
@@ -1767,6 +1769,11 @@ int Aba_Consulta(int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos*/)
                 if(arquivo==1)
                 {
                     Byte=Consulta_funcionario(procura);
+                }
+                 if(arquivo==2)
+                {
+                    Byte=Consulta_user(procura);
+
                 }
 
                     if(Byte!=0)
@@ -1784,6 +1791,7 @@ int Aba_Consulta(int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos*/)
                     }
 
             }
+
         }
 
 
@@ -1817,6 +1825,8 @@ int Aba_Consulta(int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos*/)
             entra=false;
             ativou=0;
         }
+
+
 
     }while(1);
 
@@ -1862,6 +1872,24 @@ void Resultado_Funcionario(fpos_t Byte)
 
     fclose(p);
 
+
+}
+void Resultado_Usuario(fpos_t Byte)
+{
+	FILE* pesquisar;
+    TFuncionario usuario;
+    pesquisar=fopen("Usuario","rb");
+    Byte=Byte-sizeof(usuario);
+    fsetpos(pesquisar,&Byte);
+    fread(&usuario,sizeof(usuario),1,pesquisar);
+
+    gotoxy(40,6);
+    printf("NOME: %s",usuario.nome);
+
+    gotoxy(40,7);
+    printf("USUARIO: %s",usuario.usuario);
+
+    fclose(pesquisar);
 
 }
 int Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- produtos*/)
@@ -1924,13 +1952,14 @@ int Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- pr
         Resultado_Funcionario(Byte);
     }
     if(arquivo==2)
-    {   textbackground(3);
+    {
+		textbackground(3);
         textcolor(15);
         gotoxy(58,2);
         printf("USUARIO");
         textcolor(8);
         textbackground(15);
-        //Resultado_Usuario(Byte);
+        Resultado_Usuario(Byte);
     }
     if(arquivo==3)
     {   textbackground(3);
@@ -2129,8 +2158,17 @@ int Aba_Cadastro(int arquivo /*1-Funcionario; 2-usuarios 3- produtos*/)
             Aba_Cadastro(arquivo);
         }
     }
-
-
+    if(arquivo==2)
+    {
+        if(Cadastro_usuario()==2)
+        {
+            MessageBox(0,"CADASTRO REALIZADO COM SUCESSO!","CADASTRO DE USUARIO",0);
+        }
+        else
+        {
+            Aba_Cadastro(arquivo);
+        }
+    }
 }
 int Cadastro_funcionario()
 {
@@ -2514,23 +2552,21 @@ int Cadastro_usuario()
     printf("NOME:");
 
     gotoxy(40,7);
-    printf("DATA DE NASCIMENTO:");
-
-    gotoxy(40,9);
     printf("USUARIO:");
 
-    gotoxy(60,9);
+    gotoxy(40,9);
     printf("SENHA:");
-	
+
+
 	p=fopen("Usuario","ab+");
-	
-	gotoxy(45,5);
+
+
+    gotoxy(45,5);
 	fflush(stdin);
     gets(usuario.nome);
 
-    system("pause");
 
-    if(Consulta_user(usuario.nome)!=0) 
+    if(Consulta_user(usuario.nome)!=0)
     {
         gotoxy(45,6);
         textcolor(4);
@@ -2543,22 +2579,23 @@ int Cadastro_usuario()
     }
     else
 	{
-            //USUARIO
-            gotoxy(49,19);
-            gets(usuario.usuario);
 
-            fflush(stdin);
+            //USUARIO
+            gotoxy(49,7);
+			fflush(stdin);
+		    gets(usuario.usuario);
 
             //SENHA
-            gotoxy(49,21);
-            gets(usuario.senha);
+            gotoxy(49,9);
+			fflush(stdin);
+		    gets(usuario.senha);
 
             fwrite(&usuario,sizeof(usuario),1,p);
             fclose(p);
             return(2);
     }
 }
-	
+
 
 //Define o tamanho da tela com chamada do sistema
 void redefine(void){
@@ -2578,6 +2615,7 @@ int main()
         if(MessageBox(0,"BEM VINDO AO PROGRAMA!\nAntes de começar a utiliza-lo é necessario que leia e aceite os termos de uso.\n","TERMOS DE USO",4)==6)
         {   //pra cadastrar o admin quando usa pela primeira vez
             Aba_Cadastro(1);
+            p = fopen("Usuario", "wb");
             main();
         }
         else
@@ -2588,7 +2626,7 @@ int main()
     }
     else
     {
-        //Tela_de_Carregamento();
+       // Tela_de_Carregamento();
 
         //Login();
 
