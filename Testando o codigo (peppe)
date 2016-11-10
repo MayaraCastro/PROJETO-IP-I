@@ -1877,7 +1877,7 @@ void Resultado_Funcionario(fpos_t Byte)
 void Resultado_Usuario(fpos_t Byte)
 {
 	FILE* pesquisar;
-    TFuncionario usuario;
+    TUsuario usuario;
     pesquisar=fopen("Usuario","rb");
     Byte=Byte-sizeof(usuario);
     fsetpos(pesquisar,&Byte);
