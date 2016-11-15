@@ -1263,22 +1263,27 @@ void Area_de_Trabalho()
 
 
 
-                                                if(resp==13)
+                                                  if(resp==13)
                                                 {
                                                     switch(y)
                                                     {
                                                     case 6:
                                                         {
+                                                        	Aba_Cadastro(2);
+                                                        	resp=' ';
+                                                        	Area_de_Trabalho();
                                                            break;
                                                         }
                                                     case 8:
                                                         {
+                                                            Aba_Consulta(2);
+                                                        	resp=' ';
+                                                        	Area_de_Trabalho();
                                                             break;
                                                         }
 
                                                     }
                                                 }
-
                     }while((Coordenadas.x>=270&&Coordenadas.x<=488 && Coordenadas.y<=260&&Coordenadas.y>=100));
 
                     Quadro_colorido(7,25,45,3,6);
@@ -1656,6 +1661,38 @@ int Consulta_funcionario(char procura[200])
         return(0);
     }
 }
+int Consulta_user(char pesquisa[200])
+{
+
+	FILE* pesquisar;
+	TUsuario usuario;
+	int resultado;
+	int find=0;
+	fpos_t Byte;
+
+	pesquisar=fopen("Usuario","rb");
+	fread(&usuario,sizeof(usuario),1,pesquisar);
+
+    while(!feof(pesquisar)&&find==0)
+	{
+
+		if(strcmp(usuario.nome,pesquisa)==0)
+		{
+
+			find=1;
+			fgetpos(pesquisar,&Byte);
+			fclose(pesquisar);
+			return (Byte);
+		}
+		fread(&usuario,sizeof(usuario),1,pesquisar);
+	}
+	if(find==0)
+    {
+        fclose(pesquisar);
+        return(0);
+    }
+
+}
 void Aba_Consulta(int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos*/)
 {//aba de consulta de funcionarios
     POINT Coordenadas;
@@ -1727,6 +1764,11 @@ void Aba_Consulta(int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos*/)
                 if(arquivo==1)
                 {
                     Byte=Consulta_funcionario(procura);
+                }
+                 if(arquivo==2)
+                {
+                    Byte=Consulta_user(procura);
+
                 }
 
                     if(Byte!=0)
@@ -1840,6 +1882,24 @@ void Resultado_Funcionario(fpos_t Byte)
 
 
 }
+void Resultado_Usuario(fpos_t Byte)
+{
+	FILE* pesquisar;
+    TUsuario usuario;
+    pesquisar=fopen("Usuario","rb");
+    Byte=Byte-sizeof(usuario);
+    fsetpos(pesquisar,&Byte);
+    fread(&usuario,sizeof(usuario),1,pesquisar);
+
+    gotoxy(40,6);
+    printf("NOME: %s",usuario.nome);
+
+    gotoxy(40,7);
+    printf("USUARIO: %s",usuario.usuario);
+
+    fclose(pesquisar);
+
+}
 void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- produtos*/)
 {
     system("cls");
@@ -1906,7 +1966,7 @@ void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- p
         printf("USUARIO");
         textcolor(8);
         textbackground(15);
-        //Resultado_Usuario(Byte);
+        Resultado_Usuario(Byte);
     }
     if(arquivo==3)
     {   textbackground(3);
@@ -2106,6 +2166,17 @@ void Aba_Cadastro(int arquivo /*1-Funcionario; 2-usuarios 3- produtos*/)
         if(Cadastro_funcionario()==1)
         {
             MessageBox(0,"CADASTRO REALIZADO COM SUCESSO!","CADASTRO DE FUNCIONARIO",0);
+        }
+        else
+        {
+            Aba_Cadastro(arquivo);
+        }
+    }
+    if(arquivo==2)
+    {
+        if(Cadastro_usuario()==2)
+        {
+            MessageBox(0,"CADASTRO REALIZADO COM SUCESSO!","CADASTRO DE USUARIO",0);
         }
         else
         {
@@ -2487,6 +2558,63 @@ int Cadastro_funcionario()
 
 
 }
+int Cadastro_usuario()
+{
+	TUsuario usuario;
+	FILE *p;
+	p = fopen("Usuario", "rb");
+	if (p == NULL)
+	{
+		p = fopen("Usuario", "wb");
+	}
+	gotoxy(40,5);
+    printf("NOME:");
+
+    gotoxy(40,7);
+    printf("USUARIO:");
+
+    gotoxy(40,9);
+    printf("SENHA:");
+
+
+	p=fopen("Usuario","ab+");
+
+
+    gotoxy(45,5);
+	fflush(stdin);
+    gets(usuario.nome);
+
+
+    if(Consulta_user(usuario.nome)!=0)
+    {
+        gotoxy(45,6);
+        textcolor(4);
+        printf("Usuario ja cadastrado!");
+        textcolor(0);
+
+        Sleep(1000);
+        fclose(p);
+        return(0);
+    }
+    else
+	{
+
+            //USUARIO
+            gotoxy(49,7);
+			fflush(stdin);
+		    gets(usuario.usuario);
+
+            //SENHA
+            gotoxy(49,9);
+			fflush(stdin);
+		    gets(usuario.senha);
+
+            fwrite(&usuario,sizeof(usuario),1,p);
+            fclose(p);
+            return(2);
+    }
+}
+
 void Aba_editar(fpos_t Byte,int arquivo)
 {
     system("cls");
@@ -3084,7 +3212,8 @@ int main()
     {
         if(MessageBox(0,"BEM VINDO AO PROGRAMA!\nAntes de começar a utiliza-lo é necessario que leia e aceite os termos de uso.\n","TERMOS DE USO",4)==6)
         {   //pra cadastrar o admin quando usa pela primeira vez
-            Aba_Cadastro(1);
+             Aba_Cadastro(1);
+            p = fopen("Usuario", "wb");
             main();
         }
         else
