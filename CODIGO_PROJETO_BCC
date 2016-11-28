@@ -30,7 +30,7 @@ typedef struct{
 
 typedef struct{
     char nome[10];
-    char senha[10];
+    int quantidade_comprado;
 }TProduto;
 void Musica_opcao()
 {
@@ -1461,8 +1461,8 @@ void Area_de_Trabalho()
                                                         _beginthread(Musica_opcao,0,NULL);
                                                         textbackground(7);
                                                         Quadro_colorido(7,65,85,6,8);
-                                                        gotoxy(70,6);
-                                                        printf("CADASTRAR");
+                                                        gotoxy(67,6);
+                                                        printf("RELATORIO MENSAL");
                                                         textbackground(8);
                                                     }
 
@@ -1472,14 +1472,14 @@ void Area_de_Trabalho()
                                                  {
                                                     ativou=0;
                                                     Quadro_colorido(8,65,85,6,8);
-                                                    gotoxy(70,6);
-                                                    printf("CADASTRAR");
+                                                    gotoxy(67,6);
+                                                    printf("RELATORIO MENSAL");
                                                  }
                                                  else if(entra1)
                                                  {
                                                      entra1=false;
-                                                    gotoxy(70,6);
-                                                    printf("CADASTRAR");
+                                                    gotoxy(67,6);
+                                                    printf("RELATORIO MENSAL");
                                                  }
 
 
@@ -3195,6 +3195,133 @@ void Editar_Funcionario(fpos_t Byte)
     fclose(p);
 
 }
+void FINANCEIRO()
+{
+    system("cls");
+    Janela();
+    system("Color 3F");
+    Logo(5,4);
+    gotoxy(60,2);
+    printf("FINANCEIRO");
+
+    textcolor(8);
+
+    int i,j=15,x=2;
+
+    //grafico
+    {
+    Quadro_colorido(15,32,97,4,18);
+    gotoxy(32,4);
+    printf("LUCRO");
+    for(i=0;i<=1000;i=i+100)
+    {   gotoxy(32,j);
+        printf("%i",i);
+        gotoxy(36,j--);
+        printf("|");
+    }
+    i=1;
+
+    for(j=37;j<=95;j++)
+    {
+
+        x++;
+        if(x==5)
+        {
+            gotoxy(j,16);
+            printf("%i",i++);
+            x=0;
+        }
+        gotoxy(j,15);
+        printf("_");
+
+
+    }
+
+    gotoxy(39,15);
+    printf("%c",219);
+
+    gotoxy(62,17);
+    printf("MESES");
+    }
+
+    //RESUMO DO MêS
+    {
+        Quadro_colorido(15,99,117,4,18);
+        gotoxy(101,4);
+        printf("RESUMO DO MES");
+
+    }
+
+    //itens mais vendidos
+    {
+        Quadro_colorido(15,32,58,19,26);
+        gotoxy(35,19);
+        printf("ITENS MAIS VENDIDOS");
+    }
+    //assinaturas mais populares
+    {
+        Quadro_colorido(15,60,90,19,26);
+        gotoxy(62,19);
+        printf("ASSINATURAS MAIS POPULARES");
+    }
+    //CLIENTES VIP
+    {
+        Quadro_colorido(15,92,117,19,26);
+        gotoxy(98,19);
+        printf("CLIENTES VIP");
+    }
+
+//BOTAO PARA RETORNAO AO MENU PRINCIPAL
+    bool fecha=true,ativo=true;
+    char resp;
+
+    POINT Coordenadas;
+    do
+    {
+        GetCursorPos(&Coordenadas);
+
+        if(kbhit())
+        {
+            resp=getch();
+        }
+
+        if(Coordenadas.x>60 &&Coordenadas.x<333 &&Coordenadas.y>534&&Coordenadas.y<603)
+        {
+            if(!ativo)
+            {
+                Quadro_colorido(8,5,30,21,24);
+                textcolor(15);
+                gotoxy(13,22);
+                printf("RETORNAR");
+                ativo=true;
+            }
+            if(resp==13)
+            {
+                resp=' ';
+                fecha=false;
+                break;
+            }
+
+
+        }
+        else if(ativo)
+        {//botao retornar
+            Quadro_colorido(7,5,30,21,24);
+            textcolor(8);
+            gotoxy(13,22);
+            printf("RETORNAR");
+            ativo=false;
+
+        }
+        resp=' ';
+    }while(fecha);
+
+
+
+
+
+    gotoxy(0,0);
+}
 //Define o tamanho da tela com chamada do sistema
 void redefine(void){
     system("color 3F"); //Padroniza a cor do sistema.
@@ -3224,11 +3351,12 @@ int main()
     }
     else
     {
-        Tela_de_Carregamento();
+        //Tela_de_Carregamento();
 
-        Login();
+        //Login();
 
-       Area_de_Trabalho();
+       //Area_de_Trabalho();
+       FINANCEIRO();
 
     }
 
