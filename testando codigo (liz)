@@ -5,7 +5,6 @@
 #include <windows.h>
 #include <process.h>
 #include <string.h>
-#define QUANT_MAX_FUNCIONARIOS 50
 
 typedef struct{
     char usuario[10];
@@ -2777,81 +2776,102 @@ void Aba_editar(fpos_t Byte,int arquivo)
 void Editar_Funcionario(fpos_t Byte)
 {
     char c;
-    TFuncionario funcionario;
+    int opcao;
+    TFuncionario consulta;
     FILE *p;
-    Byte = Consulta_funcionario(Byte);
+
+    char nome1[200];
+    char data_nascimento1[10];
+    char RG1[9];
+    char CPF1[14];
+    char email1[100];
+    char telefone1[13];
+    char endereco1[200];
+    float salario1;
+
     if (Byte != -1)
     {
-        Byte=Byte-sizeof(funcionario);
+        Byte = Byte - sizeof(consulta);
         p = fopen("Funcionario", "rb+");
         fsetpos(p, &Byte);
-        fread(&funcionario, Tam, 1, p);
-        printf("Nome atual: %s \n Altera (S/N)? ", funcionario.nome);
-        fflush(stdin);
+        fread(&consulta, sizeof(consulta), 1, p);
+        system("cls");
+        printf("Alterar dados atuais?(s/n)? ");
         scanf("%c", &c);
-        if (toupper(c) == 'S')
+
+        if (c == 's')
         {
-            printf("\Digite o novo nome: \n");
-            gets(funcionario.nome);
+            printf("\nESCOLHA A OPCAO QUE DESEJA ALTERAR\n");
+            printf("1 - NOME\n2 - DATA NASCIMENTO\n3 - RG \n4 - CPF \n5 - EMAIL \n6 - TELEFONE \n7 - ENDERECO\n8 - SALARIO\n");
+            scanf("%i", &opcao);
+
+
+                if(opcao==1)
+                {
+                    printf("NOVO NOME: ");
+                    scanf("%s", &nome1);
+                    strcpy(consulta.nome, nome1);
+
+                }
+                if(opcao==2)
+                {
+                    printf("NOVA DATA NASCIMENTO ");
+                    scanf("%s", &data_nascimento1);
+                    strcpy(consulta.data_nascimento, data_nascimento1);
+
+                }
+                if(opcao==3)
+                {
+                    printf("NOVO RG ");
+                    scanf("%s", &RG1);
+                    strcpy(consulta.RG, RG1);
+
+                }
+                if(opcao==4)
+                {
+                    printf("NOVO CPF ");
+                    scanf("%s", &CPF1);
+                    strcpy(consulta.CPF, CPF1);
+
+                }
+                if(opcao==5)
+                {
+                    printf("NOVO EMAIL ");
+                    scanf("%s", &email1);
+                    strcpy(consulta.email, email1);
+
+                }
+                if(opcao==6)
+                {
+                    printf("NOVO TELEFONE ");
+                    scanf("%s", &telefone1);
+                    strcpy(consulta.telefone, telefone1);
+
+                }
+                if(opcao==7)
+                {
+                    printf("NOVO ENDERECO ");
+                    scanf("%s", &endereco1);
+                    strcpy(consulta.endereco, endereco1);
+
+                }
+                if(opcao==8)
+                {
+                    printf("NOVO SALARIO ");
+                    scanf("%f", &salario1);
+                    salario1 = consulta.salario;
+
+                }
+            }
+
             fsetpos(p, &Byte);
-            fwrite(&funcionario, Tam, 1, p);
+            fwrite(&consulta, sizeof(consulta), 1, p);
         }
-    }
+
+
     else
     printf("\n Registro nao encontrado \n");
     fclose(p);
-
-
-    /*
-    FILE* p;
-    TFuncionario funcionario,ativo,pessoaModificar, consulta;
-    TFuncionario func[QUANT_MAX_FUNCIONARIOS];
-    
-
-    bool button1=true,button2=true,button3=true,button4=true,entra=false;
-    int ativado=0;
-
-    POINT Coordenadas;
-    char resp;
-    int i=0,j;
-
-    p=fopen("Funcionario","rb+");
-    fsetpos(p,&Byte);
-
-
-    while (!feof(p)) {
-
-        fread(&funcionario,sizeof(funcionario),1,p);
-        func[i++] = consulta;
-    }
-    fclose(p);
-
-    func[Byte] = pessoaModificar;
-    p = fopen("Funcionario", "wb");
-    fsetpos(p,&Byte);
-    system("cls");
-    char usuario[10];
-    char data_nascimento[10];
-    char RG[9];
-
-    printf("Nome: ");
-    scanf("%s", &usuario);
-
-    printf("Data Nascimento: ");
-    scanf("%s", &data_nascimento);
-
-    printf("RG: ");
-    scanf("%s", &RG);
-
-    strcpy(funcionario.usuario, usuario);
-    strcpy(funcionario.data_nascimento, data_nascimento);
-    strcpy(funcionario.RG, RG);
-
-    fwrite(&func, sizeof(func)*(i-1), 1, p);
-
-    fclose(p);
-    printf("\nNovos dados:\n\n%s\n%s\n%s\n", funcionario.usuario, funcionario.data_nascimento, funcionario.RG);
-    system("pause");*/
 
 }
 void FINANCEIRO()
