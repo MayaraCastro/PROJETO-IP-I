@@ -1745,7 +1745,33 @@ int Consulta_produto(char search[200])
         return(0);
     }
 }
-void Aba_Consulta(int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos*/)
+int Consulta_produto_ativo(char search[200])
+{
+    FILE *p;
+    TProduto consultar;
+    int encontrou=0;
+    p=fopen("Produto","rb");
+    fpos_t Byte;
+    fread(&consultar,sizeof(consultar),1,p);
+
+    while(!feof(p)&&encontrou==0)
+    {
+        if(strcmp(consultar.nome,search)==0&&consultar.ativo==1)
+        {
+            encontrou=1;
+            fgetpos(p,&Byte);
+            fclose(p);
+            return(Byte);
+        }
+        fread(&consultar,sizeof(consultar),1,p);
+    }
+    if(encontrou==0)
+    {
+        fclose(p);
+        return(0);
+    }
+}
+int Aba_Consulta(int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos*/)
 {
     POINT Coordenadas;
     bool entra=true;
@@ -1826,10 +1852,14 @@ void Aba_Consulta(int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos*/)
                 {
                     Byte=Consulta_produto(procura);
                 }
+                if(arquivo==4)
+                {
+                    Byte=Consulta_produto_ativo(procura);
+                }
 
                     if(Byte!=0)
                     {
-                        Aba_Resultado(Byte,arquivo);
+                        return(Aba_Resultado(Byte,arquivo));
                         break;
                     }
                     else
@@ -2004,7 +2034,35 @@ void Resultado_Produto(fpos_t Byte)
 
     fclose(p);
 }
-void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- produtos*/)
+void Resultado_Produto_compra(fpos_t Byte)
+{
+	FILE *p;
+    TProduto produto;
+    p=fopen("Produto","rb");
+    Byte=Byte-sizeof(produto);
+    fsetpos(p,&Byte);
+    fread(&produto,sizeof(produto),1,p);
+
+    gotoxy(40,6);
+    printf("NOME DO PRODUTO: %s", produto.nome);
+
+    gotoxy(40,8);
+    printf("PRECO: RS%.2f", produto.preco);
+
+    gotoxy(40,10);
+    if(produto.ativo==1)
+    {
+        printf("PRODUTO ATIVO");
+    }
+    else
+    {
+        printf("PRODUTO DESATIVO");
+    }
+
+
+    fclose(p);
+}
+int Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- produtos; 4-realizar compra*/)
 {
     system("cls");
     Janela();
@@ -2081,6 +2139,15 @@ void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- p
         textbackground(15);
        Resultado_Produto(Byte);
     }
+    if(arquivo==4)
+    {   textbackground(3);
+        textcolor(15);
+        gotoxy(58,2);
+        printf("PRODUTO");
+        textcolor(8);
+        textbackground(15);
+        Resultado_Produto_compra(Byte);
+    }
 
     char resp;
     do
@@ -2098,9 +2165,19 @@ void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- p
             if(ativado==0)
             {
                 Quadro_colorido(8,95,118,5,8);
-                gotoxy(103,6);
+
                 textcolor(15);
-                printf("EDITAR");
+                if(arquivo!=4)
+                {
+                    gotoxy(103,6);
+                    printf("EDITAR");
+                }
+                else
+                {
+                    gotoxy(102,6);
+                    printf("COMPRAR");
+                }
+
             }
             button1=true;
             ativado++;
@@ -2118,6 +2195,11 @@ void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- p
                 {
                     Editar_Produto(Byte);
                 }
+                else if(arquivo==4)
+                {
+                    Comprar_produto(Byte);
+                    return(1);
+                }
 
                 resp=' ';
                 break;
@@ -2130,7 +2212,16 @@ void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- p
             Quadro_colorido(7,95,118,5,8);
             gotoxy(103,6);
             textcolor(8);
-            printf("EDITAR");
+            if(arquivo!=4)
+                {
+                    gotoxy(103,6);
+                    printf("EDITAR");
+                }
+                else
+                {
+                    gotoxy(102,6);
+                    printf("COMPRAR");
+                }
             ativado=0;
         }
 
@@ -2160,8 +2251,9 @@ void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- p
                 {
                     Aba_Consulta(arquivo);
                 }
-                else
+                else if(arquivo==2 && Aba_Consulta(4)==1)
                 {
+                    Compra_Usuario(Byte);
 
                 }
                 resp=' ';
@@ -3832,7 +3924,43 @@ void Editar_Produto(fpos_t Byte)
     }
     fclose(p);
 }
+void Compra_Usuario(fpos_t Byte)
+{
+    FILE* p;
+    TUsuario usuario;
+    Byte=Byte-sizeof(usuario);
 
+    p=fopen("Usuario", "rb+");
+
+    fsetpos(p,&Byte);
+    fread(&usuario,sizeof(usuario),1,p);
+
+    usuario.numero_de_compras++;
+
+    fsetpos(p,&Byte);
+    fwrite(&usuario,sizeof(usuario),1,p);
+    fclose(p);
+}
+void Comprar_produto(fpos_t Byte)
+{
+    FILE* p;
+    TProduto produto;
+    Byte=Byte-sizeof(produto);
+
+    p=fopen("Produto","rb+");
+
+    fsetpos(p,&Byte);
+    fread(&produto,sizeof(produto),1,p);
+
+    produto.quantidade_comprado++;
+
+    fsetpos(p,&Byte);
+    fwrite(&produto,sizeof(produto),1,p);
+    fclose(p);
+
+}
+
+//FINANCEIRO
 void FINANCEIRO()
 {
     system("cls");
@@ -3895,6 +4023,7 @@ void FINANCEIRO()
         Quadro_colorido(15,32,58,19,26);
         gotoxy(35,19);
         printf("ITENS MAIS VENDIDOS");
+        Itens_mais_vendidos();
     }
     //assinaturas mais populares
     {
@@ -3907,6 +4036,7 @@ void FINANCEIRO()
         Quadro_colorido(15,92,117,19,26);
         gotoxy(98,19);
         printf("CLIENTES VIP");
+        Clientes_VIP();
     }
 
 //BOTAO PARA RETORNAO AO MENU PRINCIPAL
@@ -3960,6 +4090,198 @@ void FINANCEIRO()
 
     gotoxy(0,0);
 }
+void Itens_mais_vendidos()
+{
+    FILE* p,*t;
+    TProduto produto,vendidos;
+    p=fopen("Produto","rb");
+
+    fpos_t Byte,Reg;
+
+    int maior1=0,maior2=0,maior3=0, Reg1=0,Reg2=0;
+    if(p!=NULL)
+    {
+        while(!feof(p))
+        {
+            fread(&produto,sizeof(produto),1,p);
+            if(produto.ativo==1&&produto.quantidade_comprado>maior1)
+            {
+                maior1=produto.quantidade_comprado;
+                fgetpos(p,&Byte);
+
+            }
+        }
+
+        if(maior1>0)
+        {
+            Reg1=Byte=Byte-sizeof(produto);
+            fsetpos(p,&Byte);
+            fread(&produto,sizeof(produto),1,p);
+
+            gotoxy(33,21);
+            printf("1- %s",produto.nome);
+
+                rewind(p);
+                while(!feof(p))
+                {
+                    fread(&produto,sizeof(produto),1,p);
+                    if(produto.ativo==1&&produto.quantidade_comprado>maior2)
+                    {
+                        fgetpos(p,&Reg);
+                        Reg=Reg-sizeof(produto);
+
+                        if(Reg!=Reg1)
+                        {
+                            maior2=produto.quantidade_comprado;
+                            fgetpos(p,&Byte);
+                            Reg2=Byte=Byte-sizeof(produto);
+                        }
+
+                    }
+
+                }
+
+            if(maior2>0)
+            {
+                fsetpos(p,&Byte);
+                fread(&produto,sizeof(produto),1,p);
+                gotoxy(33,23);
+                printf("2- %s",produto.nome);
+
+                    rewind(p);
+                    while(!feof(p))
+                    {
+                        fread(&produto,sizeof(produto),1,p);
+                        if(produto.ativo==1&&produto.quantidade_comprado>maior3)
+                        {
+                            fgetpos(p,&Reg);
+                            Reg=Reg-sizeof(produto);
+
+                            if(Reg!=Reg1 &&Reg!=Reg2)
+                            {
+                                maior3=produto.quantidade_comprado;
+                                fgetpos(p,&Byte);
+                            }
+                        }
+                    }
+                    if(maior3>0)
+                    {
+                        Byte=Byte-sizeof(produto);
+                        fsetpos(p,&Byte);
+                        fread(&produto,sizeof(produto),1,p);
+
+                        gotoxy(33,25);
+                        printf("3- %s",produto.nome);
+                    }
+
+                }
+        }
+
+    }
+    else
+    {
+        gotoxy(33,21);
+        printf("Nenhum item vendido");
+    }
+fclose(p);
+
+}
+void Clientes_VIP()
+{
+    FILE* p;
+    fpos_t Byte,Reg;
+    int maior1=0,maior2=0,maior3=0,Reg1,Reg2;
+
+    TUsuario cliente;
+
+    p=fopen("Usuario","rb");
+    if(p!=NULL)
+    {
+        while(!feof(p))
+        {
+            fread(&cliente, sizeof(cliente),1,p);
+            if(cliente.ativo==1&&cliente.numero_de_compras>maior1)
+            {
+                maior1=cliente.numero_de_compras;
+                fgetpos(p,&Byte);
+                Reg1=Byte=Byte-sizeof(cliente);
+            }
+        }
+
+            if(maior1>0)
+            {
+                fsetpos(p,&Byte);
+                fread(&cliente,sizeof(cliente),1,p);
+
+                gotoxy(95,21);
+                printf("1- %s",cliente.nome);
+
+
+                rewind(p);
+                while(!feof(p))
+                {
+                    fread(&cliente, sizeof(cliente),1,p);
+                    if(cliente.ativo==1&&cliente.numero_de_compras>maior2)
+                    {
+                        fgetpos(p,&Reg);
+                        Reg=Reg-sizeof(cliente);
+
+                        if(Reg!=Reg1)
+                        {
+                            maior2=cliente.numero_de_compras;
+                            fgetpos(p,&Byte);
+                            Reg2=Byte=Byte-sizeof(cliente);
+                        }
+
+                    }
+                }
+
+                if(maior2>0)
+                {
+                    fsetpos(p,&Byte);
+                    fread(&cliente,sizeof(cliente),1,p);
+
+                    gotoxy(95,23);
+                    printf("2- %s",cliente.nome);
+
+
+                    rewind(p);
+                    while(!feof(p))
+                    {
+                        fread(&cliente, sizeof(cliente),1,p);
+                        if(cliente.ativo==1&&cliente.numero_de_compras>maior3)
+                        {
+                            fgetpos(p,&Reg);
+                            Reg=Reg-sizeof(cliente);
+
+                            if(Reg!=Reg1 && Reg!=Reg2)
+                            {
+                                maior3=cliente.numero_de_compras;
+                                fgetpos(p,&Byte);
+                                Byte=Byte-sizeof(cliente);
+                            }
+
+                        }
+                    }
+
+                    if(maior3>0)
+                    {
+                        fsetpos(p,&Byte);
+                        fread(&cliente,sizeof(cliente),1,p);
+
+                        gotoxy(95,25);
+                        printf("3- %s",cliente.nome);
+                    }
+                }
+            }
+            else
+            {
+                gotoxy(95,21);
+                printf("Nao ha clientes VIP");
+            }
+    }
+    fclose(p);
+}
 //Define o tamanho da tela com chamada do sistema
 void redefine(void){
     system("color 3F"); //Padroniza a cor do sistema.
@@ -3993,7 +4315,9 @@ int main()
 
         //Login();
 
-       Area_de_Trabalho();
+       //Area_de_Trabalho();
+       FINANCEIRO();
+
     }
 
 }
