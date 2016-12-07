@@ -6,10 +6,15 @@
 #include <process.h> //para usar o _beginthread()
 #include <string.h>
 
+//STRUCTS
 typedef struct{
     char usuario[10];
     char senha[10];
     char nome[50];
+    int ativo;
+    int numero_de_compras;
+    //int assinatura;
+
 }TUsuario;
 
 typedef struct{
@@ -30,8 +35,13 @@ typedef struct{
 
 typedef struct{
     char nome[10];
+    int ativo;
+    float preco;
+
     int quantidade_comprado;
 }TProduto;
+
+//efeitos sonoros/ Beeps
 void Musica_opcao()
 {
     Beep(380,300);
@@ -40,6 +50,9 @@ void Musica(){
      //musica do salto do jogo
     Beep(860,500);
 }
+
+//UTILIDADES * MUDAR COR DO TEXTO/COR DO PLANO DE FUNDO, FUNÇÃO DE COORDENADAS, FUNÇÃO PRA DESENHAR A BORDA DA JANELA,
+//E FUNÇÃO PRA DESENHAR OS BOTOES
 void gotoxy(int x,int y)
 {	//pra posicionar com coordenadas
     COORD p={x,y};
@@ -96,6 +109,55 @@ void Janela()
         gotoxy(121,i);
         printf("%c",186);
     }
+
+}
+void Quadro_colorido(int cor,int x_comeco,int x,int y_comeco, int y)
+{
+    int i,j;
+
+    textbackground(cor);
+    for(i=y_comeco;i<y;i++)
+    {
+        for(j=x_comeco;j<x;j++)
+        {
+            gotoxy(j,i);
+            printf(" ");
+        }
+
+    }
+}
+
+//DESENHOS
+void Logo(int j, int i)
+{      //int j=50,i=1;
+        gotoxy(j,i);i++;
+        printf("         _\n");
+        gotoxy(j,i);i++;
+        printf("       _/ \      _-'\n");
+        gotoxy(j,i);i++;
+        printf("      _/|  \-''- _ /\n");
+        gotoxy(j,i);i++;
+        printf("__-'  { |         \\\n");
+        gotoxy(j,i);i++;
+        printf("     /             \\\n");
+        gotoxy(j,i);i++;
+        printf("     /      ''o. |o }\n");
+        gotoxy(j,i);i++;
+        printf("     |           \\  ;\n");
+        gotoxy(j,i);i++;
+        printf("                   ',\n");
+        gotoxy(j,i);i++;
+        printf("        \_         __ \\\n");
+        gotoxy(j,i);i++;
+        printf("          ''-_    \\.//\n");
+        gotoxy(j,i);i++;
+        printf("            / '-____'\n");
+        gotoxy(j,i);i++;
+        printf("           /\n");
+        gotoxy(j,i);i++;
+        printf("         _'\n");
+        gotoxy(j,i);i++;
+        printf("       _-'\n");
 
 }
 void Cadeado_Fechado()
@@ -236,6 +298,8 @@ void Cadeado_abrindo()
 
     Sleep(500);
 }
+
+//JANELAS
 void Login()
 {
     system("cls");
@@ -412,7 +476,8 @@ void Login()
     }while(achou==0);
 }
 void Jogo()
-{char opcao;
+{
+    char opcao;
 
 
     textcolor(0);
@@ -998,21 +1063,6 @@ do
     }while(fecha);
 
 }
-void Quadro_colorido(int cor,int x_comeco,int x,int y_comeco, int y)
-{
-    int i,j;
-
-    textbackground(cor);
-    for(i=y_comeco;i<y;i++)
-    {
-        for(j=x_comeco;j<x;j++)
-        {
-            gotoxy(j,i);
-            printf(" ");
-        }
-
-    }
-}
 void Area_de_Trabalho()
 {   //area que tem os menus
 
@@ -1402,10 +1452,16 @@ void Area_de_Trabalho()
                                                     {
                                                     case 6:
                                                         {
+                                                            Aba_Cadastro(3);
+                                                        	resp=' ';
+                                                        	Area_de_Trabalho();
                                                            break;
                                                         }
                                                     case 8:
                                                         {
+                                                            Aba_Consulta(3);
+                                                        	resp=' ';
+                                                        	Area_de_Trabalho();
                                                             break;
                                                         }
 
@@ -1602,38 +1658,8 @@ void Area_de_Trabalho()
 				}while(fecha);
 
 }
-void Logo(int j, int i)
-{      //int j=50,i=1;
-        gotoxy(j,i);i++;
-        printf("         _\n");
-        gotoxy(j,i);i++;
-        printf("       _/ \      _-'\n");
-        gotoxy(j,i);i++;
-        printf("      _/|  \-''- _ /\n");
-        gotoxy(j,i);i++;
-        printf("__-'  { |         \\\n");
-        gotoxy(j,i);i++;
-        printf("     /             \\\n");
-        gotoxy(j,i);i++;
-        printf("     /      ''o. |o }\n");
-        gotoxy(j,i);i++;
-        printf("     |           \\  ;\n");
-        gotoxy(j,i);i++;
-        printf("                   ',\n");
-        gotoxy(j,i);i++;
-        printf("        \_         __ \\\n");
-        gotoxy(j,i);i++;
-        printf("          ''-_    \\.//\n");
-        gotoxy(j,i);i++;
-        printf("            / '-____'\n");
-        gotoxy(j,i);i++;
-        printf("           /\n");
-        gotoxy(j,i);i++;
-        printf("         _'\n");
-        gotoxy(j,i);i++;
-        printf("       _-'\n");
 
-}
+//ABAS DE CONSULTA
 int Consulta_funcionario(char procura[200])
 {
     FILE *p;
@@ -1693,8 +1719,34 @@ int Consulta_user(char pesquisa[200])
     }
 
 }
+int Consulta_produto(char search[200])
+{
+    FILE *p;
+    TProduto consultar;
+    int encontrou=0;
+    p=fopen("Produto","rb");
+    fpos_t Byte;
+    fread(&consultar,sizeof(consultar),1,p);
+
+    while(!feof(p)&&encontrou==0)
+    {
+        if(strcmp(consultar.nome,search)==0)
+        {
+            encontrou=1;
+            fgetpos(p,&Byte);
+            fclose(p);
+            return(Byte);
+        }
+        fread(&consultar,sizeof(consultar),1,p);
+    }
+    if(encontrou==0)
+    {
+        fclose(p);
+        return(0);
+    }
+}
 void Aba_Consulta(int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos*/)
-{//aba de consulta de funcionarios
+{
     POINT Coordenadas;
     bool entra=true;
     int ativou=0;
@@ -1770,6 +1822,10 @@ void Aba_Consulta(int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos*/)
                     Byte=Consulta_user(procura);
 
                 }
+                if(arquivo==3)
+                {
+                    Byte=Consulta_produto(procura);
+                }
 
                     if(Byte!=0)
                     {
@@ -1825,6 +1881,8 @@ void Aba_Consulta(int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos*/)
 
 
 }
+
+//ABAS RESULTADO
 void Resultado_Funcionario(fpos_t Byte)
 {
     FILE*p;
@@ -1894,11 +1952,57 @@ void Resultado_Usuario(fpos_t Byte)
     gotoxy(40,6);
     printf("NOME: %s",usuario.nome);
 
-    gotoxy(40,7);
+    gotoxy(40,8);
     printf("USUARIO: %s",usuario.usuario);
+
+    gotoxy(40,10);
+    if(usuario.ativo==1)
+    {
+        printf("USUARIO ATIVO");
+    }
+    else
+    {
+        printf("USUARIO DESATIVO");
+    }
+
+
+    gotoxy(40,12);
+
+    printf("COMPRAS REALIZADAS: %i",usuario.numero_de_compras);
+
 
     fclose(pesquisar);
 
+}
+void Resultado_Produto(fpos_t Byte)
+{
+	FILE *p;
+    TProduto produto;
+    p=fopen("Produto","rb");
+    Byte=Byte-sizeof(produto);
+    fsetpos(p,&Byte);
+    fread(&produto,sizeof(produto),1,p);
+
+    gotoxy(40,6);
+    printf("NOME DO PRODUTO: %s", produto.nome);
+
+    gotoxy(40,8);
+    printf("PRECO: RS%.2f", produto.preco);
+
+    gotoxy(40,10);
+    if(produto.ativo==1)
+    {
+        printf("PRODUTO ATIVO");
+    }
+    else
+    {
+        printf("PRODUTO DESATIVO");
+    }
+
+    gotoxy(40,12);
+    printf("QUANTIDADE ADQUIRIDA: %i", produto.quantidade_comprado);
+
+    fclose(p);
 }
 void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- produtos*/)
 {
@@ -1975,7 +2079,7 @@ void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- p
         printf("PRODUTO");
         textcolor(8);
         textbackground(15);
-       // Resultado_Produto(Byte);
+       Resultado_Produto(Byte);
     }
 
     char resp;
@@ -2002,7 +2106,19 @@ void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- p
             ativado++;
             if(resp==13)
             {
-                Editar_Funcionario(Byte);
+                if(arquivo==1)
+                {
+                   Editar_Funcionario(Byte);
+                }
+                else if(arquivo==2)
+                {
+                    Editar_Usuario(Byte);
+                }
+                else if(arquivo==3)
+                {
+                    Editar_Produto(Byte);
+                }
+
                 resp=' ';
                 break;
             }
@@ -2017,21 +2133,37 @@ void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- p
             printf("EDITAR");
             ativado=0;
         }
+
         if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>270&&Coordenadas.y<340)
         {
             if(ativado==0)
             {
                 Quadro_colorido(8,95,118,10,13);
-                gotoxy(102,11);
+
                 textcolor(15);
-                printf("RETORNAR");
+                if(arquivo!=2)
+                {   gotoxy(102,11);
+                    printf("RETORNAR");
+                }
+                else
+                {   gotoxy(100,11);
+                    printf("REALIZAR COMPRA");
+                }
+
             }
             button2=true;
             ativado++;
 
             if(resp==13)
             {
-               Aba_Consulta(arquivo);
+                if(arquivo!=2)
+                {
+                    Aba_Consulta(arquivo);
+                }
+                else
+                {
+
+                }
                 resp=' ';
                 break;
             }
@@ -2043,7 +2175,14 @@ void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- p
             Quadro_colorido(7,95,118,10,13);
             gotoxy(102,11);
             textcolor(8);
-            printf("RETORNAR");
+            if(arquivo!=2)
+                {   gotoxy(102,11);
+                    printf("RETORNAR");
+                }
+                else
+                {   gotoxy(100,11);
+                    printf("REALIZAR COMPRA");
+                }
             ativado=0;
         }
 
@@ -2054,13 +2193,25 @@ void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- p
                 Quadro_colorido(8,95,118,15,18);
                 gotoxy(100,16);
                 textcolor(15);
-                printf("MENU PRINCIPAL");
+                if(arquivo!=2)
+                {   gotoxy(100,16);
+                    printf("MENU PRINCIPAL");
+
+                }
+                else
+                {   gotoxy(102,16);
+                    printf("RETORNAR");
+                }
 
             }
             button3=true;
             ativado++;
             if(resp==13)
             {
+                if(arquivo==2)
+                {
+                    Aba_Consulta(arquivo);
+                }
                 resp=' ';
                 break;
             }
@@ -2072,43 +2223,57 @@ void Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- p
             Quadro_colorido(7,95,118,15,18);
             gotoxy(100,16);
             textcolor(8);
-            printf("MENU PRINCIPAL");
+            if(arquivo!=2)
+                {   gotoxy(100,16);
+                    printf("MENU PRINCIPAL");
+
+                }
+                else
+                {   gotoxy(102,16);
+                    printf("RETORNAR");
+                }
             ativado=0;
         }
 
-        /*if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>510&&Coordenadas.y<580)
+        if(arquivo==2)
         {
-            if(ativado==0)
+            if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>510&&Coordenadas.y<580)
             {
-                Quadro_colorido(8,95,118,20,23);
+                if(ativado==0)
+                {
+                    Quadro_colorido(8,95,118,20,23);
+                    gotoxy(100,21);
+                    textcolor(15);
+                    printf("MENU PRINCIPAL");
+                }
+                button4=true;
+                ativado++;
+                if(resp==13)
+                {
+                    resp=' ';
+                    break;
+                }
+
+            }
+            else if(button4)
+            {
+                button4=false;
+                Quadro_colorido(7,95,118,20,23);
                 gotoxy(100,21);
-                textcolor(15);
+                textcolor(8);
                 printf("MENU PRINCIPAL");
+                ativado=0;
             }
-            button4=true;
-            ativado++;
-            if(resp==13)
-            {
-                resp=' ';
-                break;
-            }
-
         }
-        else if(button4)
-        {
-            button4=false;
-            Quadro_colorido(7,95,118,20,23);
-            gotoxy(100,21);
-            textcolor(8);
-            printf("MENU PRINCIPAL");
-            ativado=0;
-        }*/
 
 
 
     }while(1);
 
 }
+
+
+//ABAS CADASTRO
 void Aba_Cadastro(int arquivo /*1-Funcionario; 2-usuarios 3- produtos*/)
 {
     system("cls");
@@ -2177,6 +2342,17 @@ void Aba_Cadastro(int arquivo /*1-Funcionario; 2-usuarios 3- produtos*/)
         if(Cadastro_usuario()==2)
         {
             MessageBox(0,"CADASTRO REALIZADO COM SUCESSO!","CADASTRO DE USUARIO",0);
+        }
+        else
+        {
+            Aba_Cadastro(arquivo);
+        }
+    }
+    if(arquivo==3)
+    {
+        if(Cadastro_produto()==3)
+        {
+            MessageBox(0,"CADASTRO REALIZADO COM SUCESSO!","CADASTRO DE PRODUTO",0);
         }
         else
         {
@@ -2609,78 +2785,63 @@ int Cadastro_usuario()
 			fflush(stdin);
 		    gets(usuario.senha);
 
+		    usuario.ativo=1;
+		    usuario.numero_de_compras=0;
+
             fwrite(&usuario,sizeof(usuario),1,p);
             fclose(p);
             return(2);
     }
 }
-
-void Aba_editar(fpos_t Byte,int arquivo)
+int Cadastro_produto()
 {
-    system("cls");
-    Janela();
-    system("Color 3F");
+	TProduto produto;
+	FILE *p;
+	p = fopen("Produto", "rb");
+	if (p == NULL)
+	{
+		p = fopen("Produto", "wb");
+	}
+	gotoxy(40,5);
+    printf("NOME DO PRODUTO:");
 
-    Logo(4,1);
-    Quadro_colorido(15,38,90,4,25);
+    gotoxy(40,7);
+    printf("PRECO:");
 
-    textcolor(3);
+	p=fopen("Produto","ab+");
 
-    //desenho da borda da janela
+    gotoxy(57,5);
+	fflush(stdin);
+    gets(produto.nome);
+
+    if(Consulta_produto(produto.nome)!=0)
     {
-    int i,j;
-    for(i=5;i<25;i++)
-    {
-        gotoxy(38,i);
-        printf("%c",186);
+        gotoxy(45,6);
+        textcolor(4);
+        printf("Produto ja cadastrado!");
+        textcolor(0);
+
+        Sleep(1000);
+        fclose(p);
+        return(0);
     }
-    gotoxy(38,25);
-    printf("%c",200);
-    gotoxy(38,4);
-    printf("%c",201);
-    for(i=39;i<90;i++)
-    {
-        gotoxy(i,4);
-        printf("%c",205);
-    }
-    for(i=39;i<90;i++)
-    {
-        gotoxy(i,25);
-        printf("%c",205);
-    }
+    else
+	{
+        gotoxy(50,7);
+        fflush(stdin);
+        scanf("%f", &produto.preco);
 
-    gotoxy(90,25);
-    printf("%c",188);
+        produto.quantidade_comprado=0;
+        produto.ativo=1;
 
-    gotoxy(90,4);
-    printf("%c",187);
-    for(i=5;i<25;i++)
-    {
-        gotoxy(90,i);
-        printf("%c",186);
-    }
+
+        fwrite(&produto,sizeof(produto),1,p);
+        fclose(p);
+        return(3);
+	}
 }
 
-    if(arquivo==1)
-    {
-        gotoxy(50,2);
-        textbackground(3);
-        textcolor(15);
-        printf("EDITAR FUNCIONARIO");
-        textcolor(8);
-        textbackground(15);
-        if(Cadastro_funcionario()==1)
-        {
-            MessageBox(0,"CADASTRO REALIZADO COM SUCESSO!","CADASTRO DE FUNCIONARIO",0);
-        }
-        else
-        {
-            Aba_Cadastro(arquivo);
-        }
-    }
-
-
-}
+//ABAS EDITAR
 void Editar_Funcionario(fpos_t Byte)
 {
     FILE* p;
@@ -2706,13 +2867,13 @@ void Editar_Funcionario(fpos_t Byte)
             resp=getch();
         }
 
-        if(Coordenadas.x>447 && Coordenadas.x<544 && Coordenadas.y>227 &&Coordenadas.y<190 &&resp==13)
+        if(Coordenadas.x>448 && Coordenadas.x<544 && Coordenadas.y>179 &&Coordenadas.y<190 &&resp==13)
         {
-            gotoxy(45,5);
+            gotoxy(45,6);
             gets(funcionario.nome);
             resp=' ';
         }
-        if(Coordenadas.x>447 && Coordenadas.x<772 && Coordenadas.y>178 &&Coordenadas.y<240 &&resp==13)
+        if(Coordenadas.x>447 && Coordenadas.x<772 && Coordenadas.y>220 &&Coordenadas.y<240 &&resp==13)
         {
             resp=' ';
             j=60;
@@ -2742,7 +2903,7 @@ void Editar_Funcionario(fpos_t Byte)
 
                             }
                             funcionario.data_nascimento[i]=' ';
-                            gotoxy(j-1,7);
+                            gotoxy(j-1,8);
                             printf("%c",funcionario.data_nascimento[i]);
 
                             funcionario.data_nascimento[i]=' ';
@@ -2768,7 +2929,7 @@ void Editar_Funcionario(fpos_t Byte)
                 {
                     j=60;
                 }
-                gotoxy(j,7);
+                gotoxy(j,8);
                 printf("%c",funcionario.data_nascimento[i]);
                 if(i>=0)
                 {
@@ -2785,7 +2946,7 @@ void Editar_Funcionario(fpos_t Byte)
             //RG
             j=45;
             for(i=0;i<9;i++)
-            {   gotoxy(j,9);
+            {   gotoxy(j,10);
                 if(i==1||i==5)
                 {
                     funcionario.RG[i]='.';
@@ -2799,7 +2960,7 @@ void Editar_Funcionario(fpos_t Byte)
                         if(i>0)
                         {
                             funcionario.RG[i]=' ';
-                            gotoxy(j,9);
+                            gotoxy(j,10);
                             printf("%c",funcionario.RG[i]);
                             i--;
                             if(i==5||i==1)
@@ -2809,7 +2970,7 @@ void Editar_Funcionario(fpos_t Byte)
 
                             }
                             funcionario.RG[i]=' ';
-                            gotoxy(j-1,9);
+                            gotoxy(j-1,10);
                             printf("%c",funcionario.RG[i]);
 
                             i--;
@@ -2830,7 +2991,7 @@ void Editar_Funcionario(fpos_t Byte)
 
                 if(j>=45)
                 {
-                    gotoxy(j,9);
+                    gotoxy(j,10);
                     printf("%c",funcionario.RG[i]);
                 }
 
@@ -2856,7 +3017,7 @@ void Editar_Funcionario(fpos_t Byte)
             j=65;
             for(i=0;i<14;i++)
             {
-                gotoxy(j,9);
+                gotoxy(j,10);
                 if(i==3||i==7)
                 {
                     funcionario.CPF[i]='.';
@@ -2876,7 +3037,7 @@ void Editar_Funcionario(fpos_t Byte)
                         if(i>0)
                         {
                             funcionario.CPF[i]=' ';
-                            gotoxy(j,9);
+                            gotoxy(j,10);
                             printf("%c",funcionario.CPF[i]);
                             i--;
                             if(i==3||i==7||i==11)
@@ -2886,7 +3047,7 @@ void Editar_Funcionario(fpos_t Byte)
 
                             }
                             funcionario.CPF[i]=' ';
-                            gotoxy(j-1,9);
+                            gotoxy(j-1,10);
                             printf("%c",funcionario.CPF[i]);
 
                             i--;
@@ -2907,7 +3068,7 @@ void Editar_Funcionario(fpos_t Byte)
 
                 if(j>=65)
                 {
-                    gotoxy(j,9);
+                    gotoxy(j,10);
                     printf("%c",funcionario.CPF[i]);
                 }
 
@@ -2926,7 +3087,7 @@ void Editar_Funcionario(fpos_t Byte)
         {
             resp=' ';
             //EMAIL
-            gotoxy(47,11);
+            gotoxy(47,12);
             gets(funcionario.email);
             fflush(stdin);
 
@@ -2937,7 +3098,7 @@ void Editar_Funcionario(fpos_t Byte)
             //TELEFONE
             j=50;
             for(i=0;i<13;i++)
-            {   gotoxy(j,13);
+            {   gotoxy(j,14);
                 if(i==0)
                 {
                     funcionario.telefone[i]='(';
@@ -2959,7 +3120,7 @@ void Editar_Funcionario(fpos_t Byte)
                         if(i>0)
                         {
                             funcionario.telefone[i]=' ';
-                            gotoxy(j,13);
+                            gotoxy(j,14);
                             printf("%c",funcionario.telefone[i]);
                             i--;
                             if(i==0||i==3)
@@ -2969,7 +3130,7 @@ void Editar_Funcionario(fpos_t Byte)
 
                             }
                             funcionario.telefone[i]=' ';
-                            gotoxy(j-1,13);
+                            gotoxy(j-1,14);
                             printf("%c",funcionario.telefone[i]);
 
                             i--;
@@ -2990,7 +3151,7 @@ void Editar_Funcionario(fpos_t Byte)
 
                 if(j>=50)
                 {
-                    gotoxy(j,13);
+                    gotoxy(j,14);
                     printf("%c",funcionario.telefone[i]);
                 }
 
@@ -3011,7 +3172,7 @@ void Editar_Funcionario(fpos_t Byte)
         {
             resp=' ';
             //ENDEREÇO
-            gotoxy(50,15);
+            gotoxy(50,16);
             gets(funcionario.endereco);
             fflush(stdin);
         }
@@ -3019,9 +3180,9 @@ void Editar_Funcionario(fpos_t Byte)
         {
             resp=' ';
             //SALARIO
-            gotoxy(49,17);
+            gotoxy(49,18);
             printf("R$");
-            gotoxy(51,17);
+            gotoxy(51,18);
             scanf("%f",&funcionario.salario);
             fflush(stdin);
         }
@@ -3030,7 +3191,7 @@ void Editar_Funcionario(fpos_t Byte)
             resp=' ';
 
             //USUARIO
-            gotoxy(49,19);
+            gotoxy(49,20);
             gets(funcionario.usuario);
 
             fflush(stdin);
@@ -3040,7 +3201,7 @@ void Editar_Funcionario(fpos_t Byte)
             resp=' ';
 
             //SENHA
-            gotoxy(49,21);
+            gotoxy(49,22);
             gets(funcionario.senha);
         }
 
@@ -3185,6 +3346,8 @@ void Editar_Funcionario(fpos_t Byte)
             ativado=0;
         }
 
+
+        resp=' ';
     }while(1);
 
     if(entra)
@@ -3195,6 +3358,481 @@ void Editar_Funcionario(fpos_t Byte)
     fclose(p);
 
 }
+void Editar_Usuario(fpos_t Byte)
+{
+    FILE* p;
+    TUsuario usuario;
+    Byte=Byte-sizeof(usuario);
+
+    bool button1=true,button2=true,button3=true,button4=true,entra=false;
+    int ativado=0;
+
+
+    POINT Coordenadas;
+    char resp;
+    int i,j;
+    int y=6;
+
+    Quadro_colorido(15,40,90,10,16);
+    textcolor(8);
+
+    gotoxy(39,y);
+    printf("*");
+
+    p=fopen("Usuario","rb+");
+    fsetpos(p,&Byte);
+    fread(&usuario,sizeof(usuario),1,p);
+
+
+    gotoxy(40,10);
+    printf("SENHA: %s",usuario.senha);
+
+    gotoxy(40,12);
+    if(usuario.ativo==1)
+    {
+        printf("USUARIO ATIVO");
+    }
+    else
+    {
+        printf("USUARIO DESATIVO");
+    }
+
+    do
+    {
+        GetCursorPos(&Coordenadas);
+        if(kbhit())
+        {
+            resp=getch();
+            textbackground(15);
+
+            if(resp==72)
+            {
+                gotoxy(39,y);
+                printf(" ");
+                y-=2;
+                if(y<6)
+                {
+                    y=10;
+                }
+
+            }
+            else if(resp==80)
+            {
+                gotoxy(39,y);
+                printf(" ");
+                y+=2;
+                if(y>10)
+                {
+                    y=6;
+                }
+            }
+
+            gotoxy(39,y);
+            printf("*");
+        }
+
+
+
+
+        if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>150&&Coordenadas.y<220)
+        {
+            if(ativado==0)
+            {
+                Quadro_colorido(8,95,118,5,8);
+                gotoxy(99,6);
+                textcolor(15);
+                printf("DESATIVAR/ATIVAR");
+            }
+            button1=true;
+            ativado++;
+            if(resp==13)
+            {
+                textbackground(15);
+                textcolor(8);
+
+                if(usuario.ativo==1)
+                {
+                    usuario.ativo=0;
+
+
+                    gotoxy(40,12);
+                    printf("USUARIO DESATIVO");
+                }
+                else
+                {
+                    usuario.ativo=1;
+                    gotoxy(40,12);
+                    printf("                ");
+                    gotoxy(40,12);
+                    printf("USUARIO ATIVO");
+                }
+                resp=' ';
+
+            }
+
+
+
+        }
+        else if(button1)
+        {
+            button1=false;
+            Quadro_colorido(7,95,118,5,8);
+            gotoxy(99,6);
+            textcolor(8);
+            printf("DESATIVAR/ATIVAR");
+            ativado=0;
+        }
+        if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>270&&Coordenadas.y<340)
+        {
+            if(ativado==0)
+            {
+                Quadro_colorido(8,95,118,10,13);
+                gotoxy(102,11);
+                textcolor(15);
+                printf("SALVAR");
+            }
+            button2=true;
+            ativado++;
+
+            if(resp==13)
+            {
+                entra=true;
+                resp=' ';
+                break;
+            }
+
+        }
+        else if(button2)
+        {
+            button2=false;
+            Quadro_colorido(7,95,118,10,13);
+            gotoxy(102,11);
+            textcolor(8);
+            printf("SALVAR");
+            ativado=0;
+        }
+
+        if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>390&&Coordenadas.y<450)
+        {
+            if(ativado==0)
+            {
+                Quadro_colorido(8,95,118,15,18);
+                gotoxy(102,16);
+                textcolor(15);
+                printf("RETORNAR");
+
+            }
+            button3=true;
+            ativado++;
+            if(resp==13)
+            {
+                Aba_Resultado(Byte,1);
+                resp=' ';
+                break;
+            }
+
+        }
+        else if(button3)
+        {
+            button3=false;
+            Quadro_colorido(7,95,118,15,18);
+            gotoxy(102,16);
+            textcolor(8);
+            printf("RETORNAR");
+            ativado=0;
+        }
+
+        if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>510&&Coordenadas.y<580)
+        {
+            if(ativado==0)
+            {
+                Quadro_colorido(8,95,118,20,23);
+                gotoxy(100,21);
+                textcolor(15);
+                printf("MENU PRINCIPAL");
+            }
+            button4=true;
+            ativado++;
+            if(resp==13)
+            {
+                resp=' ';
+                Area_de_Trabalho();
+                break;
+            }
+
+        }
+        else if(button4)
+        {
+            button4=false;
+            Quadro_colorido(7,95,118,20,23);
+            gotoxy(100,21);
+            textcolor(8);
+            printf("MENU PRINCIPAL");
+            ativado=0;
+        }
+
+        if(resp==13 &&(!(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>150&&Coordenadas.y<220)&&
+                       !(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>270&&Coordenadas.y<340)&&
+                       !(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>390&&Coordenadas.y<450)&&
+                       !(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>510&&Coordenadas.y<580)))
+        {
+            if(y==6)
+            {
+                gotoxy(46,y);
+                gets(usuario.nome);
+            }
+            else if(y==8)
+            {
+                gotoxy(49,y);
+                gets(usuario.usuario);
+            }
+            else if(y==10)
+            {
+                gotoxy(47,y);
+                gets(usuario.senha);
+            }
+
+
+        }
+
+        resp=' ';
+    }while(1);
+
+    if(entra)
+    {
+        fsetpos(p,&Byte);
+        fwrite(&usuario,sizeof(usuario),1,p);
+    }
+    fclose(p);
+}
+void Editar_Produto(fpos_t Byte)
+{
+    FILE* p;
+    TProduto produto;
+    Byte=Byte-sizeof(produto);
+
+    bool button1=true,button2=true,button3=true,button4=true,entra=false;
+    int ativado=0;
+
+
+    POINT Coordenadas;
+    char resp;
+    int i,j;
+    int y=6;
+
+    textcolor(8);
+
+    gotoxy(39,y);
+    printf("*");
+
+    p=fopen("Produto","rb+");
+    fsetpos(p,&Byte);
+    fread(&produto,sizeof(produto),1,p);
+
+
+
+    do
+    {
+        GetCursorPos(&Coordenadas);
+        if(kbhit())
+        {
+            resp=getch();
+            textbackground(15);
+
+            if(resp==72)
+            {
+                gotoxy(39,y);
+                printf(" ");
+                y-=2;
+                if(y<6)
+                {
+                    y=8;
+                }
+
+            }
+            else if(resp==80)
+            {
+                gotoxy(39,y);
+                printf(" ");
+                y+=2;
+                if(y>8)
+                {
+                    y=6;
+                }
+            }
+
+            gotoxy(39,y);
+            printf("*");
+        }
+
+
+
+
+        if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>150&&Coordenadas.y<220)
+        {
+            if(ativado==0)
+            {
+                Quadro_colorido(8,95,118,5,8);
+                gotoxy(99,6);
+                textcolor(15);
+                printf("DESATIVAR/ATIVAR");
+            }
+            button1=true;
+            ativado++;
+            if(resp==13)
+            {
+                textbackground(15);
+                textcolor(8);
+
+                if(produto.ativo==1)
+                {
+                    produto.ativo=0;
+
+
+                    gotoxy(40,10);
+                    printf("PRODUTO DESATIVO");
+                }
+                else
+                {
+                    produto.ativo=1;
+                    gotoxy(40,10);
+                    printf("                ");
+                    gotoxy(40,10);
+                    printf("PRODUTO ATIVO");
+                }
+                resp=' ';
+
+            }
+
+
+
+        }
+        else if(button1)
+        {
+            button1=false;
+            Quadro_colorido(7,95,118,5,8);
+            gotoxy(99,6);
+            textcolor(8);
+            printf("DESATIVAR/ATIVAR");
+            ativado=0;
+        }
+        if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>270&&Coordenadas.y<340)
+        {
+            if(ativado==0)
+            {
+                Quadro_colorido(8,95,118,10,13);
+                gotoxy(102,11);
+                textcolor(15);
+                printf("SALVAR");
+            }
+            button2=true;
+            ativado++;
+
+            if(resp==13)
+            {
+                entra=true;
+                resp=' ';
+                break;
+            }
+
+        }
+        else if(button2)
+        {
+            button2=false;
+            Quadro_colorido(7,95,118,10,13);
+            gotoxy(102,11);
+            textcolor(8);
+            printf("SALVAR");
+            ativado=0;
+        }
+
+        if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>390&&Coordenadas.y<450)
+        {
+            if(ativado==0)
+            {
+                Quadro_colorido(8,95,118,15,18);
+                gotoxy(102,16);
+                textcolor(15);
+                printf("RETORNAR");
+
+            }
+            button3=true;
+            ativado++;
+            if(resp==13)
+            {
+                Aba_Resultado(Byte,1);
+                resp=' ';
+                break;
+            }
+
+        }
+        else if(button3)
+        {
+            button3=false;
+            Quadro_colorido(7,95,118,15,18);
+            gotoxy(102,16);
+            textcolor(8);
+            printf("RETORNAR");
+            ativado=0;
+        }
+
+        if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>510&&Coordenadas.y<580)
+        {
+            if(ativado==0)
+            {
+                Quadro_colorido(8,95,118,20,23);
+                gotoxy(100,21);
+                textcolor(15);
+                printf("MENU PRINCIPAL");
+            }
+            button4=true;
+            ativado++;
+            if(resp==13)
+            {
+                resp=' ';
+                Area_de_Trabalho();
+                break;
+            }
+
+        }
+        else if(button4)
+        {
+            button4=false;
+            Quadro_colorido(7,95,118,20,23);
+            gotoxy(100,21);
+            textcolor(8);
+            printf("MENU PRINCIPAL");
+            ativado=0;
+        }
+
+        if(resp==13 &&(!(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>150&&Coordenadas.y<220)&&
+                       !(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>270&&Coordenadas.y<340)&&
+                       !(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>390&&Coordenadas.y<450)&&
+                       !(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>510&&Coordenadas.y<580)))
+        {
+            if(y==6)
+            {
+                gotoxy(57,y);
+                gets(produto.nome);
+            }
+            else if(y==8)
+            {
+                gotoxy(49,y);
+                scanf("%f",&produto.preco);
+            }
+        }
+
+        resp=' ';
+    }while(1);
+
+    if(entra)
+    {
+        fsetpos(p,&Byte);
+        fwrite(&produto,sizeof(produto),1,p);
+    }
+    fclose(p);
+}
+
 void FINANCEIRO()
 {
     system("cls");
@@ -3355,9 +3993,7 @@ int main()
 
         //Login();
 
-       //Area_de_Trabalho();
-       FINANCEIRO();
-
+       Area_de_Trabalho();
     }
 
 }
