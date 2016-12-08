@@ -1,0 +1,15 @@
+#include<stdio.h>
+#include<time.h>
+
+
+main()
+{
+	struct tm *ptr;
+	time_t lt;
+	
+	lt = time(NULL);
+	ptr = localtime (&lt);
+	printf(asctime(ptr));
+	printf("\nXXXXXXXXXXXXXXXXX\n");
+	printf(ctime(&lt));
+}
