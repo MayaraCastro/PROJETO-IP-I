@@ -1929,16 +1929,16 @@ void Resultado_Funcionario(fpos_t Byte)
     printf("DATA DE NASCIMENTO: %s ",funcionario.data_nascimento);
 
     gotoxy(40,10);
-    printf("RG: %i",funcionario.RG);
+    printf("RG: %s",funcionario.RG);
 
     gotoxy(60,10);
-    printf("CPF: %i",funcionario.CPF);
+    printf("CPF: %s",funcionario.CPF);
 
     gotoxy(40,12);
     printf("E-MAIL: %s ",funcionario.email);
 
     gotoxy(40,14);
-    printf("TELEFONE: %i",funcionario.telefone);
+    printf("TELEFONE: %s",funcionario.telefone);
 
     gotoxy(40,16);
     printf("ENDERECO: %s ",funcionario.endereco);
