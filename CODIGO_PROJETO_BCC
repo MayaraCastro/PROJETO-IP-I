@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <process.h> //para usar o _beginthread()
 #include <string.h>
+#include<time.h>//pra usar data
 
 //STRUCTS
 typedef struct{
@@ -16,7 +17,6 @@ typedef struct{
     //int assinatura;
 
 }TUsuario;
-
 typedef struct{
     char nome[200];
     char data_nascimento[10];
@@ -32,7 +32,6 @@ typedef struct{
     char usuario[10];
     char senha[10];
 }TFuncionario;
-
 typedef struct{
     char nome[10];
     int ativo;
@@ -40,7 +39,13 @@ typedef struct{
 
     int quantidade_comprado;
 }TProduto;
-
+typedef struct{
+    int mes;
+    int dia;
+    float lucro;
+    float entrada;
+    float saida;
+}TRelatorio;
 //efeitos sonoros/ Beeps
 void Musica_opcao()
 {
@@ -1492,130 +1497,34 @@ void Area_de_Trabalho()
 
                     //FINANCEIRO
                     if((Coordenadas.x>=700&&Coordenadas.x<=910 && Coordenadas.y<=166&&Coordenadas.y>=100))
-                    {   att3=0;
+                    {att4=0;
 
-
-                            Quadro_colorido(8,65,85,3,10);
-                            gotoxy(70,4);
-                            printf("FINANCEIRO");
-                            do
+                            if(resp==13)
                             {
-
-                                    x_antigo=Coordenadas.x;
-                                    y_antigo=Coordenadas.y;
-                                    GetCursorPos(&Coordenadas);
-                                    gotoxy(2,2);
-                                    printf("X: %d Y: %d", Coordenadas.x, Coordenadas.y);
-
-                                                    textbackground(8);
-                                                 if((Coordenadas.x>=700&&Coordenadas.x<=910 && Coordenadas.y<=210&&Coordenadas.y>=170))
-                                                 {
-                                                     y=6;
-                                                    ativou++;
-                                                    if(ativou==1)
-                                                    {
-                                                        _beginthread(Musica_opcao,0,NULL);
-                                                        textbackground(7);
-                                                        Quadro_colorido(7,65,85,6,8);
-                                                        gotoxy(67,6);
-                                                        printf("RELATORIO MENSAL");
-                                                        textbackground(8);
-                                                    }
-
-
-                                                 }
-                                                 else if(x_antigo>=700&&x_antigo<=910 && y_antigo<=210&&y_antigo>=170)
-                                                 {
-                                                    ativou=0;
-                                                    Quadro_colorido(8,65,85,6,8);
-                                                    gotoxy(67,6);
-                                                    printf("RELATORIO MENSAL");
-                                                 }
-                                                 else if(entra1)
-                                                 {
-                                                     entra1=false;
-                                                    gotoxy(67,6);
-                                                    printf("RELATORIO MENSAL");
-                                                 }
-
-
-                                                if((Coordenadas.x>=700&&Coordenadas.x<=910 && Coordenadas.y<=260&&Coordenadas.y>=210))
-                                                 {
-                                                    y=8;
-                                                    ativou++;
-                                                    if(ativou==1)
-                                                    {
-                                                        _beginthread(Musica_opcao,0,NULL);
-                                                        textbackground(7);
-                                                        Quadro_colorido(7,65,85,8,10);
-                                                        gotoxy(70,8);
-                                                        printf("CONSULTAR");
-                                                        textbackground(8);
-                                                    }
+                                FINANCEIRO();
+                                Area_de_Trabalho();
+                                break;
+                            }
+                            if(entra2)
+                            {
+                                Quadro_colorido(8,65,85,3,6);
+                                gotoxy(70,4);
+                                printf("FINANCEIRO");
+                                entra2=false;
+                            }
 
 
 
-                                                 }
-                                                 else if(x_antigo>=700&&x_antigo<=910 && y_antigo<=260&&y_antigo>=210)
-                                                 {
-                                                    ativou=0;
-                                                    Quadro_colorido(8,65,85,8,10);
-                                                    gotoxy(70,8);
-                                                    printf("CONSULTAR");
-                                                 }
-                                                 else if(entra2)
-                                                 {
-                                                     entra2=false;
-                                                    gotoxy(70,8);
-                                                    printf("CONSULTAR");
-                                                 }
-
-
-
-                                                gotoxy(0,25);
-                                                if(kbhit())
-                                                {
-                                                    resp=getch();
-                                                }
-
-
-
-                                                if(resp==13)
-                                                {
-                                                    switch(y)
-                                                    {
-                                                    case 6:
-                                                        {
-                                                           break;
-                                                        }
-                                                    case 8:
-                                                        {
-                                                            break;
-                                                        }
-
-                                                    }
-                                                }
-
-                    }while((Coordenadas.x>=700&&Coordenadas.x<=910 && Coordenadas.y<=260&&Coordenadas.y>=100));
-
-                    Quadro_colorido(7,65,85,3,6);
-                    Quadro_colorido(3,65,85,6,10);
-
-                    entra1=entra2=true;
-
-                        textbackground(7);
-                        att4++;
-                        gotoxy(70,4);
-                        printf("FINANCEIRO");
 
                     }
                     else if(att4==0)
                     {
                         textbackground(7);
+                        Quadro_colorido(7,65,85,3,6);
                         att4++;
                         gotoxy(70,4);
                         printf("FINANCEIRO");
-
+                        entra2=true;
                     }
 
                     //SAIR
@@ -1929,16 +1838,16 @@ void Resultado_Funcionario(fpos_t Byte)
     printf("DATA DE NASCIMENTO: %s ",funcionario.data_nascimento);
 
     gotoxy(40,10);
-    printf("RG: %s",funcionario.RG);
+    printf("RG: %i",funcionario.RG);
 
     gotoxy(60,10);
-    printf("CPF: %s",funcionario.CPF);
+    printf("CPF: %i",funcionario.CPF);
 
     gotoxy(40,12);
     printf("E-MAIL: %s ",funcionario.email);
 
     gotoxy(40,14);
-    printf("TELEFONE: %s",funcionario.telefone);
+    printf("TELEFONE: %i",funcionario.telefone);
 
     gotoxy(40,16);
     printf("ENDERECO: %s ",funcionario.endereco);
@@ -3945,6 +3854,7 @@ void Comprar_produto(fpos_t Byte)
 {
     FILE* p;
     TProduto produto;
+
     Byte=Byte-sizeof(produto);
 
     p=fopen("Produto","rb+");
@@ -3953,6 +3863,8 @@ void Comprar_produto(fpos_t Byte)
     fread(&produto,sizeof(produto),1,p);
 
     produto.quantidade_comprado++;
+
+    Financeiro_entrada(produto.preco);
 
     fsetpos(p,&Byte);
     fwrite(&produto,sizeof(produto),1,p);
@@ -3974,6 +3886,7 @@ void FINANCEIRO()
 
     int i,j=15,x=2;
 
+    Financeiro_lucro();
     //grafico
     {
     Quadro_colorido(15,32,97,4,18);
@@ -4003,11 +3916,10 @@ void FINANCEIRO()
 
     }
 
-    gotoxy(39,15);
-    printf("%c",219);
+        Grafico();
 
-    gotoxy(62,17);
-    printf("MESES");
+        gotoxy(62,17);
+        printf("MESES");
     }
 
     //RESUMO DO MêS
@@ -4015,7 +3927,7 @@ void FINANCEIRO()
         Quadro_colorido(15,99,117,4,18);
         gotoxy(101,4);
         printf("RESUMO DO MES");
-
+        Resumo_do_Mes();
     }
 
     //itens mais vendidos
@@ -4282,11 +4194,359 @@ void Clientes_VIP()
     }
     fclose(p);
 }
+void Financeiro_entrada(float compra)
+{
+    FILE *p;
+    fpos_t Byte;
+    TRelatorio relatorio;
+
+    int ano=Ano();
+    char year[4];
+    itoa(ano,year,10);
+
+
+    p=fopen(year,"ab+");
+
+    fseek(p, -sizeof(relatorio), SEEK_END);
+    fread(&relatorio,sizeof(relatorio),1,p);
+    relatorio.entrada+=relatorio.entrada+compra;
+
+            fgetpos(p,&Byte);
+            Byte-=Byte-sizeof(relatorio);
+
+
+
+    fsetpos(p,&Byte);
+    fwrite(&relatorio,sizeof(relatorio),1,p);
+    fclose(p);
+}
+void Financeiro_saida()
+{
+    FILE *p,*t;
+    fpos_t Byte;
+    TRelatorio relatorio;
+    TFuncionario funcionario;
+    int ano=Ano();
+    char year[4];
+    itoa(ano,year,10);
+
+
+    p=fopen(year,"ab+");
+
+    fseek(p, -sizeof(relatorio), SEEK_END);
+    fread(&relatorio,sizeof(relatorio),1,p);
+
+    if(relatorio.dia<1)
+            {
+               t=fopen("Funcionario","rb");
+                while(!feof(t))
+                {
+                    fread(&funcionario,sizeof(funcionario),1,t);
+                    if(funcionario.ativo==1)
+                    {
+                        relatorio.saida+=funcionario.salario;
+                    }
+                }
+                relatorio.dia++;
+                fclose(t);
+
+                fgetpos(p,&Byte);
+                Byte-=sizeof(relatorio);
+                fsetpos(p,&Byte);
+                fwrite(&relatorio,sizeof(relatorio),1,p);
+            }
+
+   /* while(!feof(p))
+    {
+        fread(&relatorio,sizeof(relatorio),1,p);
+        if(relatorio.mes==Mes())
+        {
+            if(relatorio.dia<1)
+            {
+               t=fopen("Funcionario","rb");
+                while(!feof(t))
+                {
+                    fread(&funcionario,sizeof(funcionario),1,t);
+                    if(funcionario.ativo==1)
+                    {
+                        relatorio.saida+=funcionario.salario;
+                    }
+                }
+                relatorio.dia++;
+                fclose(t);
+
+                fgetpos(p,&Byte);
+                Byte-=sizeof(relatorio);
+                fsetpos(p,&Byte);
+                fwrite(&relatorio,sizeof(relatorio),1,p);
+            }
+
+            break;
+        }
+    }*/
+
+    fclose(p);
+}
+void Resumo_do_Mes()
+{
+    FILE*p;
+    TRelatorio relatorio;
+    int ano=Ano();
+    char year[4];
+    itoa(ano,year,10);
+
+
+    p=fopen(year,"rb");
+    while(!feof(p))
+    {
+        fread(&relatorio,sizeof(relatorio),1,p);
+        if(relatorio.mes==Mes())
+        {
+            textcolor(8);
+            gotoxy(100,6);
+            printf("ENTRADA");
+            gotoxy(100,8);
+            printf("R$%.2f",relatorio.entrada);
+            gotoxy(100,10);
+            printf("SAIDA");
+            gotoxy(100,12);
+            printf("R$%.2f",relatorio.saida);
+            gotoxy(100,14);
+            printf("LUCRO");
+            gotoxy(100,16);
+            printf("R$%.2f",relatorio.lucro);
+            break;
+
+        }
+    }
+    fclose(p);
+
+}
+void Grafico()
+{
+    FILE*p;
+    TRelatorio relatorio;
+    int ano=Ano();
+    char year[4];
+    itoa(ano,year,10);
+
+    int j,i=39,x;
+
+    p=fopen(year,"rb");
+    while(!feof(p))
+    {
+        fread(&relatorio,sizeof(relatorio),1,p);
+        if(relatorio.lucro>0)
+        {
+            x=15-(relatorio.lucro/100);
+            for(j=15;j>x;j--)
+            {
+                gotoxy(i,j);
+                printf("%c",219);
+            }
+        }
+
+        i+=3;
+
+    }
+    fclose(p);
+}
+void Financeiro_lucro()
+{
+    FILE *p,*t;
+    fpos_t Byte;
+    TRelatorio relatorio;
+    int ano=Ano();
+    char year[4];
+    itoa(ano,year,10);
+
+
+    p=fopen(year,"ab+");
+
+    fseek(p, -sizeof(relatorio), SEEK_END);
+    fread(&relatorio,sizeof(relatorio),1,p);
+    relatorio.lucro=relatorio.entrada-relatorio.saida;
+                if(relatorio.lucro<0)
+                {
+                    relatorio.lucro=0;
+                }
+                fgetpos(p,&Byte);
+                Byte-=sizeof(relatorio);
+                fsetpos(p,&Byte);
+                fwrite(&relatorio,sizeof(relatorio),1,p);
+    /*while(!feof(p))
+    {
+        fread(&relatorio,sizeof(relatorio),1,p);
+            if(relatorio.mes==Mes())
+            {
+                relatorio.lucro=relatorio.entrada-relatorio.saida;
+                if(relatorio.lucro<0)
+                {
+                    relatorio.lucro=0;
+                }
+                fgetpos(p,&Byte);
+                Byte-=sizeof(relatorio);
+                fsetpos(p,&Byte);
+                fwrite(&relatorio,sizeof(relatorio),1,p);
+            }
+    }*/
+
+
+    fclose(p);
+}
 //Define o tamanho da tela com chamada do sistema
 void redefine(void){
     system("color 3F"); //Padroniza a cor do sistema.
     system("MODE con cols=123 lines=28"); //Redimensiona a tela
     system("title STEAM - by: LGMT"); //Dá título a tela
+}
+//PEGA O DIA MES E ANO EM QUE O USUARIO
+void Data(void){
+
+   int dia,mes,ano1;
+   struct tm *local;
+   time_t t;
+
+   t = time(NULL);
+   local = localtime(&t);
+
+   dia = local -> tm_mday;
+   mes = local -> tm_mon + 1;
+   ano1 = local -> tm_year + 1900;
+
+   //criar o arquivo do ano pra usar no relatorio mensal
+   FILE *p,*n;
+   TRelatorio relatorio,novo;
+
+    char ano[4];
+// convert int to string
+    itoa(ano1, ano, 10);
+
+   p=fopen(ano,"rb");
+   if(p==NULL)
+   {
+
+       p=fopen(ano,"wb");
+
+       int i,year;
+
+
+            char year1[4];
+            year=ano1-1;
+            itoa(year,year1,10);
+
+            fpos_t Byte;
+
+            n=fopen(year1,"rb");
+            if(n!=NULL)
+            {
+                fseek(n, -sizeof(relatorio), SEEK_END);
+                fread(&relatorio,sizeof(relatorio),1,n);
+                for(i=1;i<=mes;i++)
+                {
+                    novo.mes=i;
+                    novo.dia=0;
+                    novo.lucro=novo.entrada=0;
+                    novo.saida=relatorio.saida;
+
+                    fwrite(&novo,sizeof(novo),1,p);
+                }
+            }
+            else
+            {
+               for(i=1;i<=Mes();i++)
+                {
+                    novo.mes=i;
+                    novo.dia=0;
+                    novo.lucro=novo.entrada=0;
+                    novo.saida=0;
+
+                    fwrite(&novo,sizeof(novo),1,p);
+                }
+            }
+            fclose(n);
+
+   }
+   else
+   {
+       //procura no arquivo se ja existe dados salvos do mes em q o usuario está entrando
+       p=fopen(ano,"rb");
+       bool achou=false;
+
+       fseek(p, -sizeof(relatorio), SEEK_END);
+        fread(&relatorio,sizeof(relatorio),1,p);
+       if(relatorio.mes==Mes())
+           {
+               achou=true;
+           }
+
+       if(!achou)
+       {
+               p=fopen(ano,"ab+");
+
+               int diferenca,i;
+
+               diferenca=Mes()-relatorio.mes;
+
+               for(i=1;i<=diferenca;i++)
+               {
+                   novo.mes=relatorio.mes+i;
+                   novo.lucro=novo.entrada=0;
+                   novo.saida=relatorio.saida;
+                   novo.dia=0;
+
+                   fwrite(&novo,sizeof(novo),1,p);
+               }
+       }
+   }
+   fclose(p);
+
+
+}
+int Mes(void){
+
+   int dia,mes,ano1;
+   struct tm *local;
+   time_t t;
+
+   t = time(NULL);
+   local = localtime(&t);
+
+   dia = local -> tm_mday;
+   mes = local -> tm_mon + 1;
+   ano1 = local -> tm_year + 1900;
+
+   return(mes);
+}
+int Ano(void){
+
+   int dia,mes,ano;
+   struct tm *local;
+   time_t t;
+
+   t = time(NULL);
+   local = localtime(&t);
+
+   dia = local -> tm_mday;
+   mes = local -> tm_mon + 1;
+   ano = local -> tm_year + 1900;
+
+   return(ano);
+}
+int Dia(void){
+
+   int dia,mes,ano;
+   struct tm *local;
+   time_t t;
+
+   t = time(NULL);
+   local = localtime(&t);
+
+   dia = local -> tm_mday;
+   mes = local -> tm_mon + 1;
+   ano = local -> tm_year + 1900;
+
+   return(dia);
 }
 int main()
 {
@@ -4314,10 +4574,18 @@ int main()
         //Tela_de_Carregamento();
 
         //Login();
-
-       //Area_de_Trabalho();
-       FINANCEIRO();
+        Data();
+        Financeiro_saida();
+       Area_de_Trabalho();
+      //FINANCEIRO();
 
     }
-
+    FILE* n;
+    n=fopen("2016","rb");
+    TRelatorio relatorio;
+while(!feof(n))
+                {
+                    fread(&relatorio,sizeof(relatorio),1,n);
+                    printf("%i\n",relatorio.entrada);
+                }
 }
