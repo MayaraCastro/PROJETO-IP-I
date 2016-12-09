@@ -19,11 +19,11 @@ typedef struct{
 }TUsuario;
 typedef struct{
     char nome[200];
-    char data_nascimento[10];
-    char RG[9];
-    char CPF[14];
+    char data_nascimento[11];
+    char RG[10];
+    char CPF[15];
     char email[100];
-    char telefone[13];
+    char telefone[14];
     char endereco[200];
     float salario;
 
