@@ -14,12 +14,11 @@ typedef struct{
     char nome[50];
     int ativo;
     int numero_de_compras;
-    int vip;//1 =GOLD ; 2= PLATINUM; 0= SEM VIP
-    int rank_1,rank_2;
+    int assinatura;//1 =GOLD ; 2= PLATINUM; 0= SEM VIP
     int dia;
 	int mes;
 	int ano;
-    
+
 
 }TUsuario;
 typedef struct{
@@ -1899,8 +1898,8 @@ void Resultado_Usuario(fpos_t Byte)
 
     gotoxy(40,8);
     printf("USUARIO: %s",usuario.usuario);
-	
-	
+
+
     gotoxy(40,10);
     if(usuario.ativo==1)
     {
@@ -1910,18 +1909,18 @@ void Resultado_Usuario(fpos_t Byte)
     {
         printf("USUARIO DESATIVO");
     }
-  	
- 		 if(usuario.vip==1)
+
+ 		 if(usuario.assinatura==1)
 		    {
-		    
+
     			gotoxy(40,14);
     			printf("VIP GOLD");
-    			
+
 			}
-			else if(usuario.vip==2)
+			else if(usuario.assinatura==2)
 			{
     			gotoxy(40,14);
-    			printf("VIP PLATINUM");				
+    			printf("VIP PLATINUM");
 			}
 
     gotoxy(40,12);
@@ -2172,7 +2171,7 @@ int Aba_Resultado(fpos_t Byte,int arquivo /*1 - funcionarios ; 2- usuarios; 3- p
             }
             button2=true;
             ativado++;
- 			
+
             if(resp==13)
             {
                 if(arquivo!=2)
@@ -2459,7 +2458,7 @@ int Cadastro_funcionario()
                 else
                 {
                     funcionario.data_nascimento[i]=getch();
-				
+
                     if(funcionario.data_nascimento[i]==8)
                     {
                         if(i>=0)
@@ -2596,7 +2595,7 @@ int Cadastro_funcionario()
                 else
                 {
                     funcionario.CPF[i]=getch();
-					
+
 					if(funcionario.CPF>= 'a' && funcionario.CPF<='Z')
 					{
 						error++;
@@ -2760,14 +2759,14 @@ int Cadastro_funcionario()
             //SENHA
             gotoxy(49,21);
             gets(funcionario.senha);
-			
+
             fwrite(&funcionario,sizeof(funcionario),1,p);
             fclose(p);
 
             return(1);
     }
 
-	
+
 }
 int Cadastro_usuario()
 {
@@ -2789,14 +2788,14 @@ int Cadastro_usuario()
 
     gotoxy(40,9);
     printf("SENHA:");
-    
+
     gotoxy(40,11);
     printf("PLANOS VIP:");
     gotoxy(40,12);
     printf("[ 1 ] GOLD");
     gotoxy(40,13);
     printf("[ 2 ] PLATINUM");
-   
+
 	p=fopen("Usuario","ab+");
 
 
@@ -2828,13 +2827,13 @@ int Cadastro_usuario()
             gotoxy(49,9);
 			fflush(stdin);
 		    gets(usuario.senha);
-		    
+
 		    //PLANO
 		    gotoxy(52,11);
 			fflush(stdin);
-		    scanf("%i",&usuario.vip);
-					    
-		    if(usuario.vip==1)
+		    scanf("%i",&usuario.assinatura);
+
+		    if(usuario.assinatura==1)
 		    {
 		    	gotoxy(40,12);
     			printf("          ");
@@ -2842,21 +2841,21 @@ int Cadastro_usuario()
     			printf("[ X ] GOLD");
     			gotoxy(40,13);
     			printf("[ 2 ] PLATINUM");
-    			usuario.rank_1++;
+
 			}
-			else if(usuario.vip==2)
+			else if(usuario.assinatura==2)
 			{
-				
+
     			gotoxy(40,12);
     			printf("[ 1 ] GOLD");
     			gotoxy(40,13);
     			printf("          ");
     			gotoxy(40,13);
     			printf("[ X ] PLATINUM");
-				usuario.rank_2++;				
+
 			}
-			
-  
+
+
 		    usuario.ativo=1;
 		    usuario.numero_de_compras=0;
 
@@ -2902,7 +2901,7 @@ int Cadastro_produto()
         gotoxy(50,7);
         fflush(stdin);
         scanf("%f", &produto.preco);
-		
+
         produto.quantidade_comprado=0;
         produto.ativo=1;
 
@@ -3469,7 +3468,7 @@ void Editar_Usuario(fpos_t Byte)
         printf("USUARIO DESATIVO");
     }
     int renovar;
-    renovar=usuario.vip;
+    renovar=usuario.assinatura;
     if(usuario.ano>=usuario.ano+1)
     {
     	renovar=0;
@@ -3480,8 +3479,8 @@ void Editar_Usuario(fpos_t Byte)
     printf("[ 1 ] GOLD");
     gotoxy(40,14);
     printf("[ 2 ] PLATINUM");
-    
-	
+
+
     do
     {
         GetCursorPos(&Coordenadas);
@@ -3680,9 +3679,9 @@ void Editar_Usuario(fpos_t Byte)
             {
             	gotoxy(52,12);
 				fflush(stdin);
-				scanf("%i",&usuario.vip);
-							    
-				    if(usuario.vip==1)
+				scanf("%i",&usuario.assinatura);
+
+				    if(usuario.assinatura==1)
 				    {
 				    	gotoxy(40,13);
 		    			printf("          ");
@@ -3691,17 +3690,17 @@ void Editar_Usuario(fpos_t Byte)
 		    			gotoxy(40,14);
 		    			printf("[ 2 ] PLATINUM");
 					}
-					else if(usuario.vip==2)
+					else if(usuario.assinatura==2)
 					{
-						
+
 		    			gotoxy(40,13);
 		    			printf("[ 1 ] GOLD");
 		    			gotoxy(40,14);
 		    			printf("          ");
 		    			gotoxy(40,14);
-		    			printf("[ X ] PLATINUM");				
+		    			printf("[ X ] PLATINUM");
 						}
-    
+
 				}
 
 
@@ -3955,9 +3954,9 @@ void Compra_Usuario(fpos_t Byte)
 
     fsetpos(p,&Byte);
     fread(&usuario,sizeof(usuario),1,p);
-    
+
     usuario.numero_de_compras++;
-	
+
 
     fsetpos(p,&Byte);
     fwrite(&usuario,sizeof(usuario),1,p);
@@ -3974,13 +3973,13 @@ int Comprar_produto(fpos_t Byte)
     fsetpos(p,&Byte);
 
     fread(&produto,sizeof(produto),1,p);
-	
+
     produto.quantidade_comprado++;
-	
+
 	int compra = produto.preco;
-	
+
     Financeiro_entrada(compra);
-    
+
 
     fsetpos(p,&Byte);
 
@@ -4057,8 +4056,8 @@ void FINANCEIRO()
     {
         Quadro_colorido(15,60,90,19,26);
         gotoxy(62,19);
-        printf("TOP 3 USUARIOS");
-        Top_3();
+        printf("ASSINATURAS POPULARES");
+        Top_Assinatura();
     }
     //CLIENTES VIP
     {
@@ -4313,7 +4312,7 @@ void Clientes_VIP()
 }
 void Financeiro_entrada(int compra)
 {
-	
+
     FILE *p;
     fpos_t Byte;
     TRelatorio relatorio;
@@ -4330,7 +4329,7 @@ void Financeiro_entrada(int compra)
     relatorio.entrada=relatorio.entrada+20;
     fgetpos(p,&Byte);
     Byte-=Byte-sizeof(relatorio);
-            
+
     fsetpos(p,&Byte);
     fwrite(&relatorio,sizeof(relatorio),1,p);
     fclose(p);
@@ -4509,11 +4508,13 @@ void Financeiro_lucro()
 
     fclose(p);
 }
-void Top_3()
+void Top_Assinatura()
 {
 	FILE* p;
     fpos_t Byte,Reg;
     TUsuario usuario;
+
+    int Gold=0,Platinum=0;
 
     p=fopen("Usuario","rb");
     if(p!=NULL)
@@ -4521,25 +4522,25 @@ void Top_3()
         while(!feof(p))
         {
             fread(&usuario,sizeof(usuario),1,p);
-            if(usuario.ativo==1)
+            if(usuario.ativo==1 &&usuario.assinatura==1)
             {
-                fgetpos(p,&Byte);
-                Byte=Byte-sizeof(usuario);
+                Gold++;
+
+            } if(usuario.ativo==1 &&usuario.assinatura==2)
+            {
+                Platinum++;
+
             }
         }
-
-            if(usuario.rank_1>usuario.rank_2)
+            if(Gold>Platinum)
             {
-                fsetpos(p,&Byte);
-                fread(&usuario,sizeof(usuario),1,p);
-
                 gotoxy(62,21);
                 printf("1- GOLD");
                 gotoxy(62,22);
                 printf("2- PLATINUM");
-                rewind(p);
+
             }
-            else if(usuario.rank_1<usuario.rank_2)
+            else if(Gold<Platinum)
             {
                 gotoxy(62,21);
                 printf("1- PLATINUM");
@@ -4550,7 +4551,7 @@ void Top_3()
             {
             	gotoxy(62,21);
             	printf("1- GOLDINUM(GOLD/PLATINUM)");
-				
+
 			}
     }
     fclose(p);
