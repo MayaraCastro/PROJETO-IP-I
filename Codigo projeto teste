@@ -16,8 +16,10 @@ typedef struct{
     int numero_de_compras;
     int assinatura;//1 =GOLD ; 2= PLATINUM; 0= SEM VIP
     int dia;
-    int mes;
-    int ano;
+	int mes;
+	int ano;
+
+
 }TUsuario;
 typedef struct{
     char nome[200];
@@ -3974,9 +3976,9 @@ int Comprar_produto(fpos_t Byte)
 
     produto.quantidade_comprado++;
 
-    
+	float compra = produto.preco;
 
-    Financeiro_entrada(produto.preco);
+    Financeiro_entrada(&compra);
 
 
     fsetpos(p,&Byte);
@@ -4308,7 +4310,7 @@ void Clientes_VIP()
     }
     fclose(p);
 }
-void Financeiro_entrada(float compra)
+void Financeiro_entrada(float *compra)
 {
 
     FILE *p;
@@ -4320,30 +4322,32 @@ void Financeiro_entrada(float compra)
     itoa(ano,year,10);
 
 
-    p=fopen(year,"ab+");
-    relatorio.entrada=0;
-    fseek(p, -sizeof(relatorio), SEEK_END);
-    fread(&relatorio,sizeof(relatorio),1,p);
-    relatorio.entrada=relatorio.entrada+compra;
-    fgetpos(p,&Byte);
-    Byte=Byte-sizeof(relatorio);
 
-    fsetpos(p,&Byte);
+    p=fopen(year,"rb+");
+    fseek(p, -sizeof(relatorio), SEEK_END);
+
+    fread(&relatorio,sizeof(relatorio),1,p);
+    gotoxy(40,2);
+
+    relatorio.entrada=relatorio.entrada+*compra;
+
+    fseek(p, -sizeof(relatorio), SEEK_END);
     fwrite(&relatorio,sizeof(relatorio),1,p);
     fclose(p);
 }
-void Financeiro_saida()
+void Financeiro_saida_entrada_mensal()
 {
     FILE *p,*t;
     fpos_t Byte;
     TRelatorio relatorio;
     TFuncionario funcionario;
+    TUsuario usuario;
     int ano=Ano();
     char year[4];
     itoa(ano,year,10);
 
 
-    p=fopen(year,"ab+");
+    p=fopen(year,"rb+");
 
     fseek(p, -sizeof(relatorio), SEEK_END);
     fread(&relatorio,sizeof(relatorio),1,p);
@@ -4362,40 +4366,25 @@ void Financeiro_saida()
                 relatorio.dia++;
                 fclose(t);
 
-                fgetpos(p,&Byte);
-                Byte-=sizeof(relatorio);
-                fsetpos(p,&Byte);
-                fwrite(&relatorio,sizeof(relatorio),1,p);
-            }
-
-   /* while(!feof(p))
-    {
-        fread(&relatorio,sizeof(relatorio),1,p);
-        if(relatorio.mes==Mes())
-        {
-            if(relatorio.dia<1)
-            {
-               t=fopen("Funcionario","rb");
+                t=fopen("Usuario","rb");
                 while(!feof(t))
                 {
-                    fread(&funcionario,sizeof(funcionario),1,t);
-                    if(funcionario.ativo==1)
+                    fread(&usuario,sizeof(usuario),1,t);
+                    if(usuario.ativo==1&&usuario.assinatura==1)
                     {
-                        relatorio.saida+=funcionario.salario;
+                        relatorio.entrada+=70;
+                    }
+                    if(usuario.ativo==1&&usuario.assinatura==2)
+                    {
+                        relatorio.entrada+=120;
                     }
                 }
-                relatorio.dia++;
+
                 fclose(t);
 
-                fgetpos(p,&Byte);
-                Byte-=sizeof(relatorio);
-                fsetpos(p,&Byte);
+                fseek(p, -sizeof(relatorio), SEEK_END);
                 fwrite(&relatorio,sizeof(relatorio),1,p);
             }
-
-            break;
-        }
-    }*/
 
     fclose(p);
 }
@@ -4409,12 +4398,9 @@ void Resumo_do_Mes()
 
 
     p=fopen(year,"rb");
-    while(!feof(p))
-    {
+        fseek(p,-sizeof(relatorio),SEEK_END);
         fread(&relatorio,sizeof(relatorio),1,p);
-        if(relatorio.mes==Mes())
-        {
-            textcolor(8);
+        textcolor(8);
             gotoxy(100,6);
             printf("ENTRADA");
             gotoxy(100,8);
@@ -4427,10 +4413,7 @@ void Resumo_do_Mes()
             printf("LUCRO");
             gotoxy(100,16);
             printf("R$%.2f",relatorio.lucro);
-            break;
 
-        }
-    }
     fclose(p);
 
 }
@@ -4451,14 +4434,19 @@ void Grafico()
         if(relatorio.lucro>0)
         {
             x=15-(relatorio.lucro/100);
-            for(j=15;j>x;j--)
+
+            if(x<5)
+            {
+                x=5;
+            }
+            for(j=15;j>=x;j--)
             {
                 gotoxy(i,j);
                 printf("%c",219);
             }
         }
 
-        i+=3;
+        i+=5;
 
     }
     fclose(p);
@@ -4473,7 +4461,7 @@ void Financeiro_lucro()
     itoa(ano,year,10);
 
 
-    p=fopen(year,"ab+");
+    p=fopen(year,"rb+");
 
     fseek(p, -sizeof(relatorio), SEEK_END);
     fread(&relatorio,sizeof(relatorio),1,p);
@@ -4633,7 +4621,7 @@ void Data(void){
        p=fopen(ano,"rb");
        bool achou=false;
 
-       fseek(p, -sizeof(relatorio), SEEK_END);
+        fseek(p, -sizeof(relatorio), SEEK_END);
         fread(&relatorio,sizeof(relatorio),1,p);
        if(relatorio.mes==Mes())
            {
@@ -4735,10 +4723,9 @@ int main()
 
         //Login();
         Data();
-        Financeiro_saida();
-       Area_de_Trabalho();
-      //FINANCEIRO();
-
+        Financeiro_saida_entrada_mensal();
+        //Area_de_Trabalho();
+        FINANCEIRO();
     }
     FILE* n;
     n=fopen("2016","rb");
@@ -4746,6 +4733,7 @@ int main()
 	while(!feof(n))
     {
        fread(&relatorio,sizeof(relatorio),1,n);
-       printf("%i\n",relatorio.entrada);
+       //relatorio.entrada=20;
+       printf("%f\n",relatorio.entrada);
     }
 }
