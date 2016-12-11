@@ -14,15 +14,16 @@ typedef struct{
     char nome[50];
     int ativo;
     int numero_de_compras;
-    //int assinatura;
+    int assinatura;//1 =GOLD ; 2= PLATINUM; 0= SEM VIP
+    int dia;
+	int mes;
+	int ano;
+
 
 }TUsuario;
 typedef struct{
     char nome[200];
     char data_nascimento[11];
-    char RG[10];
-    char CPF[15];
-    char email[100];
     char telefone[14];
     char endereco[200];
     float salario;
@@ -46,6 +47,7 @@ typedef struct{
     float entrada;
     float saida;
 }TRelatorio;
+
 //efeitos sonoros/ Beeps
 void Musica_opcao()
 {
@@ -138,9 +140,9 @@ void Logo(int j, int i)
         gotoxy(j,i);i++;
         printf("         _\n");
         gotoxy(j,i);i++;
-        printf("       _/ \      _-'\n");
+        printf("       _/\\      _-'\n");
         gotoxy(j,i);i++;
-        printf("      _/|  \-''- _ /\n");
+        printf("      _/| \\-''- _ /\n");
         gotoxy(j,i);i++;
         printf("__-'  { |         \\\n");
         gotoxy(j,i);i++;
@@ -152,7 +154,7 @@ void Logo(int j, int i)
         gotoxy(j,i);i++;
         printf("                   ',\n");
         gotoxy(j,i);i++;
-        printf("        \_         __ \\\n");
+        printf("       \\_         __ \\\n");
         gotoxy(j,i);i++;
         printf("          ''-_    \\.//\n");
         gotoxy(j,i);i++;
@@ -177,7 +179,7 @@ void Cadeado_Fechado()
     gotoxy(j,i);i++;
     printf("    / .------. \\ ");
     gotoxy(j,i);i++;
-    printf("   \/ \/        \\ \\");
+    printf("  \\/\\/        \\ \\");
     gotoxy(j,i);i++;
     printf("   | |        | |");
     gotoxy(j,i);i++;
@@ -213,7 +215,7 @@ void Cadeado_abrindo()
     gotoxy(j,i);i++;
     printf("    / .------. \\ ");
     gotoxy(j,i);i++;
-    printf("   \/ \/        \\ \\");
+    printf("  \\/\\/        \\ \\");
     gotoxy(j,i);i++;
     printf("   | |        | |");
     gotoxy(j,i);i++;
@@ -274,7 +276,7 @@ void Cadeado_abrindo()
     gotoxy(j,i);i++;
     printf("    / .------. \\ ");
     gotoxy(j,i);i++;
-    printf("   \/ \/        \\ \\");
+    printf("  \\/\\/        \\ \\");
     gotoxy(j,i);i++;
     printf("   | |        | |");
     gotoxy(j,i);i++;
@@ -1838,16 +1840,16 @@ void Resultado_Funcionario(fpos_t Byte)
     printf("DATA DE NASCIMENTO: %s ",funcionario.data_nascimento);
 
     gotoxy(40,10);
-    printf("RG: %i",funcionario.RG);
+    printf("RG: %s",funcionario.RG);
 
     gotoxy(60,10);
-    printf("CPF: %i",funcionario.CPF);
+    printf("CPF: %s",funcionario.CPF);
 
     gotoxy(40,12);
     printf("E-MAIL: %s ",funcionario.email);
 
     gotoxy(40,14);
-    printf("TELEFONE: %i",funcionario.telefone);
+    printf("TELEFONE: %s",funcionario.telefone);
 
     gotoxy(40,16);
     printf("ENDERECO: %s ",funcionario.endereco);
@@ -1894,6 +1896,7 @@ void Resultado_Usuario(fpos_t Byte)
     gotoxy(40,8);
     printf("USUARIO: %s",usuario.usuario);
 
+
     gotoxy(40,10);
     if(usuario.ativo==1)
     {
@@ -1904,6 +1907,18 @@ void Resultado_Usuario(fpos_t Byte)
         printf("USUARIO DESATIVO");
     }
 
+ 		 if(usuario.assinatura==1)
+		    {
+
+    			gotoxy(40,14);
+    			printf("VIP GOLD");
+
+			}
+			else if(usuario.assinatura==2)
+			{
+    			gotoxy(40,14);
+    			printf("VIP PLATINUM");
+			}
 
     gotoxy(40,12);
 
@@ -1971,7 +1986,7 @@ void Resultado_Produto_compra(fpos_t Byte)
 
     fclose(p);
 }
-int Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- produtos; 4-realizar compra*/)
+int Aba_Resultado(fpos_t Byte,int arquivo /*1 - funcionarios ; 2- usuarios; 3- produtos; 4-realizar compra*/)
 {
     system("cls");
     Janela();
@@ -2046,7 +2061,7 @@ int Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- pr
         printf("PRODUTO");
         textcolor(8);
         textbackground(15);
-       Resultado_Produto(Byte);
+        Resultado_Produto(Byte);
     }
     if(arquivo==4)
     {   textbackground(3);
@@ -2163,7 +2178,6 @@ int Aba_Resultado(fpos_t Byte,int arquivo/*1 - funcionarios ; 2- usuarios; 3- pr
                 else if(arquivo==2 && Aba_Consulta(4)==1)
                 {
                     Compra_Usuario(Byte);
-
                 }
                 resp=' ';
                 break;
@@ -2366,6 +2380,7 @@ void Aba_Cadastro(int arquivo /*1-Funcionario; 2-usuarios 3- produtos*/)
 int Cadastro_funcionario()
 {
     TFuncionario funcionario;
+    int error=0;
 
     FILE* p;
     p=fopen("Funcionario","rb");
@@ -2383,27 +2398,18 @@ int Cadastro_funcionario()
     printf("DATA DE NASCIMENTO:");
 
     gotoxy(40,9);
-    printf("RG:");
-
-    gotoxy(60,9);
-    printf("CPF:");
-
-    gotoxy(40,11);
-    printf("E-MAIL:");
-
-    gotoxy(40,13);
     printf("TELEFONE:");
 
-    gotoxy(40,15);
+    gotoxy(40,11);
     printf("ENDERECO:");
 
-    gotoxy(40,17);
+    gotoxy(40,13);
     printf("SALARIO:");
 
-    gotoxy(40,19);
+    gotoxy(40,15);
     printf("USUARIO:");
 
-    gotoxy(40,21);
+    gotoxy(40,17);
     printf("SENHA:");
 
     p=fopen("Funcionario","ab+");
@@ -2500,7 +2506,10 @@ int Cadastro_funcionario()
                 else
                 {
                     funcionario.RG[i]=getch();
-
+					if(funcionario.RG>= 'a' && funcionario.RG<='Z')
+					{
+						error++;
+					}
                     if(funcionario.RG[i]==8)
                     {
                         if(i>0)
@@ -2575,6 +2584,10 @@ int Cadastro_funcionario()
                 {
                     funcionario.CPF[i]=getch();
 
+					if(funcionario.CPF>= 'a' && funcionario.CPF<='Z')
+					{
+						error++;
+					}
                     if(funcionario.CPF[i]==8)
                     {
                         if(i>0)
@@ -2648,6 +2661,10 @@ int Cadastro_funcionario()
                 {
 
                     funcionario.telefone[i]=getch();
+                    if(funcionario.telefone>= 'a' && funcionario.telefone<='Z')
+					{
+						error++;
+					}
                     if(funcionario.telefone[i]==13)
                     {
                         break;
@@ -2716,6 +2733,10 @@ int Cadastro_funcionario()
             gotoxy(51,17);
             scanf("%f",&funcionario.salario);
             fflush(stdin);
+            if(funcionario.salario>= 'a' && funcionario.salario<='Z')
+			{
+				error++;
+			}
 
             //USUARIO
             gotoxy(49,19);
@@ -2738,6 +2759,9 @@ int Cadastro_funcionario()
 int Cadastro_usuario()
 {
 	TUsuario usuario;
+	usuario.dia=Dia();
+	usuario.mes=Mes();
+	usuario.ano=Ano();
 	FILE *p;
 	p = fopen("Usuario", "rb");
 	if (p == NULL)
@@ -2753,6 +2777,12 @@ int Cadastro_usuario()
     gotoxy(40,9);
     printf("SENHA:");
 
+    gotoxy(40,11);
+    printf("PLANOS VIP:");
+    gotoxy(40,12);
+    printf("[ 1 ] GOLD");
+    gotoxy(40,13);
+    printf("[ 2 ] PLATINUM");
 
 	p=fopen("Usuario","ab+");
 
@@ -2785,6 +2815,34 @@ int Cadastro_usuario()
             gotoxy(49,9);
 			fflush(stdin);
 		    gets(usuario.senha);
+
+		    //PLANO
+		    gotoxy(52,11);
+			fflush(stdin);
+		    scanf("%i",&usuario.assinatura);
+
+		    if(usuario.assinatura==1)
+		    {
+		    	gotoxy(40,12);
+    			printf("          ");
+    			gotoxy(40,12);
+    			printf("[ X ] GOLD");
+    			gotoxy(40,13);
+    			printf("[ 2 ] PLATINUM");
+
+			}
+			else if(usuario.assinatura==2)
+			{
+
+    			gotoxy(40,12);
+    			printf("[ 1 ] GOLD");
+    			gotoxy(40,13);
+    			printf("          ");
+    			gotoxy(40,13);
+    			printf("[ X ] PLATINUM");
+
+			}
+
 
 		    usuario.ativo=1;
 		    usuario.numero_de_compras=0;
@@ -3378,7 +3436,7 @@ void Editar_Usuario(fpos_t Byte)
     textcolor(8);
 
     gotoxy(39,y);
-    printf("*");
+    printf("%c",175);
 
     p=fopen("Usuario","rb+");
     fsetpos(p,&Byte);
@@ -3388,7 +3446,7 @@ void Editar_Usuario(fpos_t Byte)
     gotoxy(40,10);
     printf("SENHA: %s",usuario.senha);
 
-    gotoxy(40,12);
+    gotoxy(40,15);
     if(usuario.ativo==1)
     {
         printf("USUARIO ATIVO");
@@ -3397,6 +3455,19 @@ void Editar_Usuario(fpos_t Byte)
     {
         printf("USUARIO DESATIVO");
     }
+    int renovar;
+    renovar=usuario.assinatura;
+    if(usuario.ano>=usuario.ano+1)
+    {
+    	renovar=0;
+	}
+    gotoxy(40,12);
+    printf("PLANOS VIP:");
+    gotoxy(40,13);
+    printf("[ 1 ] GOLD");
+    gotoxy(40,14);
+    printf("[ 2 ] PLATINUM");
+
 
     do
     {
@@ -3413,7 +3484,7 @@ void Editar_Usuario(fpos_t Byte)
                 y-=2;
                 if(y<6)
                 {
-                    y=10;
+                    y=12;
                 }
 
             }
@@ -3422,7 +3493,7 @@ void Editar_Usuario(fpos_t Byte)
                 gotoxy(39,y);
                 printf(" ");
                 y+=2;
-                if(y>10)
+                if(y>12)
                 {
                     y=6;
                 }
@@ -3456,15 +3527,15 @@ void Editar_Usuario(fpos_t Byte)
                     usuario.ativo=0;
 
 
-                    gotoxy(40,12);
+                    gotoxy(40,15);
                     printf("USUARIO DESATIVO");
                 }
                 else
                 {
                     usuario.ativo=1;
-                    gotoxy(40,12);
+                    gotoxy(40,15);
                     printf("                ");
-                    gotoxy(40,12);
+                    gotoxy(40,15);
                     printf("USUARIO ATIVO");
                 }
                 resp=' ';
@@ -3543,7 +3614,7 @@ void Editar_Usuario(fpos_t Byte)
             ativado=0;
         }
 
-        if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>510&&Coordenadas.y<580)
+       if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>510&&Coordenadas.y<580)
         {
             if(ativado==0)
             {
@@ -3592,6 +3663,33 @@ void Editar_Usuario(fpos_t Byte)
                 gotoxy(47,y);
                 gets(usuario.senha);
             }
+            else if(y==12)
+            {
+            	gotoxy(52,12);
+				fflush(stdin);
+				scanf("%i",&usuario.assinatura);
+
+				    if(usuario.assinatura==1)
+				    {
+				    	gotoxy(40,13);
+		    			printf("          ");
+		    			gotoxy(40,13);
+		    			printf("[ X ] GOLD");
+		    			gotoxy(40,14);
+		    			printf("[ 2 ] PLATINUM");
+					}
+					else if(usuario.assinatura==2)
+					{
+
+		    			gotoxy(40,13);
+		    			printf("[ 1 ] GOLD");
+		    			gotoxy(40,14);
+		    			printf("          ");
+		    			gotoxy(40,14);
+		    			printf("[ X ] PLATINUM");
+						}
+
+				}
 
 
         }
@@ -3835,6 +3933,7 @@ void Editar_Produto(fpos_t Byte)
 }
 void Compra_Usuario(fpos_t Byte)
 {
+	system("pause");
     FILE* p;
     TUsuario usuario;
     Byte=Byte-sizeof(usuario);
@@ -3846,30 +3945,34 @@ void Compra_Usuario(fpos_t Byte)
 
     usuario.numero_de_compras++;
 
+
     fsetpos(p,&Byte);
     fwrite(&usuario,sizeof(usuario),1,p);
     fclose(p);
 }
-void Comprar_produto(fpos_t Byte)
+int Comprar_produto(fpos_t Byte)
 {
-    FILE* p;
+    FILE* p,* p1;
     TProduto produto;
 
     Byte=Byte-sizeof(produto);
 
     p=fopen("Produto","rb+");
-
     fsetpos(p,&Byte);
+
     fread(&produto,sizeof(produto),1,p);
 
     produto.quantidade_comprado++;
 
-    Financeiro_entrada(produto.preco);
+	float compra = produto.preco;
+
+    Financeiro_entrada(&compra);
+
 
     fsetpos(p,&Byte);
+
     fwrite(&produto,sizeof(produto),1,p);
     fclose(p);
-
 }
 
 //FINANCEIRO
@@ -3941,7 +4044,8 @@ void FINANCEIRO()
     {
         Quadro_colorido(15,60,90,19,26);
         gotoxy(62,19);
-        printf("ASSINATURAS MAIS POPULARES");
+        printf("ASSINATURAS POPULARES");
+        Top_Assinatura();
     }
     //CLIENTES VIP
     {
@@ -4194,8 +4298,9 @@ void Clientes_VIP()
     }
     fclose(p);
 }
-void Financeiro_entrada(float compra)
+void Financeiro_entrada(float *compra)
 {
+
     FILE *p;
     fpos_t Byte;
     TRelatorio relatorio;
@@ -4205,35 +4310,34 @@ void Financeiro_entrada(float compra)
     itoa(ano,year,10);
 
 
-    p=fopen(year,"ab+");
+
+    p=fopen(year,"rb+");
+    fseek(p, -sizeof(relatorio), SEEK_END);
+
+    fread(&relatorio,sizeof(relatorio),1,p);
+    gotoxy(40,2);
+
+    relatorio.entrada=relatorio.entrada+*compra;
 
     fseek(p, -sizeof(relatorio), SEEK_END);
-    fread(&relatorio,sizeof(relatorio),1,p);
-    relatorio.entrada+=relatorio.entrada+compra;
-
-            fgetpos(p,&Byte);
-            Byte-=Byte-sizeof(relatorio);
-
-
-
-    fsetpos(p,&Byte);
     fwrite(&relatorio,sizeof(relatorio),1,p);
     fclose(p);
 }
-void Financeiro_saida()
+void Financeiro_saida_entrada_mensal()
 {
     FILE *p,*t;
     fpos_t Byte;
     TRelatorio relatorio;
     TFuncionario funcionario;
+    TUsuario usuario;
     int ano=Ano();
     char year[4];
     itoa(ano,year,10);
 
 
-    p=fopen(year,"ab+");
+    p=fopen(year,"rb+");
 
-    fseek(p, -sizeof(relatorio), SEEK_END);
+    fseek(p,-sizeof(relatorio), SEEK_END);
     fread(&relatorio,sizeof(relatorio),1,p);
 
     if(relatorio.dia<1)
@@ -4247,43 +4351,30 @@ void Financeiro_saida()
                         relatorio.saida+=funcionario.salario;
                     }
                 }
+                relatorio.saida=relatorio.saida/2;
                 relatorio.dia++;
                 fclose(t);
 
-                fgetpos(p,&Byte);
-                Byte-=sizeof(relatorio);
-                fsetpos(p,&Byte);
-                fwrite(&relatorio,sizeof(relatorio),1,p);
-            }
-
-   /* while(!feof(p))
-    {
-        fread(&relatorio,sizeof(relatorio),1,p);
-        if(relatorio.mes==Mes())
-        {
-            if(relatorio.dia<1)
-            {
-               t=fopen("Funcionario","rb");
+                t=fopen("Usuario","rb");
                 while(!feof(t))
                 {
-                    fread(&funcionario,sizeof(funcionario),1,t);
-                    if(funcionario.ativo==1)
+                    fread(&usuario,sizeof(usuario),1,t);
+                    if(usuario.ativo==1&&usuario.assinatura==1)
                     {
-                        relatorio.saida+=funcionario.salario;
+                        relatorio.entrada+=70;
+                    }
+                    if(usuario.ativo==1&&usuario.assinatura==2)
+                    {
+                        relatorio.entrada+=120;
                     }
                 }
-                relatorio.dia++;
+                relatorio.entrada=relatorio.entrada/2;
+
                 fclose(t);
 
-                fgetpos(p,&Byte);
-                Byte-=sizeof(relatorio);
-                fsetpos(p,&Byte);
+                fseek(p, -sizeof(relatorio), SEEK_END);
                 fwrite(&relatorio,sizeof(relatorio),1,p);
             }
-
-            break;
-        }
-    }*/
 
     fclose(p);
 }
@@ -4297,12 +4388,9 @@ void Resumo_do_Mes()
 
 
     p=fopen(year,"rb");
-    while(!feof(p))
-    {
+        fseek(p,-sizeof(relatorio),SEEK_END);
         fread(&relatorio,sizeof(relatorio),1,p);
-        if(relatorio.mes==Mes())
-        {
-            textcolor(8);
+        textcolor(8);
             gotoxy(100,6);
             printf("ENTRADA");
             gotoxy(100,8);
@@ -4315,10 +4403,7 @@ void Resumo_do_Mes()
             printf("LUCRO");
             gotoxy(100,16);
             printf("R$%.2f",relatorio.lucro);
-            break;
 
-        }
-    }
     fclose(p);
 
 }
@@ -4339,14 +4424,19 @@ void Grafico()
         if(relatorio.lucro>0)
         {
             x=15-(relatorio.lucro/100);
-            for(j=15;j>x;j--)
+
+            if(x<5)
+            {
+                x=5;
+            }
+            for(j=15;j>=x;j--)
             {
                 gotoxy(i,j);
                 printf("%c",219);
             }
         }
 
-        i+=3;
+        i+=5;
 
     }
     fclose(p);
@@ -4361,7 +4451,7 @@ void Financeiro_lucro()
     itoa(ano,year,10);
 
 
-    p=fopen(year,"ab+");
+    p=fopen(year,"rb+");
 
     fseek(p, -sizeof(relatorio), SEEK_END);
     fread(&relatorio,sizeof(relatorio),1,p);
@@ -4394,14 +4484,70 @@ void Financeiro_lucro()
 
     fclose(p);
 }
+void Top_Assinatura()
+{
+	FILE* p;
+    fpos_t Byte,Reg;
+    TUsuario usuario;
+
+    int Gold=0,Platinum=0;
+
+    p=fopen("Usuario","rb");
+    if(p!=NULL)
+    {
+        while(!feof(p))
+        {
+            fread(&usuario,sizeof(usuario),1,p);
+            if(usuario.ativo==1 &&usuario.assinatura==1)
+            {
+                Gold++;
+
+            } if(usuario.ativo==1 &&usuario.assinatura==2)
+            {
+                Platinum++;
+
+            }
+        }
+            if(Gold>Platinum)
+            {
+                gotoxy(62,21);
+                printf("1- GOLD");
+                gotoxy(62,22);
+                printf("2- PLATINUM");
+
+            }
+            else if(Gold<Platinum)
+            {
+                gotoxy(62,21);
+                printf("1- PLATINUM");
+                gotoxy(62,22);
+                printf("2- GOLD");
+            }
+            else
+            {
+            	gotoxy(62,21);
+            	printf("1- GOLDINUM(GOLD/PLATINUM)");
+
+			}
+    }
+    fclose(p);
+}
 //Define o tamanho da tela com chamada do sistema
 void redefine(void){
     system("color 3F"); //Padroniza a cor do sistema.
     system("MODE con cols=123 lines=28"); //Redimensiona a tela
     system("title STEAM - by: LGMT"); //Dá título a tela
+    {//MAXIMIXA A TELA ( APERTA NO TECLADO O ALT+ESPACO+X)
+    keybd_event ( VK_MENU, 0x38, 0, 0 );
+    keybd_event ( VK_SPACE, 0x39, 0, 0 );
+    keybd_event(0x58,0,0,0);
+    keybd_event ( VK_MENU, 0x38, KEYEVENTF_KEYUP, 0 );
+    keybd_event ( VK_SPACE, 0x39, KEYEVENTF_KEYUP, 0 );
+    keybd_event(0x58,0,KEYEVENTF_KEYUP,0);
+    }
 }
 //PEGA O DIA MES E ANO EM QUE O USUARIO
-void Data(void){
+void Data(){
 
    int dia,mes,ano1;
    struct tm *local;
@@ -4428,7 +4574,7 @@ void Data(void){
 
        p=fopen(ano,"wb");
 
-       int i,year;
+       int i=1,year;
 
 
             char year1[4];
@@ -4454,17 +4600,18 @@ void Data(void){
             }
             else
             {
-               for(i=1;i<=Mes();i++)
+                while(i<=Mes())
                 {
                     novo.mes=i;
                     novo.dia=0;
                     novo.lucro=novo.entrada=0;
                     novo.saida=0;
-
                     fwrite(&novo,sizeof(novo),1,p);
+                    i++;
                 }
             }
             fclose(n);
+            fclose(p);
 
    }
    else
@@ -4473,7 +4620,7 @@ void Data(void){
        p=fopen(ano,"rb");
        bool achou=false;
 
-       fseek(p, -sizeof(relatorio), SEEK_END);
+        fseek(p, -sizeof(relatorio), SEEK_END);
         fread(&relatorio,sizeof(relatorio),1,p);
        if(relatorio.mes==Mes())
            {
@@ -4498,10 +4645,8 @@ void Data(void){
                    fwrite(&novo,sizeof(novo),1,p);
                }
        }
+       fclose(p);
    }
-   fclose(p);
-
-
 }
 int Mes(void){
 
@@ -4548,6 +4693,7 @@ int Dia(void){
 
    return(dia);
 }
+
 int main()
 {
     redefine();
@@ -4557,9 +4703,10 @@ int main()
     fclose(p);
     if(p==NULL)
     {
-        if(MessageBox(0,"BEM VINDO AO PROGRAMA!\nAntes de começar a utiliza-lo é necessario que leia e aceite os termos de uso.\n","TERMOS DE USO",4)==6)
+        if(MessageBox(0,"BEM VINDO AO PROGRAMA!\nAntes de começar a utiliza-lo é necessario que leia e aceite os termos de uso.\n"
+                      "sdsdsd","TERMOS DE USO",4)==6)
         {   //pra cadastrar o admin quando usa pela primeira vez
-             Aba_Cadastro(1);
+            Aba_Cadastro(1);
             p = fopen("Usuario", "wb");
             main();
         }
@@ -4567,7 +4714,6 @@ int main()
         {
             exit(0);
         }
-
     }
     else
     {
@@ -4575,17 +4721,9 @@ int main()
 
         //Login();
         Data();
-        Financeiro_saida();
-       Area_de_Trabalho();
-      //FINANCEIRO();
-
+        Financeiro_saida_entrada_mensal();
+        //Area_de_Trabalho();
+        //FINANCEIRO();
     }
-    FILE* n;
-    n=fopen("2016","rb");
-    TRelatorio relatorio;
-while(!feof(n))
-                {
-                    fread(&relatorio,sizeof(relatorio),1,n);
-                    printf("%i\n",relatorio.entrada);
-                }
+
 }
