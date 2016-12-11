@@ -16,10 +16,8 @@ typedef struct{
     int numero_de_compras;
     int assinatura;//1 =GOLD ; 2= PLATINUM; 0= SEM VIP
     int dia;
-	int mes;
-	int ano;
-
-
+    int mes;
+    int ano;
 }TUsuario;
 typedef struct{
     char nome[200];
@@ -47,7 +45,7 @@ typedef struct{
     int mes;
     int dia;
     float lucro;
-    int entrada;
+    float entrada;
     float saida;
 }TRelatorio;
 
@@ -3976,9 +3974,9 @@ int Comprar_produto(fpos_t Byte)
 
     produto.quantidade_comprado++;
 
-	int compra = produto.preco;
+    
 
-    Financeiro_entrada(compra);
+    Financeiro_entrada(produto.preco);
 
 
     fsetpos(p,&Byte);
@@ -4310,7 +4308,7 @@ void Clientes_VIP()
     }
     fclose(p);
 }
-void Financeiro_entrada(int compra)
+void Financeiro_entrada(float compra)
 {
 
     FILE *p;
@@ -4323,12 +4321,12 @@ void Financeiro_entrada(int compra)
 
 
     p=fopen(year,"ab+");
-	relatorio.entrada=0;
+    relatorio.entrada=0;
     fseek(p, -sizeof(relatorio), SEEK_END);
     fread(&relatorio,sizeof(relatorio),1,p);
-    relatorio.entrada=relatorio.entrada+20;
+    relatorio.entrada=relatorio.entrada+compra;
     fgetpos(p,&Byte);
-    Byte-=Byte-sizeof(relatorio);
+    Byte=Byte-sizeof(relatorio);
 
     fsetpos(p,&Byte);
     fwrite(&relatorio,sizeof(relatorio),1,p);
