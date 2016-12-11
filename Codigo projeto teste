@@ -4349,7 +4349,7 @@ void Financeiro_saida_entrada_mensal()
 
     p=fopen(year,"rb+");
 
-    fseek(p, -sizeof(relatorio), SEEK_END);
+    fseek(p,-sizeof(relatorio), SEEK_END);
     fread(&relatorio,sizeof(relatorio),1,p);
 
     if(relatorio.dia<1)
@@ -4363,6 +4363,7 @@ void Financeiro_saida_entrada_mensal()
                         relatorio.saida+=funcionario.salario;
                     }
                 }
+                relatorio.saida=relatorio.saida/2;
                 relatorio.dia++;
                 fclose(t);
 
@@ -4379,6 +4380,7 @@ void Financeiro_saida_entrada_mensal()
                         relatorio.entrada+=120;
                     }
                 }
+                relatorio.entrada=relatorio.entrada/2;
 
                 fclose(t);
 
@@ -4549,7 +4551,7 @@ void redefine(void){
     system("title STEAM - by: LGMT"); //Dá título a tela
 }
 //PEGA O DIA MES E ANO EM QUE O USUARIO
-void Data(void){
+void Data(){
 
    int dia,mes,ano1;
    struct tm *local;
@@ -4576,7 +4578,7 @@ void Data(void){
 
        p=fopen(ano,"wb");
 
-       int i,year;
+       int i=1,year;
 
 
             char year1[4];
@@ -4602,17 +4604,18 @@ void Data(void){
             }
             else
             {
-               for(i=1;i<=Mes();i++)
+                while(i<=Mes())
                 {
                     novo.mes=i;
                     novo.dia=0;
                     novo.lucro=novo.entrada=0;
                     novo.saida=0;
-
                     fwrite(&novo,sizeof(novo),1,p);
+                    i++;
                 }
             }
             fclose(n);
+            fclose(p);
 
    }
    else
@@ -4646,10 +4649,8 @@ void Data(void){
                    fwrite(&novo,sizeof(novo),1,p);
                }
        }
+       fclose(p);
    }
-   fclose(p);
-
-
 }
 int Mes(void){
 
@@ -4724,16 +4725,17 @@ int main()
         //Login();
         Data();
         Financeiro_saida_entrada_mensal();
-        //Area_de_Trabalho();
+        Area_de_Trabalho();
         FINANCEIRO();
     }
     FILE* n;
     n=fopen("2016","rb");
     TRelatorio relatorio;
+
 	while(!feof(n))
     {
        fread(&relatorio,sizeof(relatorio),1,n);
-       //relatorio.entrada=20;
        printf("%f\n",relatorio.entrada);
     }
+
 }
