@@ -4441,7 +4441,7 @@ void Grafico()
             {
                 x=5;
             }
-            for(j=15;j>=x;j--)
+            for(j=15;j>x;j--)
             {
                 gotoxy(i,j);
                 printf("%c",219);
