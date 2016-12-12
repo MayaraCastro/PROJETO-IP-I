@@ -33,10 +33,14 @@ typedef struct{
     char senha[10];
 }TFuncionario;
 typedef struct{
-    char nome[10];
-    int ativo;
+    char nome[50];
     float preco;
-
+    char genero[20];
+    int ano_lancamento;
+    char categoria[20];
+    char descricao[200];
+    char classificacao_indicativa[20];
+    int ativo;
     int quantidade_comprado;
 }TProduto;
 typedef struct{
@@ -1101,9 +1105,6 @@ void Area_de_Trabalho()
 
                     GetCursorPos(&Coordenadas);
 
-                    gotoxy(2,2);
-                    printf("X: %d Y: %d", Coordenadas.x, Coordenadas.y);
-
                     textbackground(7);
                     //FUNCIONARIOS
                     if((Coordenadas.x>=60&&Coordenadas.x<=270 && Coordenadas.y<=166&&Coordenadas.y>=100))
@@ -1123,8 +1124,7 @@ void Area_de_Trabalho()
                                     x_antigo=Coordenadas.x;
                                     y_antigo=Coordenadas.y;
                                     GetCursorPos(&Coordenadas);
-                                    gotoxy(2,2);
-                                    printf("X: %d Y: %d", Coordenadas.x, Coordenadas.y);
+
 
                                                     textbackground(8);
                                                  if((Coordenadas.x>=60&&Coordenadas.x<=270 && Coordenadas.y<=210&&Coordenadas.y>=170))
@@ -1243,8 +1243,6 @@ void Area_de_Trabalho()
                                     x_antigo=Coordenadas.x;
                                     y_antigo=Coordenadas.y;
                                     GetCursorPos(&Coordenadas);
-                                    gotoxy(2,2);
-                                    printf("X: %d Y: %d", Coordenadas.x, Coordenadas.y);
 
                                                     textbackground(8);
                                                  if((Coordenadas.x>=270&&Coordenadas.x<=480 && Coordenadas.y<=210&&Coordenadas.y>=170))
@@ -1376,8 +1374,7 @@ void Area_de_Trabalho()
                                     x_antigo=Coordenadas.x;
                                     y_antigo=Coordenadas.y;
                                     GetCursorPos(&Coordenadas);
-                                    gotoxy(2,2);
-                                    printf("X: %d Y: %d", Coordenadas.x, Coordenadas.y);
+
 
                                                     textbackground(8);
                                                  if((Coordenadas.x>=480&&Coordenadas.x<=690 && Coordenadas.y<=210&&Coordenadas.y>=170))
@@ -1786,8 +1783,6 @@ int Aba_Consulta(int arquivo ,fpos_t ByteUsuario/*1 - funcionarios ; 2- usuarios
 
 
         textbackground(3);
-        gotoxy(20,10);
-        printf("x: %d  y: %d ",Coordenadas.x,Coordenadas.y);
         GetCursorPos(&Coordenadas);
         if(Coordenadas.x<775 &&Coordenadas.x>555 &&Coordenadas.y<580 && Coordenadas.y>510)
         {
@@ -1933,8 +1928,22 @@ void Resultado_Produto(fpos_t Byte)
     printf("NOME DO PRODUTO: %s", produto.nome);
 
     gotoxy(40,8);
-    printf("PRECO: RS%.2f", produto.preco);
+    printf("CATEGORIA: %s", produto.categoria);
 
+    gotoxy(40,10);
+    printf("GENERO: %s", produto.genero);
+
+    gotoxy(40,12);
+    printf("ANO DE LANCAMENTO: %i", produto.ano_lancamento);
+
+    gotoxy(40,14);
+    printf("CLASSIFICACAO INDICATIVA: %s", produto.classificacao_indicativa);
+
+    gotoxy(40,16);
+    printf("PRECO: RS %.2f", produto.preco);
+
+    gotoxy(40,18);
+    printf("DESCRICAO: %s", produto.descricao);
     gotoxy(40,10);
     if(produto.ativo==1)
     {
@@ -1963,7 +1972,22 @@ void Resultado_Produto_compra(fpos_t Byte)
     printf("NOME DO PRODUTO: %s", produto.nome);
 
     gotoxy(40,8);
-    printf("PRECO: RS%.2f", produto.preco);
+    printf("CATEGORIA: %s", produto.categoria);
+
+    gotoxy(40,10);
+    printf("GENERO: %s", produto.genero);
+
+    gotoxy(40,12);
+    printf("ANO DE LANCAMENTO: %i", produto.ano_lancamento);
+
+    gotoxy(40,14);
+    printf("CLASSIFICACAO INDICATIVA: %s", produto.classificacao_indicativa);
+
+    gotoxy(40,16);
+    printf("PRECO: RS %.2f", produto.preco);
+
+    gotoxy(40,18);
+    printf("DESCRICAO: %s", produto.descricao);
 
     gotoxy(40,10);
     if(produto.ativo==1)
@@ -2072,8 +2096,7 @@ int Aba_Resultado(fpos_t Byte,int arquivo,fpos_t ByteUsuario /*1 - funcionarios 
         {
             resp=getch();
         }
-        gotoxy(40,25);
-        printf("x: %d  y: %d ",Coordenadas.x,Coordenadas.y);
+
         GetCursorPos(&Coordenadas);
 
         if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>150&&Coordenadas.y<220)
@@ -2646,6 +2669,21 @@ int Cadastro_produto()
     gotoxy(40,7);
     printf("PRECO:");
 
+    gotoxy(40,9);
+    printf("GENERO:");
+
+    gotoxy(40,11);
+    printf("ANO DE LANCAMENTO:");
+
+    gotoxy(40,13);
+    printf("CATEGORIA:");
+
+    gotoxy(40,15);
+    printf("CLASSIFICACAO INDICATIVA:");
+
+    gotoxy(40,17);
+    printf("DESCRICAO:");
+
 	p=fopen("Produto","ab+");
 
     gotoxy(57,5);
@@ -2665,9 +2703,29 @@ int Cadastro_produto()
     }
     else
 	{
-        gotoxy(50,7);
+        gotoxy(48,7);
         fflush(stdin);
         scanf("%f", &produto.preco);
+
+        gotoxy(48,9);
+        fflush(stdin);
+        gets(produto.genero);
+
+        gotoxy(60,11);
+        fflush(stdin);
+        scanf("%i", &produto.ano_lancamento);
+
+        gotoxy(52,13);
+        fflush(stdin);
+        gets(produto.categoria);
+
+        gotoxy(67,15);
+        fflush(stdin);
+        gets(produto.classificacao_indicativa);
+
+        gotoxy(52,17);
+        gets(produto.descricao);
+        fflush(stdin);
 
         produto.quantidade_comprado=0;
         produto.ativo=1;
@@ -2697,7 +2755,7 @@ void Editar_Funcionario(fpos_t Byte)
     textbackground(15);
     textcolor(8);
     gotoxy(39,y);
-    printf(">");
+    printf("%c",175);
     int error=0;
     p=fopen("Funcionario","rb+");
     fsetpos(p,&Byte);
@@ -2734,7 +2792,7 @@ void Editar_Funcionario(fpos_t Byte)
             }
 
             gotoxy(39,y);
-            printf(">");
+            printf("%c",175);
 
         }
 
@@ -3095,7 +3153,7 @@ void Editar_Usuario(fpos_t Byte)
             }
 
             gotoxy(39,y);
-            printf("*");
+            printf("%c",175);
         }
 
 
@@ -3317,7 +3375,7 @@ void Editar_Produto(fpos_t Byte)
     textcolor(8);
 
     gotoxy(39,y);
-    printf("*");
+    printf("%c",175);
 
     p=fopen("Produto","rb+");
     fsetpos(p,&Byte);
@@ -3340,7 +3398,7 @@ void Editar_Produto(fpos_t Byte)
                 y-=2;
                 if(y<6)
                 {
-                    y=8;
+                    y=18;
                 }
 
             }
@@ -3349,14 +3407,14 @@ void Editar_Produto(fpos_t Byte)
                 gotoxy(39,y);
                 printf(" ");
                 y+=2;
-                if(y>8)
+                if(y>18)
                 {
                     y=6;
                 }
             }
 
             gotoxy(39,y);
-            printf("*");
+            printf("%c",175);
         }
 
 
@@ -3504,7 +3562,7 @@ void Editar_Produto(fpos_t Byte)
                        !(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>390&&Coordenadas.y<450)&&
                        !(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>510&&Coordenadas.y<580)))
         {
-            if(y==6)
+                 if(y==6)
             {
                 gotoxy(57,y);
                 gets(produto.nome);
@@ -3514,6 +3572,42 @@ void Editar_Produto(fpos_t Byte)
                 gotoxy(49,y);
                 scanf("%f",&produto.preco);
             }
+
+              else if(y==8)
+            {
+                gotoxy(49,y);
+                gets(produto.categoria);
+            }
+
+              else if(y==10)
+            {
+                gotoxy(49,y);
+                gets( produto.genero);
+            }
+
+              else if(y==12)
+            {
+                gotoxy(49,y);
+                scanf("%i",& produto.ano_lancamento);
+            }
+
+              else if(y==14)
+            {
+                gotoxy(49,y);
+                gets(produto.classificacao_indicativa);
+            }
+              else if(y==16)
+            {
+                gotoxy(49,y);
+                scanf("%f",&produto.preco);
+            }
+              else if(y==18)
+            {
+                gotoxy(49,y);
+                gets(produto.descricao);
+            }
+
+
         }
 
         resp=' ';
@@ -3563,8 +3657,6 @@ int Comprar_produto(fpos_t Byte, fpos_t ByteUsuario)
     p1=fopen("Usuario", "rb");
     fsetpos(p1,&ByteUsuario);
     fread(&usuario,sizeof(usuario),1,p1);
-    printf("%s",usuario.nome);
-    system("pause");
 	if(usuario.assinatura==1)
 	{
 		desconto=compra*0.25;
@@ -4309,8 +4401,7 @@ int Dia(void){
 int main()
 {
     redefine();
-    Tela_de_Carregamento();
-    
+
     FILE*p;
     p=fopen("Funcionario","rb");
     fclose(p);
@@ -4333,7 +4424,7 @@ int main()
     }
     else
     {
-       // Tela_de_Carregamento();
+        Tela_de_Carregamento();
 
         Login();
         Data();
