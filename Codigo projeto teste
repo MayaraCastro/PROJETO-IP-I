@@ -2401,27 +2401,18 @@ int Cadastro_funcionario()
     printf("DATA DE NASCIMENTO:");
 
     gotoxy(40,9);
-    printf("RG:");
-
-    gotoxy(60,9);
-    printf("CPF:");
-
-    gotoxy(40,11);
-    printf("E-MAIL:");
-
-    gotoxy(40,13);
     printf("TELEFONE:");
 
-    gotoxy(40,15);
+    gotoxy(40,11);
     printf("ENDERECO:");
 
-    gotoxy(40,17);
+    gotoxy(40,13);
     printf("SALARIO:");
 
-    gotoxy(40,19);
+    gotoxy(40,15);
     printf("USUARIO:");
 
-    gotoxy(40,21);
+    gotoxy(40,17);
     printf("SENHA:");
 
     p=fopen("Funcionario","ab+");
@@ -3945,7 +3936,6 @@ void Editar_Produto(fpos_t Byte)
 }
 void Compra_Usuario(fpos_t Byte)
 {
-	system("pause");
     FILE* p;
     TUsuario usuario;
     Byte=Byte-sizeof(usuario);
@@ -3957,34 +3947,62 @@ void Compra_Usuario(fpos_t Byte)
 
     usuario.numero_de_compras++;
 
-
     fsetpos(p,&Byte);
     fwrite(&usuario,sizeof(usuario),1,p);
     fclose(p);
 }
 int Comprar_produto(fpos_t Byte)
 {
-    FILE* p,* p1;
-    TProduto produto;
-
+	int a=Byte;
+	
+    FILE* p;//produto
+    TProduto produto;	
+	//produto
     Byte=Byte-sizeof(produto);
-
     p=fopen("Produto","rb+");
     fsetpos(p,&Byte);
-
     fread(&produto,sizeof(produto),1,p);
-
     produto.quantidade_comprado++;
-
 	float compra = produto.preco;
-
+	
+    //desconto//usuario
+    FILE* p1;//usuario
+    TUsuario usuario;
+   	float desconto=0.0;//usuario
+   	Byte=a;
+	Byte=Byte-sizeof(usuario);
+    p1=fopen("Usuario", "rb+");
+    fsetpos(p1,&Byte);
+    fread(&usuario,sizeof(usuario),1,p1);	
+    printf("%s",usuario.nome);
+    system("pause");
+	if(usuario.assinatura==1)
+	{
+		printf("1111111111111111111");
+		system("pause");
+		desconto=compra*0.25;
+		compra-=desconto;
+		printf("%f", compra);
+		system("pause");
+	}
+	else if(usuario.assinatura==2)
+	{
+		printf("22222222222222222");
+		system("pause");
+		desconto=compra*0.50;
+		compra-=desconto;
+		printf("%f", compra);
+		system("pause");
+	}
+	//produto
     Financeiro_entrada(&compra);
-
-
+    Byte=Byte-sizeof(produto);	
     fsetpos(p,&Byte);
 
     fwrite(&produto,sizeof(produto),1,p);
     fclose(p);
+    fclose(p1);
+
 }
 
 //FINANCEIRO
@@ -4441,7 +4459,7 @@ void Grafico()
             {
                 x=5;
             }
-            for(j=15;j>x;j--)
+            for(j=15;j>=x;j--)
             {
                 gotoxy(i,j);
                 printf("%c",219);
@@ -4549,6 +4567,14 @@ void redefine(void){
     system("color 3F"); //Padroniza a cor do sistema.
     system("MODE con cols=123 lines=28"); //Redimensiona a tela
     system("title STEAM - by: LGMT"); //Dá título a tela
+    {//MAXIMIXA A TELA ( APERTA NO TECLADO O ALT+ESPACO+X)
+    keybd_event ( VK_MENU, 0x38, 0, 0 );
+    keybd_event ( VK_SPACE, 0x39, 0, 0 );
+    keybd_event(0x58,0,0,0);
+    keybd_event ( VK_MENU, 0x38, KEYEVENTF_KEYUP, 0 );
+    keybd_event ( VK_SPACE, 0x39, KEYEVENTF_KEYUP, 0 );
+    keybd_event(0x58,0,KEYEVENTF_KEYUP,0);
+    }
 }
 //PEGA O DIA MES E ANO EM QUE O USUARIO
 void Data(){
@@ -4697,6 +4723,7 @@ int Dia(void){
 
    return(dia);
 }
+
 int main()
 {
     redefine();
@@ -4706,7 +4733,8 @@ int main()
     fclose(p);
     if(p==NULL)
     {
-        if(MessageBox(0,"BEM VINDO AO PROGRAMA!\nAntes de começar a utiliza-lo é necessario que leia e aceite os termos de uso.\n","TERMOS DE USO",4)==6)
+        if(MessageBox(0,"BEM VINDO AO PROGRAMA!\nAntes de começar a utiliza-lo é necessario que leia e aceite os termos de uso.\n"
+                      "sdsdsd","TERMOS DE USO",4)==6)
         {   //pra cadastrar o admin quando usa pela primeira vez
             Aba_Cadastro(1);
             p = fopen("Usuario", "wb");
@@ -4716,7 +4744,6 @@ int main()
         {
             exit(0);
         }
-
     }
     else
     {
@@ -4727,15 +4754,6 @@ int main()
         Financeiro_saida_entrada_mensal();
         Area_de_Trabalho();
         FINANCEIRO();
-    }
-    FILE* n;
-    n=fopen("2016","rb");
-    TRelatorio relatorio;
-
-	while(!feof(n))
-    {
-       fread(&relatorio,sizeof(relatorio),1,n);
-       printf("%f\n",relatorio.entrada);
     }
 
 }
