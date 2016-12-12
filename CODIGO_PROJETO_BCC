@@ -178,7 +178,7 @@ void Cadeado_Fechado()
     gotoxy(j,i);i++;
     printf("    / .------. \\ ");
     gotoxy(j,i);i++;
-    printf("  \\/\\/        \\ \\");
+    printf("   / /        \\ \\");
     gotoxy(j,i);i++;
     printf("   | |        | |");
     gotoxy(j,i);i++;
@@ -214,7 +214,7 @@ void Cadeado_abrindo()
     gotoxy(j,i);i++;
     printf("    / .------. \\ ");
     gotoxy(j,i);i++;
-    printf("  \\/\\/        \\ \\");
+    printf("   / /        \\ \\");
     gotoxy(j,i);i++;
     printf("   | |        | |");
     gotoxy(j,i);i++;
@@ -275,7 +275,7 @@ void Cadeado_abrindo()
     gotoxy(j,i);i++;
     printf("    / .------. \\ ");
     gotoxy(j,i);i++;
-    printf("  \\/\\/        \\ \\");
+    printf("   / /        \\ \\");
     gotoxy(j,i);i++;
     printf("   | |        | |");
     gotoxy(j,i);i++;
