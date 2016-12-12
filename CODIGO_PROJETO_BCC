@@ -4309,14 +4309,18 @@ int Dia(void){
 int main()
 {
     redefine();
-
+    Tela_de_Carregamento();
+    
     FILE*p;
     p=fopen("Funcionario","rb");
     fclose(p);
     if(p==NULL)
     {
-        if(MessageBox(0,"BEM VINDO AO PROGRAMA!\nAntes de começar a utiliza-lo é necessario que leia e aceite os termos de uso.\n"
-                      "sdsdsd","TERMOS DE USO",4)==6)
+        if(MessageBox(0,"\t\t               BEM VINDO AO PROGRAMA!\n\nAntes de começar a utiliza-lo é necessario que leia atentamente e aceite os termos abaixo.\n"
+                      "\n1-Para utilizar o programa é necessário que o cmd esteja configurado com a fonte consolas tamanho 24 e esteja em janela maximizada posicionada no topo esquerdo da tela;"
+"\n\n2-Para navegar no menu principal faz-se necessário o uso do mouse e a tecla <ENTER> para escolher a opção desejada, no menu de edição é utilizado também as setas direcionais do teclado;"
+"\n\n3-Ao aceitar os termos de uso será necessário o cadastro para prosseguir com a utilização;"
+		"\n\t   Ao aceitar, você concorda com todos os termos acima.","TERMOS DE USO",4)==6)
         {   //pra cadastrar o admin quando usa pela primeira vez
             Aba_Cadastro(1);
             p = fopen("Usuario", "wb");
@@ -4329,13 +4333,12 @@ int main()
     }
     else
     {
-        //Tela_de_Carregamento();
+       // Tela_de_Carregamento();
 
-        //Login();
+        Login();
         Data();
         Financeiro_saida_entrada_mensal();
         Area_de_Trabalho();
-        FINANCEIRO();
-    }
 
+    }
 }
