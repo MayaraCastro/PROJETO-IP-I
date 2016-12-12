@@ -23,7 +23,6 @@ typedef struct{
 }TUsuario;
 typedef struct{
     char nome[200];
-    int dia_n,mes_n,ano_n;//data de nascimento
     char telefone[14];
     char endereco[200];
     float salario;
@@ -1837,37 +1836,34 @@ void Resultado_Funcionario(fpos_t Byte)
     printf("NOME: %s",funcionario.nome);
 
     gotoxy(40,7);
-    printf("DATA DE NASCIMENTO: %i/%i/%i",funcionario.dia_n,funcionario.mes_n,funcionario.ano_n);
-
-    gotoxy(40,9);
     printf("TELEFONE: %s",funcionario.telefone);
 
-    gotoxy(40,11);
+    gotoxy(40,9);
     printf("ENDERECO: %s ",funcionario.endereco);
 
-    gotoxy(40,13);
+    gotoxy(40,11);
     printf("SALARIO: R$%.2f ",funcionario.salario);
 
-    gotoxy(40,15);
+    gotoxy(40,13);
     printf("USUARIO: %s",funcionario.usuario);
 
-    gotoxy(40,17);
+    gotoxy(40,15);
     printf("SENHA: %s",funcionario.senha);
 
-    gotoxy(40,19);
+    gotoxy(40,17);
     printf("DATA DE ADMISSAO: %i/%i/%i",funcionario.dia_a,funcionario.mes_a,funcionario.ano_a);
 
 
 
     if(funcionario.ativo==1)
     {
-        gotoxy(40,21);
+        gotoxy(40,19);
         printf("FUNCIONARIO ATIVO");
 
     }
     else
     {
-        gotoxy(40,21);
+        gotoxy(40,19);
         printf("FUNCIONARIO DESATIVADO");
     }
 
@@ -2391,21 +2387,18 @@ int Cadastro_funcionario()
     printf("NOME:");
 
     gotoxy(40,7);
-    printf("DATA DE NASCIMENTO:");
-
-    gotoxy(40,9);
     printf("TELEFONE:");
 
-    gotoxy(40,11);
+    gotoxy(40,9);
     printf("ENDERECO:");
 
-    gotoxy(40,13);
+    gotoxy(40,11);
     printf("SALARIO:");
 
-    gotoxy(40,15);
+    gotoxy(40,13);
     printf("USUARIO:");
 
-    gotoxy(40,17);
+    gotoxy(40,15);
     printf("SENHA:");
 
     p=fopen("Funcionario","ab+");
@@ -2430,28 +2423,10 @@ int Cadastro_funcionario()
 
            int i,j;
 
-            //DATA DE NASCIMENTO
-            gotoxy(60,7);
-            scanf(" %i",&funcionario.dia_n);
-            gotoxy(63,7);
-            scanf(" %i",&funcionario.mes_n);
-            gotoxy(66,7);
-            scanf(" %i",&funcionario.ano_n);
-            if(funcionario.dia_n>31||funcionario.dia_n<=0 ||funcionario.mes_n<=0||funcionario.mes_n>12||funcionario.ano_n<1913 ||funcionario.ano_n>2000)
-            {
-                gotoxy(60,8);
-                textcolor(4);
-                printf("Data invalida!");
-                textcolor(0);
-
-                Sleep(1000);
-                fclose(p);
-                return(0);
-            }
             //TELEFONE
             j=50;
             for(i=0;i<13;i++)
-            {   gotoxy(j,9);
+            {   gotoxy(j,7);
                 if(i==0)
                 {
                     funcionario.telefone[i]='(';
@@ -2477,7 +2452,7 @@ int Cadastro_funcionario()
                         if(i>0)
                         {
                             funcionario.telefone[i]=' ';
-                            gotoxy(j,9);
+                            gotoxy(j,7);
                             printf("%c",funcionario.telefone[i]);
                             i--;
                             if(i==0||i==3)
@@ -2487,7 +2462,7 @@ int Cadastro_funcionario()
 
                             }
                             funcionario.telefone[i]=' ';
-                            gotoxy(j-1,9);
+                            gotoxy(j-1,7);
                             printf("%c",funcionario.telefone[i]);
 
                             i--;
@@ -2508,7 +2483,7 @@ int Cadastro_funcionario()
 
                 if(j>=50)
                 {
-                    gotoxy(j,9);
+                    gotoxy(j,7);
                     printf("%c",funcionario.telefone[i]);
                 }
 
@@ -2526,25 +2501,25 @@ int Cadastro_funcionario()
 
             fflush(stdin);
             //ENDEREÇO
-            gotoxy(50,11);
+            gotoxy(50,9);
             gets(funcionario.endereco);
             fflush(stdin);
 
             //SALARIO
-            gotoxy(49,13);
+            gotoxy(49,11);
             printf("R$");
-            gotoxy(51,13);
+            gotoxy(51,11);
             scanf("%f",&funcionario.salario);
             fflush(stdin);
 
             //USUARIO
-            gotoxy(49,15);
+            gotoxy(49,13);
             gets(funcionario.usuario);
 
             fflush(stdin);
 
             //SENHA
-            gotoxy(49,17);
+            gotoxy(49,15);
             gets(funcionario.senha);
 
             //data de admissao
@@ -2743,7 +2718,7 @@ void Editar_Funcionario(fpos_t Byte)
                 y-=2;
                 if(y<5)
                 {
-                    y=17;
+                    y=15;
                 }
 
             }
@@ -2752,7 +2727,7 @@ void Editar_Funcionario(fpos_t Byte)
                 gotoxy(39,y);
                 printf(" ");
                 y+=2;
-                if(y>17)
+                if(y>15)
                 {
                     y=5;
                 }
@@ -2911,35 +2886,10 @@ void Editar_Funcionario(fpos_t Byte)
         }
         else if(y==7)
         {
-            //DATA DE NASCIMENTO
-            gotoxy(60,7);
-            scanf(" %i",&funcionario.dia_n);
-            gotoxy(63,7);
-            scanf("%i",&funcionario.mes_n);
-            gotoxy(66,7);
-            scanf(" %i",&funcionario.ano_n);
-            if(funcionario.dia_n>31||funcionario.dia_n<=0 ||funcionario.mes_n<=0||funcionario.mes_n>12||funcionario.ano_n<1913 ||funcionario.ano_n>2000)
-            {
-                gotoxy(60,8);
-                textcolor(4);
-                printf("Data invalida!");
-                textcolor(0);
-
-                Sleep(1000);
-                gotoxy(60,8);
-                printf("              ");
-                fclose(p);
-                Resultado_Funcionario(Byte);
-                Editar_Funcionario(Byte);
-            }
-
-        }
-        else if(y==9)
-        {
              //TELEFONE
             j=50;
             for(i=0;i<13;i++)
-            {   gotoxy(j,9);
+            {   gotoxy(j,7);
                 if(i==0)
                 {
                     funcionario.telefone[i]='(';
@@ -2965,7 +2915,7 @@ void Editar_Funcionario(fpos_t Byte)
                         if(i>0)
                         {
                             funcionario.telefone[i]=' ';
-                            gotoxy(j,9);
+                            gotoxy(j,7);
                             printf("%c",funcionario.telefone[i]);
                             i--;
                             if(i==0||i==3)
@@ -2975,7 +2925,7 @@ void Editar_Funcionario(fpos_t Byte)
 
                             }
                             funcionario.telefone[i]=' ';
-                            gotoxy(j-1,9);
+                            gotoxy(j-1,7);
                             printf("%c",funcionario.telefone[i]);
 
                             i--;
@@ -2996,7 +2946,7 @@ void Editar_Funcionario(fpos_t Byte)
 
                 if(j>=50)
                 {
-                    gotoxy(j,9);
+                    gotoxy(j,7);
                     printf("%c",funcionario.telefone[i]);
                 }
 
@@ -3016,36 +2966,36 @@ void Editar_Funcionario(fpos_t Byte)
 
         }
 
-        else if(y==11)
+        else if(y==9)
         {   //ENDEREÇO
-            gotoxy(50,11);
+            gotoxy(50,9);
             gets(funcionario.endereco);
             fflush(stdin);
 
         }
-        else if(y==13)
+        else if(y==11)
         {
              //SALARIO
-            gotoxy(49,13);
+            gotoxy(49,11);
             printf("R$");
-            gotoxy(51,13);
+            gotoxy(51,11);
             scanf("%f",&funcionario.salario);
             fflush(stdin);
         }
 
-        else if(y==15)
+        else if(y==13)
         {
              //USUARIO
-            gotoxy(49,15);
+            gotoxy(49,13);
             gets(funcionario.usuario);
 
             fflush(stdin);
         }
 
-        else if(y==17)
+        else if(y==15)
         {
             //SENHA
-            gotoxy(49,17);
+            gotoxy(49,15);
             gets(funcionario.senha);
         }
     }
@@ -3613,6 +3563,8 @@ int Comprar_produto(fpos_t Byte, fpos_t ByteUsuario)
     p1=fopen("Usuario", "rb");
     fsetpos(p1,&ByteUsuario);
     fread(&usuario,sizeof(usuario),1,p1);
+    printf("%s",usuario.nome);
+    system("pause");
 	if(usuario.assinatura==1)
 	{
 		desconto=compra*0.25;
