@@ -3613,8 +3613,6 @@ int Comprar_produto(fpos_t Byte, fpos_t ByteUsuario)
     p1=fopen("Usuario", "rb");
     fsetpos(p1,&ByteUsuario);
     fread(&usuario,sizeof(usuario),1,p1);
-    printf("%s",usuario.nome);
-    system("pause");
 	if(usuario.assinatura==1)
 	{
 		desconto=compra*0.25;
