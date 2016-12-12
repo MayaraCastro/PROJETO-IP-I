@@ -29,7 +29,14 @@ typedef struct{
 }TFuncionario;
 
 typedef struct{
-    char nome[10];
+    char nome[50];
+    char genero[20];
+    int ano_lancamento;
+    char categoria[20];
+    char descricao[200];
+    char classificacao_indicativa[20];
+    float preco;
+    int ativo;
     int quantidade_comprado;
 }TProduto;
 void Musica_opcao()
@@ -1927,7 +1934,7 @@ void Resultado_Usuario(fpos_t Byte)
 }
 void Resultado_Produto(fpos_t Byte)
 {
-	FILE *p;
+    FILE *p;
     TProduto produto;
     p=fopen("Produto","rb");
     Byte=Byte-sizeof(produto);
@@ -1937,8 +1944,34 @@ void Resultado_Produto(fpos_t Byte)
     gotoxy(40,6);
     printf("NOME DO PRODUTO: %s", produto.nome);
 
-    gotoxy(40,7);
-    printf("QUANTIDADE ADQUIRIDA: %i", produto.quantidade_comprado);
+    gotoxy(40,8);
+    printf("CATEGORIA: %s", produto.categoria);
+
+    gotoxy(40,10);
+    printf("GENERO: %s", produto.genero);
+
+    gotoxy(40,12);
+    printf("ANO DE LANCAMENTO: %i", produto.ano_lancamento);
+
+    gotoxy(40,14);
+    printf("CLASSIFICACAO INDICATIVA: %s", produto.classificacao_indicativa);
+
+    gotoxy(40,16);
+    printf("PRECO: RS %.2f", produto.preco);
+
+    gotoxy(40,18);
+    printf("DESCRICAO: %s", produto.descricao);
+
+
+    gotoxy(40,20);
+    if(produto.ativo==1)
+    {
+        printf("PRODUTO ATIVO");
+    }
+    else
+    {
+        printf("PRODUTO DESATIVO");
+    }
 
     fclose(p);
 }
@@ -2674,34 +2707,74 @@ int Cadastro_produto()
 	{
 		p = fopen("Produto", "wb");
 	}
-	gotoxy(40,5);
-    printf("NOME DO PRODUTO:");
 
-    gotoxy(40,7);
-    printf("QUANTIDADE ADQUIRIDA:");
+	gotoxy(40,5);
+        printf("NOME DO PRODUTO:");
+
+        gotoxy(40,7);
+        printf("CATEGORIA:");
+
+        gotoxy(40,9);
+        printf("GENERO:");
+
+        gotoxy(40,11);
+        printf("ANO DE LANCAMENTO:");
+
+        gotoxy(40,13);
+        printf("CLASSIFICACAO INDICATIVA:");
+
+        gotoxy(40,15);
+        printf("PRECO:");
+
+        gotoxy(40,17);
+        printf("DESCRICAO:");
 
 	p=fopen("Produto","ab+");
 
-    gotoxy(57,5);
-	fflush(stdin);
-    gets(produto.nome);
+        gotoxy(57,5);
+  	fflush(stdin);
+        gets(produto.nome);
 
-    if(Consulta_produto(produto.nome)!=0)
-    {
-        gotoxy(45,6);
-        textcolor(4);
-        printf("Produto ja cadastrado!");
-        textcolor(0);
+        if(Consulta_produto(produto.nome)!=0)
+        {
+ 	    gotoxy(45,6);
+            textcolor(4);
+            printf("Produto ja cadastrado!");
+            textcolor(0);
 
-        Sleep(1000);
-        fclose(p);
-        return(0);
-    }
-    else
+            Sleep(1000);
+            fclose(p);
+            return(0);
+        }
+        else
 	{
-        gotoxy(62,7);
+        gotoxy(52,7);
+        gets(produto.categoria);
         fflush(stdin);
-        scanf("%i", &produto.quantidade_comprado);
+
+        gotoxy(48,9);
+        gets(produto.genero);
+        fflush(stdin);
+
+        gotoxy(60,11);
+        scanf("%i", &produto.ano_lancamento);
+        fflush(stdin);
+
+        gotoxy(66,13);
+        gets(produto.classificacao_indicativa);
+        fflush(stdin);
+
+        gotoxy(48,15);
+        scanf("%f", &produto.preco);
+        fflush(stdin);
+
+        gotoxy(52,17);
+        gets(produto.descricao);
+        fflush(stdin);
+
+        produto.quantidade_comprado=0;
+        produto.ativo=1;
+
 
         fwrite(&produto,sizeof(produto),1,p);
         fclose(p);
