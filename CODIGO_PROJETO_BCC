@@ -23,11 +23,11 @@ typedef struct{
 }TUsuario;
 typedef struct{
     char nome[200];
-    char data_nascimento[11];
+    int dia_n,mes_n,ano_n;//data de nascimento
     char telefone[14];
     char endereco[200];
     float salario;
-
+    int dia_a,mes_a,ano_a;//data de admissao
     int ativo;
 
     char usuario[10];
@@ -1833,45 +1833,41 @@ void Resultado_Funcionario(fpos_t Byte)
     fsetpos(p,&Byte);
     fread(&funcionario,sizeof(funcionario),1,p);
 
-    gotoxy(40,6);
+    gotoxy(40,5);
     printf("NOME: %s",funcionario.nome);
 
-    gotoxy(40,8);
-    printf("DATA DE NASCIMENTO: %s ",funcionario.data_nascimento);
+    gotoxy(40,7);
+    printf("DATA DE NASCIMENTO: %i/%i/%i",funcionario.dia_n,funcionario.mes_n,funcionario.ano_n);
 
-    gotoxy(40,10);
-    printf("RG: %s",funcionario.RG);
-
-    gotoxy(60,10);
-    printf("CPF: %s",funcionario.CPF);
-
-    gotoxy(40,12);
-    printf("E-MAIL: %s ",funcionario.email);
-
-    gotoxy(40,14);
+    gotoxy(40,9);
     printf("TELEFONE: %s",funcionario.telefone);
 
-    gotoxy(40,16);
+    gotoxy(40,11);
     printf("ENDERECO: %s ",funcionario.endereco);
 
-    gotoxy(40,18);
-    printf("SALARIO: %f ",funcionario.salario);
+    gotoxy(40,13);
+    printf("SALARIO: R$%.2f ",funcionario.salario);
 
-    gotoxy(40,20);
+    gotoxy(40,15);
     printf("USUARIO: %s",funcionario.usuario);
 
-    gotoxy(40,22);
+    gotoxy(40,17);
     printf("SENHA: %s",funcionario.senha);
+
+    gotoxy(40,19);
+    printf("DATA DE ADMISSAO: %i/%i/%i",funcionario.dia_a,funcionario.mes_a,funcionario.ano_a);
+
+
 
     if(funcionario.ativo==1)
     {
-        gotoxy(40,24);
+        gotoxy(40,21);
         printf("FUNCIONARIO ATIVO");
 
     }
     else
     {
-        gotoxy(40,24);
+        gotoxy(40,21);
         printf("FUNCIONARIO DESATIVADO");
     }
 
@@ -2432,223 +2428,30 @@ int Cadastro_funcionario()
     {
         funcionario.ativo=1;
 
-           int i,j=60;
+           int i,j;
+
             //DATA DE NASCIMENTO
-            for(i=0;i<10;i++)
+            gotoxy(60,7);
+            scanf(" %i",&funcionario.dia_n);
+            gotoxy(63,7);
+            scanf(" %i",&funcionario.mes_n);
+            gotoxy(66,7);
+            scanf(" %i",&funcionario.ano_n);
+            if(funcionario.dia_n>31||funcionario.dia_n<=0 ||funcionario.mes_n<=0||funcionario.mes_n>12||funcionario.ano_n<1913 ||funcionario.ano_n>2000)
             {
+                gotoxy(60,8);
+                textcolor(4);
+                printf("Data invalida!");
+                textcolor(0);
 
-                gotoxy(j,7);
-                if(i==2||i==5)
-                {
-                    funcionario.data_nascimento[i]='//';
-
-                }
-                else
-                {
-                    funcionario.data_nascimento[i]=getch();
-
-                    if(funcionario.data_nascimento[i]==8)
-                    {
-                        if(i>=0)
-                        {
-                            i--;
-                            if(i==5||i==2)
-                            {
-                                i--;
-                                j--;
-
-                            }
-                            funcionario.data_nascimento[i]=' ';
-                            gotoxy(j-1,7);
-                            printf("%c",funcionario.data_nascimento[i]);
-
-                            funcionario.data_nascimento[i]=' ';
-                            i--;
-                            j-=2;
-
-                        }
-                        else
-                        {
-                            i=-1;
-                        }
-                    }
-
-                    /*if(funcionario.data_nascimento[i]<30 ||funcionario.data_nascimento[i]>39)
-                    {
-                        funcionario.data_nascimento[i]=' ';
-                        i--;
-                        j--;
-                    }*/
-
-                }
-                if(j<60)
-                {
-                    j=60;
-                }
-                gotoxy(j,7);
-                printf("%c",funcionario.data_nascimento[i]);
-                if(i>=0)
-                {
-                    j++;
-                }
-
-
-
+                Sleep(1000);
+                fclose(p);
+                return(0);
             }
-            //RG
-            j=45;
-            for(i=0;i<9;i++)
-            {   gotoxy(j,9);
-                if(i==1||i==5)
-                {
-                    funcionario.RG[i]='.';
-                }
-                else
-                {
-                    funcionario.RG[i]=getch();
-					if(funcionario.RG>= 'a' && funcionario.RG<='Z')
-					{
-						error++;
-					}
-                    if(funcionario.RG[i]==8)
-                    {
-                        if(i>0)
-                        {
-                            funcionario.RG[i]=' ';
-                            gotoxy(j,9);
-                            printf("%c",funcionario.RG[i]);
-                            i--;
-                            if(i==5||i==1)
-                            {
-                                i--;
-                                j--;
-
-                            }
-                            funcionario.RG[i]=' ';
-                            gotoxy(j-1,9);
-                            printf("%c",funcionario.RG[i]);
-
-                            i--;
-                            j-=2;
-                        }
-                        else
-                        {
-                            i--;
-                        }
-                    }
-                   /* else if(funcionario.RG[i]<30 ||funcionario.RG[i]>39)
-                    {
-                        funcionario.RG[i]=' ';
-                        i--;
-                        j--;
-                    }*/
-                }
-
-                if(j>=45)
-                {
-                    gotoxy(j,9);
-                    printf("%c",funcionario.RG[i]);
-                }
-
-                if(j<45)
-                {
-                    j=45;
-                }
-                if(i>=0)
-                {
-                    j++;
-
-                }
-
-
-
-
-            }
-
-            //CPF
-            j=65;
-            for(i=0;i<14;i++)
-            {
-                gotoxy(j,9);
-                if(i==3||i==7)
-                {
-                    funcionario.CPF[i]='.';
-
-                }
-                else if(i==11)
-                {
-                    funcionario.CPF[i]='-';
-
-                }
-                else
-                {
-                    funcionario.CPF[i]=getch();
-
-					if(funcionario.CPF>= 'a' && funcionario.CPF<='Z')
-					{
-						error++;
-					}
-                    if(funcionario.CPF[i]==8)
-                    {
-                        if(i>0)
-                        {
-                            funcionario.CPF[i]=' ';
-                            gotoxy(j,9);
-                            printf("%c",funcionario.CPF[i]);
-                            i--;
-                            if(i==3||i==7||i==11)
-                            {
-                                i--;
-                                j--;
-
-                            }
-                            funcionario.CPF[i]=' ';
-                            gotoxy(j-1,9);
-                            printf("%c",funcionario.CPF[i]);
-
-                            i--;
-                            j-=2;
-                        }
-                        else
-                        {
-                            i--;
-                        }
-                    }
-                    /*else if(funcionario.CPF[i]<30 ||funcionario.CPF[i]>39)
-                    {
-                        funcionario.CPF[i]=' ';
-                        i--;
-                        j--;
-                    }*/
-                }
-
-                if(j>=65)
-                {
-                    gotoxy(j,9);
-                    printf("%c",funcionario.CPF[i]);
-                }
-
-                if(j<65)
-                {
-                    j=65;
-                }
-                if(i>=0)
-                {
-                    j++;
-
-                }
-                }
-
-            //EMAIL
-            gotoxy(47,11);
-            gets(funcionario.email);
-            fflush(stdin);
-
-
             //TELEFONE
             j=50;
             for(i=0;i<13;i++)
-            {   gotoxy(j,13);
+            {   gotoxy(j,9);
                 if(i==0)
                 {
                     funcionario.telefone[i]='(';
@@ -2674,7 +2477,7 @@ int Cadastro_funcionario()
                         if(i>0)
                         {
                             funcionario.telefone[i]=' ';
-                            gotoxy(j,13);
+                            gotoxy(j,9);
                             printf("%c",funcionario.telefone[i]);
                             i--;
                             if(i==0||i==3)
@@ -2684,7 +2487,7 @@ int Cadastro_funcionario()
 
                             }
                             funcionario.telefone[i]=' ';
-                            gotoxy(j-1,13);
+                            gotoxy(j-1,9);
                             printf("%c",funcionario.telefone[i]);
 
                             i--;
@@ -2705,7 +2508,7 @@ int Cadastro_funcionario()
 
                 if(j>=50)
                 {
-                    gotoxy(j,13);
+                    gotoxy(j,9);
                     printf("%c",funcionario.telefone[i]);
                 }
 
@@ -2721,32 +2524,33 @@ int Cadastro_funcionario()
                 }
 
 
-
+            fflush(stdin);
             //ENDEREÇO
-            gotoxy(50,15);
+            gotoxy(50,11);
             gets(funcionario.endereco);
             fflush(stdin);
 
             //SALARIO
-            gotoxy(49,17);
+            gotoxy(49,13);
             printf("R$");
-            gotoxy(51,17);
+            gotoxy(51,13);
             scanf("%f",&funcionario.salario);
             fflush(stdin);
-            if(funcionario.salario>= 'a' && funcionario.salario<='Z')
-			{
-				error++;
-			}
 
             //USUARIO
-            gotoxy(49,19);
+            gotoxy(49,15);
             gets(funcionario.usuario);
 
             fflush(stdin);
 
             //SENHA
-            gotoxy(49,21);
+            gotoxy(49,17);
             gets(funcionario.senha);
+
+            //data de admissao
+            funcionario.dia_a=Dia();
+            funcionario.mes_a=Mes();
+            funcionario.ano_a=Ano();
 
             fwrite(&funcionario,sizeof(funcionario),1,p);
             fclose(p);
@@ -2914,7 +2718,12 @@ void Editar_Funcionario(fpos_t Byte)
     POINT Coordenadas;
     char resp;
     int i,j;
-
+    int y=5;
+    textbackground(15);
+    textcolor(8);
+    gotoxy(39,y);
+    printf(">");
+    int error=0;
     p=fopen("Funcionario","rb+");
     fsetpos(p,&Byte);
     fread(&funcionario,sizeof(funcionario),1,p);
@@ -2924,345 +2733,37 @@ void Editar_Funcionario(fpos_t Byte)
         if(kbhit())
         {
             resp=getch();
-        }
 
-        if(Coordenadas.x>448 && Coordenadas.x<544 && Coordenadas.y>179 &&Coordenadas.y<190 &&resp==13)
-        {
-            gotoxy(45,6);
-            gets(funcionario.nome);
-            resp=' ';
-        }
-        if(Coordenadas.x>447 && Coordenadas.x<772 && Coordenadas.y>220 &&Coordenadas.y<240 &&resp==13)
-        {
-            resp=' ';
-            j=60;
-            //DATA DE NASCIMENTO
-            for(i=0;i<10;i++)
+            textbackground(15);
+
+            if(resp==72)
             {
-
-                gotoxy(j,7);
-                if(i==2||i==5)
+                gotoxy(39,y);
+                printf(" ");
+                y-=2;
+                if(y<5)
                 {
-                    funcionario.data_nascimento[i]='//';
-
+                    y=17;
                 }
-                else
-                {
-                    funcionario.data_nascimento[i]=getch();
-
-                    if(funcionario.data_nascimento[i]==8)
-                    {
-                        if(i>=0)
-                        {
-                            i--;
-                            if(i==5||i==2)
-                            {
-                                i--;
-                                j--;
-
-                            }
-                            funcionario.data_nascimento[i]=' ';
-                            gotoxy(j-1,8);
-                            printf("%c",funcionario.data_nascimento[i]);
-
-                            funcionario.data_nascimento[i]=' ';
-                            i--;
-                            j-=2;
-
-                        }
-                        else
-                        {
-                            i=-1;
-                        }
-                    }
-
-                    /*if(funcionario.data_nascimento[i]<30 ||funcionario.data_nascimento[i]>39)
-                    {
-                        funcionario.data_nascimento[i]=' ';
-                        i--;
-                        j--;
-                    }*/
-
-                }
-                if(j<60)
-                {
-                    j=60;
-                }
-                gotoxy(j,8);
-                printf("%c",funcionario.data_nascimento[i]);
-                if(i>=0)
-                {
-                    j++;
-                }
-
-
 
             }
-        }
-        if(Coordenadas.x>447 && Coordenadas.x<604 && Coordenadas.y>274 &&Coordenadas.y<294 &&resp==13)
-        {
-            resp=' ';
-            //RG
-            j=45;
-            for(i=0;i<9;i++)
-            {   gotoxy(j,10);
-                if(i==1||i==5)
-                {
-                    funcionario.RG[i]='.';
-                }
-                else
-                {
-                    funcionario.RG[i]=getch();
-
-                    if(funcionario.RG[i]==8)
-                    {
-                        if(i>0)
-                        {
-                            funcionario.RG[i]=' ';
-                            gotoxy(j,10);
-                            printf("%c",funcionario.RG[i]);
-                            i--;
-                            if(i==5||i==1)
-                            {
-                                i--;
-                                j--;
-
-                            }
-                            funcionario.RG[i]=' ';
-                            gotoxy(j-1,10);
-                            printf("%c",funcionario.RG[i]);
-
-                            i--;
-                            j-=2;
-                        }
-                        else
-                        {
-                            i--;
-                        }
-                    }
-                   /* else if(funcionario.RG[i]<30 ||funcionario.RG[i]>39)
-                    {
-                        funcionario.RG[i]=' ';
-                        i--;
-                        j--;
-                    }*/
-                }
-
-                if(j>=45)
-                {
-                    gotoxy(j,10);
-                    printf("%c",funcionario.RG[i]);
-                }
-
-                if(j<45)
-                {
-                    j=45;
-                }
-                if(i>=0)
-                {
-                    j++;
-
-                }
-
-
-
-
-            }
-        }
-        if(Coordenadas.x>666 && Coordenadas.x<794 && Coordenadas.y>275 &&Coordenadas.y<288 &&resp==13)
-        {
-            resp=' ';
-            //CPF
-            j=65;
-            for(i=0;i<14;i++)
+            else if(resp==80)
             {
-                gotoxy(j,10);
-                if(i==3||i==7)
+                gotoxy(39,y);
+                printf(" ");
+                y+=2;
+                if(y>17)
                 {
-                    funcionario.CPF[i]='.';
-
+                    y=5;
                 }
-                else if(i==11)
-                {
-                    funcionario.CPF[i]='-';
+            }
 
-                }
-                else
-                {
-                    funcionario.CPF[i]=getch();
-
-                    if(funcionario.CPF[i]==8)
-                    {
-                        if(i>0)
-                        {
-                            funcionario.CPF[i]=' ';
-                            gotoxy(j,10);
-                            printf("%c",funcionario.CPF[i]);
-                            i--;
-                            if(i==3||i==7||i==11)
-                            {
-                                i--;
-                                j--;
-
-                            }
-                            funcionario.CPF[i]=' ';
-                            gotoxy(j-1,10);
-                            printf("%c",funcionario.CPF[i]);
-
-                            i--;
-                            j-=2;
-                        }
-                        else
-                        {
-                            i--;
-                        }
-                    }
-                    /*else if(funcionario.CPF[i]<30 ||funcionario.CPF[i]>39)
-                    {
-                        funcionario.CPF[i]=' ';
-                        i--;
-                        j--;
-                    }*/
-                }
-
-                if(j>=65)
-                {
-                    gotoxy(j,10);
-                    printf("%c",funcionario.CPF[i]);
-                }
-
-                if(j<65)
-                {
-                    j=65;
-                }
-                if(i>=0)
-                {
-                    j++;
-
-                }
-                }
-        }
-        if(Coordenadas.x>447 && Coordenadas.x<604 && Coordenadas.y>322 &&Coordenadas.y<336 &&resp==13)
-        {
-            resp=' ';
-            //EMAIL
-            gotoxy(47,12);
-            gets(funcionario.email);
-            fflush(stdin);
+            gotoxy(39,y);
+            printf(">");
 
         }
-        if(Coordenadas.x>447 && Coordenadas.x<631 && Coordenadas.y>372 &&Coordenadas.y<383 &&resp==13)
-        {
-            resp=' ';
-            //TELEFONE
-            j=50;
-            for(i=0;i<13;i++)
-            {   gotoxy(j,14);
-                if(i==0)
-                {
-                    funcionario.telefone[i]='(';
-                }
-                else if(i==3)
-                {
-                    funcionario.telefone[i]=')';
-                }
-                else
-                {
-
-                    funcionario.telefone[i]=getch();
-                    if(funcionario.telefone[i]==13)
-                    {
-                        break;
-                    }
-                    else if(funcionario.telefone[i]==8)
-                    {
-                        if(i>0)
-                        {
-                            funcionario.telefone[i]=' ';
-                            gotoxy(j,14);
-                            printf("%c",funcionario.telefone[i]);
-                            i--;
-                            if(i==0||i==3)
-                            {
-                                i--;
-                                j--;
-
-                            }
-                            funcionario.telefone[i]=' ';
-                            gotoxy(j-1,14);
-                            printf("%c",funcionario.telefone[i]);
-
-                            i--;
-                            j-=2;
-                        }
-                        else
-                        {
-                            i--;
-                        }
-                    }
-                    /*else if(funcionario.telefone[i]<30 ||funcionario.telefone[i]>39)
-                    {
-                        funcionario.telefone[i]=' ';
-                        i--;
-                        j--;
-                    }*/
-                }
-
-                if(j>=50)
-                {
-                    gotoxy(j,14);
-                    printf("%c",funcionario.telefone[i]);
-                }
-
-                if(j<50)
-                {
-                    j=50;
-                }
-                if(i>=0)
-                {
-                    j++;
-
-                }
-                }
 
 
-        }
-        if(Coordenadas.x>447 && Coordenadas.x<631 && Coordenadas.y>386 &&Coordenadas.y<400 &&resp==13)
-        {
-            resp=' ';
-            //ENDEREÇO
-            gotoxy(50,16);
-            gets(funcionario.endereco);
-            fflush(stdin);
-        }
-        if(Coordenadas.x>447 && Coordenadas.x<582 && Coordenadas.y>432 &&Coordenadas.y<447 &&resp==13)
-        {
-            resp=' ';
-            //SALARIO
-            gotoxy(49,18);
-            printf("R$");
-            gotoxy(51,18);
-            scanf("%f",&funcionario.salario);
-            fflush(stdin);
-        }
-        if(Coordenadas.x>447 && Coordenadas.x<576 && Coordenadas.y>515 &&Coordenadas.y<527 &&resp==13)
-        {
-            resp=' ';
-
-            //USUARIO
-            gotoxy(49,20);
-            gets(funcionario.usuario);
-
-            fflush(stdin);
-        }
-        if(Coordenadas.x>447 && Coordenadas.x<576 && Coordenadas.y>560 &&Coordenadas.y<575 &&resp==13)
-        {
-            resp=' ';
-
-            //SENHA
-            gotoxy(49,22);
-            gets(funcionario.senha);
-        }
 
         if(Coordenadas.x>1050&&Coordenadas.x<1300 &&Coordenadas.y>150&&Coordenadas.y<220)
         {
@@ -3282,29 +2783,24 @@ void Editar_Funcionario(fpos_t Byte)
 
                 if(funcionario.ativo==1)
                 {
-                    MessageBox(0,"Funcionario desativado com sucesso!","",0);
+
                     funcionario.ativo=0;
 
 
-                    gotoxy(52,24);
+                    gotoxy(52,21);
                     printf("DESATIVO");
                 }
                 else
-                {   MessageBox(0,"Funcionario ativado com sucesso!","",0);
+                {
                     funcionario.ativo=1;
-                    gotoxy(52,24);
+                    gotoxy(52,21);
                     printf("           ");
-                    gotoxy(52,24);
+                    gotoxy(52,21);
                     printf("ATIVO");
                 }
                 resp=' ';
 
-
-
-
             }
-
-
 
         }
         else if(button1)
@@ -3406,6 +2902,155 @@ void Editar_Funcionario(fpos_t Byte)
         }
 
 
+    if(resp==13)
+    {
+        if(y==5)
+        {
+            gotoxy(45,5);
+            gets(funcionario.nome);
+        }
+        else if(y==7)
+        {
+            //DATA DE NASCIMENTO
+            gotoxy(60,7);
+            scanf(" %i",&funcionario.dia_n);
+            gotoxy(63,7);
+            scanf("%i",&funcionario.mes_n);
+            gotoxy(66,7);
+            scanf(" %i",&funcionario.ano_n);
+            if(funcionario.dia_n>31||funcionario.dia_n<=0 ||funcionario.mes_n<=0||funcionario.mes_n>12||funcionario.ano_n<1913 ||funcionario.ano_n>2000)
+            {
+                gotoxy(60,8);
+                textcolor(4);
+                printf("Data invalida!");
+                textcolor(0);
+
+                Sleep(1000);
+                gotoxy(60,8);
+                printf("              ");
+                fclose(p);
+                Resultado_Funcionario(Byte);
+                Editar_Funcionario(Byte);
+            }
+
+        }
+        else if(y==9)
+        {
+             //TELEFONE
+            j=50;
+            for(i=0;i<13;i++)
+            {   gotoxy(j,9);
+                if(i==0)
+                {
+                    funcionario.telefone[i]='(';
+                }
+                else if(i==3)
+                {
+                    funcionario.telefone[i]=')';
+                }
+                else
+                {
+
+                    funcionario.telefone[i]=getch();
+                    if(funcionario.telefone>= 'a' && funcionario.telefone<='Z')
+					{
+						error++;
+					}
+                    if(funcionario.telefone[i]==13)
+                    {
+                        break;
+                    }
+                    else if(funcionario.telefone[i]==8)
+                    {
+                        if(i>0)
+                        {
+                            funcionario.telefone[i]=' ';
+                            gotoxy(j,9);
+                            printf("%c",funcionario.telefone[i]);
+                            i--;
+                            if(i==0||i==3)
+                            {
+                                i--;
+                                j--;
+
+                            }
+                            funcionario.telefone[i]=' ';
+                            gotoxy(j-1,9);
+                            printf("%c",funcionario.telefone[i]);
+
+                            i--;
+                            j-=2;
+                        }
+                        else
+                        {
+                            i--;
+                        }
+                    }
+                    /*else if(funcionario.telefone[i]<30 ||funcionario.telefone[i]>39)
+                    {
+                        funcionario.telefone[i]=' ';
+                        i--;
+                        j--;
+                    }*/
+                }
+
+                if(j>=50)
+                {
+                    gotoxy(j,9);
+                    printf("%c",funcionario.telefone[i]);
+                }
+
+                if(j<50)
+                {
+                    j=50;
+                }
+                if(i>=0)
+                {
+                    j++;
+
+                }
+                }
+
+
+            fflush(stdin);
+
+        }
+
+        else if(y==11)
+        {   //ENDEREÇO
+            gotoxy(50,11);
+            gets(funcionario.endereco);
+            fflush(stdin);
+
+        }
+        else if(y==13)
+        {
+             //SALARIO
+            gotoxy(49,13);
+            printf("R$");
+            gotoxy(51,13);
+            scanf("%f",&funcionario.salario);
+            fflush(stdin);
+        }
+
+        else if(y==15)
+        {
+             //USUARIO
+            gotoxy(49,15);
+            gets(funcionario.usuario);
+
+            fflush(stdin);
+        }
+
+        else if(y==17)
+        {
+            //SENHA
+            gotoxy(49,17);
+            gets(funcionario.senha);
+        }
+    }
+
+
         resp=' ';
     }while(1);
 
@@ -3500,7 +3145,7 @@ void Editar_Usuario(fpos_t Byte)
             }
 
             gotoxy(39,y);
-            printf("*");
+            printf(">");
         }
 
 
@@ -4722,8 +4367,9 @@ int main()
         //Login();
         Data();
         Financeiro_saida_entrada_mensal();
-        //Area_de_Trabalho();
+        Area_de_Trabalho();
         //FINANCEIRO();
     }
+
 
 }
