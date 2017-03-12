@@ -62,8 +62,8 @@ void Musica(){
     Beep(860,500);
 }
 
-//UTILIDADES * MUDAR COR DO TEXTO/COR DO PLANO DE FUNDO, FUN«√O DE COORDENADAS, FUN«√O PRA DESENHAR A BORDA DA JANELA,
-//E FUN«√O PRA DESENHAR OS BOTOES
+//UTILIDADES * MUDAR COR DO TEXTO/COR DO PLANO DE FUNDO, FUN√á√ÉO DE COORDENADAS, FUN√á√ÉO PRA DESENHAR A BORDA DA JANELA,
+//E FUN√á√ÉO PRA DESENHAR OS BOTOES
 void gotoxy(int x,int y)
 {	//pra posicionar com coordenadas
     COORD p={x,y};
@@ -535,7 +535,7 @@ do
         textcolor(15);
         posicao_placar_vida=30+correcao_coluna;
 
-        //pontuaÁ„o
+        //pontua√ß√£o
         textbackground(3);
         textcolor(15);
         gotoxy(18+correcao_coluna,19);
@@ -852,7 +852,7 @@ do
         posicao_placar_vida=30+correcao_coluna;
 
 
-        //pontuaÁ„o
+        //pontua√ß√£o
         textbackground(3);
         textcolor(15);
         gotoxy(18+correcao_coluna,19);
@@ -2537,7 +2537,7 @@ int Cadastro_funcionario()
 
 
             fflush(stdin);
-            //ENDERE«O
+            //ENDERE√áO
             gotoxy(50,9);
             gets(funcionario.endereco);
             fflush(stdin);
@@ -3092,7 +3092,7 @@ void Editar_Funcionario(fpos_t Byte)
         }
 
         else if(y==9)
-        {   //ENDERE«O
+        {   //ENDERE√áO
             gotoxy(50,9);
             gets(funcionario.endereco);
             fflush(stdin);
@@ -3796,7 +3796,7 @@ void FINANCEIRO()
         printf("MESES");
     }
 
-    //RESUMO DO MÍS
+    //RESUMO DO M√™S
     {
         Quadro_colorido(15,99,117,4,18);
         gotoxy(101,4);
@@ -4307,7 +4307,7 @@ void Top_Assinatura()
 void redefine(void){
     system("color 3F"); //Padroniza a cor do sistema.
     system("MODE con cols=123 lines=28"); //Redimensiona a tela
-    system("title STEAM - by: LGMT"); //D· tÌtulo a tela
+    system("title STEAM - by: LGMT"); //D√° t√≠tulo a tela
     {//MAXIMIXA A TELA ( APERTA NO TECLADO O ALT+ESPACO+X)
     keybd_event ( VK_MENU, 0x38, 0, 0 );
     keybd_event ( VK_SPACE, 0x39, 0, 0 );
@@ -4387,7 +4387,7 @@ void Data(){
    }
    else
    {
-       //procura no arquivo se ja existe dados salvos do mes em q o usuario est· entrando
+       //procura no arquivo se ja existe dados salvos do mes em q o usuario est√° entrando
        p=fopen(ano,"rb");
        bool achou=false;
 
@@ -4474,11 +4474,11 @@ int main()
     fclose(p);
     if(p==NULL)
     {
-        if(MessageBox(0,"\t\t               BEM VINDO AO PROGRAMA!\n\nAntes de comeÁar a utiliza-lo È necessario que leia atentamente e aceite os termos abaixo.\n"
-                      "\n1-Para utilizar o programa È necess·rio que o cmd esteja configurado com a fonte consolas tamanho 24 e esteja em janela maximizada posicionada no topo esquerdo da tela;"
-"\n\n2-Para navegar no menu principal faz-se necess·rio o uso do mouse e a tecla <ENTER> para escolher a opÁ„o desejada, no menu de ediÁ„o È utilizado tambÈm as setas direcionais do teclado;"
-"\n\n3-Ao aceitar os termos de uso ser· necess·rio o cadastro para prosseguir com a utilizaÁ„o;"
-		"\n\t   Ao aceitar, vocÍ concorda com todos os termos acima.","TERMOS DE USO",4)==6)
+        if(MessageBox(0,"\t\t               BEM VINDO AO PROGRAMA!\n\nAntes de come√ßar a utiliza-lo √© necessario que leia atentamente e aceite os termos abaixo.\n"
+                      "\n1-Para utilizar o programa √© necess√°rio que o cmd esteja configurado com a fonte consolas tamanho 24 e esteja em janela maximizada posicionada no topo esquerdo da tela;"
+"\n\n2-Para navegar no menu principal faz-se necess√°rio o uso do mouse e a tecla <ENTER> para escolher a op√ß√£o desejada, no menu de edi√ß√£o √© utilizado tamb√©m as setas direcionais do teclado;"
+"\n\n3-Ao aceitar os termos de uso ser√° necess√°rio o cadastro para prosseguir com a utiliza√ß√£o;"
+		"\n\t   Ao aceitar, voc√™ concorda com todos os termos acima.","TERMOS DE USO",4)==6)
         {   //pra cadastrar o admin quando usa pela primeira vez
             Aba_Cadastro(1);
             p = fopen("Usuario", "wb");
@@ -4498,10 +4498,7 @@ int main()
         //Financeiro_saida_entrada_mensal();
         Area_de_Trabalho();
 
-        char *test = "12.11";
- double temp = strtod(test,NULL);
- float ftemp = atof(test);
- printf("price: %f, %f",temp,ftemp);
+   
     }
 
 }
