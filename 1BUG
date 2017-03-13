@@ -3795,58 +3795,7 @@ void Editar_Produto(fpos_t Byte)
             }
             else if(y==8)
             {
-                char prdt_int[5];
-			    char prdt_fl,prdt_fl2;
-				do
-				{
-		
-					gotoxy(48,7);
-			        printf("R$");
-			        gotoxy(50,7);
-			        fflush(stdin);
-			        fflush(stdin);
-		
-		            gotoxy(50,7);
-		            printf("             ");
-					gotoxy(50,7);
-		
-			 		for(i=0;i<5;i++)
-		            {
-			           prdt_int[i]=getch();
-			           gotoxy(50+i,7);
-			           printf("%c",prdt_int[i]);
-		        	}
-		
-		                gotoxy(55,7);
-		                printf(".");
-		
-		            	fflush(stdin);
-		                prdt_fl=getch();
-		                gotoxy(56,7);
-		                printf("%c",prdt_fl);
-		                fflush(stdin);
-		
-		                prdt_fl2=getch();
-		                gotoxy(57,7);
-		                printf("%c",prdt_fl2);
-		
-			    }while(!(isdigit(prdt_int[0])&&isdigit(prdt_int[1])&&
-		                   isdigit(prdt_int[2])&&isdigit(prdt_int[3])&&
-		                   isdigit(prdt_int[4])&&isdigit(prdt_fl)&&isdigit(prdt_fl2)));
-			  int intr[5];
-		      for(i=0;i<5;i++)
-		      {
-		            intr[i]=prdt_int[i]-48;
-		      }
-		       int f1=prdt_fl-48;
-		       int f2=prdt_fl2-48;
-		
-		        produto.preco=intr[0]*10000+intr[1]*1000+intr[2]*100+intr[3]*10+intr[4]+f1*0.1+f2*0.01;
-            }
-
-              else if(y==8)
-            {
-                gotoxy(49,y);
+                gotoxy(50,y);
                 gets(produto.categoria);
             }
 
@@ -3856,7 +3805,7 @@ void Editar_Produto(fpos_t Byte)
                 gets( produto.genero);
             }
 
-              else if(y==12)
+              else if(y==12)//aq mostra a data com o nome de quantidade de produtos adquiridos
             {
 					do{
 						do
@@ -3895,17 +3844,63 @@ void Editar_Produto(fpos_t Byte)
 
               else if(y==14)
             {
-                gotoxy(49,y);
+                gotoxy(66,y);
                 gets(produto.classificacao_indicativa);
             }
               else if(y==16)
             {
-                gotoxy(49,y);
-                scanf("%f",&produto.preco);
+                
+                char prdt_int[5];
+			    char prdt_fl,prdt_fl2;
+				do
+				{
+		
+					gotoxy(47,y);
+			        printf("R$");
+			        gotoxy(50,y);
+			        fflush(stdin);
+			        fflush(stdin);
+		
+		            gotoxy(50,y);
+		            printf("             ");
+					gotoxy(50,y);
+		
+			 		for(i=0;i<5;i++)
+		            {
+			           prdt_int[i]=getch();
+			           gotoxy(50+i,y);
+			           printf("%c",prdt_int[i]);
+		        	}
+		
+		                gotoxy(55,y);
+		                printf(".");
+		
+		            	fflush(stdin);
+		                prdt_fl=getch();
+		                gotoxy(56,y);
+		                printf("%c",prdt_fl);
+		                fflush(stdin);
+		
+		                prdt_fl2=getch();
+		                gotoxy(57,y);
+		                printf("%c",prdt_fl2);
+		
+			    }while(!(isdigit(prdt_int[0])&&isdigit(prdt_int[1])&&
+		                   isdigit(prdt_int[2])&&isdigit(prdt_int[3])&&
+		                   isdigit(prdt_int[4])&&isdigit(prdt_fl)&&isdigit(prdt_fl2)));
+			  int intr[5];
+		      for(i=0;i<5;i++)
+		      {
+		            intr[i]=prdt_int[i]-48;
+		      }
+		       int f1=prdt_fl-48;
+		       int f2=prdt_fl2-48;
+		
+		        produto.preco=intr[0]*10000+intr[1]*1000+intr[2]*100+intr[3]*10+intr[4]+f1*0.1+f2*0.01;
             }
               else if(y==18)
             {
-                gotoxy(49,y);
+                gotoxy(51,y);
                 gets(produto.descricao);
             }
 
