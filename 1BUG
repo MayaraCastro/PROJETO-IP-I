@@ -6,7 +6,7 @@
 #include <process.h> //para usar o _beginthread()
 #include <string.h>
 #include<time.h>//pra usar data
-#include <ctype.h>
+#include <ctype.h> // isdigit
 
 //STRUCTS
 typedef struct{
@@ -1945,7 +1945,7 @@ void Resultado_Produto(fpos_t Byte)
 
     gotoxy(40,18);
     printf("DESCRICAO: %s", produto.descricao);
-    gotoxy(40,10);
+    gotoxy(40,20);
     if(produto.ativo==1)
     {
         printf("PRODUTO ATIVO");
@@ -1955,7 +1955,7 @@ void Resultado_Produto(fpos_t Byte)
         printf("PRODUTO DESATIVO");
     }
 
-    gotoxy(40,12);
+    gotoxy(40,22);
     printf("QUANTIDADE ADQUIRIDA: %i", produto.quantidade_comprado);
 
     fclose(p);
@@ -2786,38 +2786,37 @@ int Cadastro_produto()
             printf("             ");
 			gotoxy(50,7);
 
-	 		for(i=0;i<5;i++)
+	 		for(i=0;i<3;i++)
             {
 	           prdt_int[i]=getch();
 	           gotoxy(50+i,7);
 	           printf("%c",prdt_int[i]);
         	}
 
-                gotoxy(55,7);
+                gotoxy(53,7);
                 printf(".");
 
             	fflush(stdin);
                 prdt_fl=getch();
-                gotoxy(56,7);
+                gotoxy(54,7);
                 printf("%c",prdt_fl);
                 fflush(stdin);
 
                 prdt_fl2=getch();
-                gotoxy(57,7);
+                gotoxy(55,7);
                 printf("%c",prdt_fl2);
 
 	    }while(!(isdigit(prdt_int[0])&&isdigit(prdt_int[1])&&
-                   isdigit(prdt_int[2])&&isdigit(prdt_int[3])&&
-                   isdigit(prdt_int[4])&&isdigit(prdt_fl)&&isdigit(prdt_fl2)));
+                   isdigit(prdt_int[2])&&isdigit(prdt_fl)&&isdigit(prdt_fl2)));
 	  int intr[5];
-      for(i=0;i<5;i++)
+      for(i=0;i<3;i++)
       {
             intr[i]=prdt_int[i]-48;
       }
        int f1=prdt_fl-48;
        int f2=prdt_fl2-48;
 
-        produto.preco=intr[0]*10000+intr[1]*1000+intr[2]*100+intr[3]*10+intr[4]+f1*0.1+f2*0.01;
+        produto.preco=intr[0]*100+intr[1]*10+intr[2]+f1*0.1+f2*0.01;
 
         fflush(stdin);
 
@@ -3593,7 +3592,7 @@ void Editar_Produto(fpos_t Byte)
     int i,j;
     int y=6;
 	char dt_int[5];
-	int saida=0;
+	bool saida=true;
 	int intr[5];
 
 
@@ -3805,41 +3804,49 @@ void Editar_Produto(fpos_t Byte)
                 gets( produto.genero);
             }
 
-              else if(y==12)//aq mostra a data com o nome de quantidade de produtos adquiridos
+              else if(y==12)//ano de lancamento
             {
 					do{
 						do
 						{
-							gotoxy(60,11);
+							gotoxy(59,12);
 				            printf("           ");
-							gotoxy(60,11);
-				
-							for(i=0;i<4;i++)
+							gotoxy(59,12);
+
+							for(i=0;i<3;i++)
 				            {
 					           dt_int[i]=getch();
-					           gotoxy(60+i,11);
+					           gotoxy(59+i,12);
 					           printf("%c",dt_int[i]);
 				        	}
-				
+				        	dt_int[3]=getchar();
+				        	gotoxy(62,12);
+                            printf("%c",dt_int[3]);
+
 				      	    }while(!(isdigit(dt_int[0])&&isdigit(dt_int[1])&&
 				                   isdigit(dt_int[2])&&isdigit(dt_int[3])));
-				
+
+
+
 					      for(i=0;i<4;i++)
 					      {
 					            intr[i]=dt_int[i]-48;
 					      }
-				
-					      produto.ano_lancamento=intr[0]*1000+intr[1]*100+intr[2]*10+intr[3];
+
+					      int valor=intr[0]*1000+intr[1]*100+intr[2]*10+intr[3];
 					        int ano=Ano();
-					        int valor=produto.ano_lancamento;
+
 					      if(valor>=1950 && valor<=ano)// nao quer sair aq
 						  {
-						  	 saida=1;
+						  	 saida=false;
+						  	 produto.ano_lancamento=valor;
+						  	 break;
 						  }
-				
-				
-					}
-					while(saida!=1)	;
+
+						  fflush(stdin);
+
+
+					}while(saida);
             }
 
               else if(y==14)
@@ -3849,54 +3856,53 @@ void Editar_Produto(fpos_t Byte)
             }
               else if(y==16)
             {
-                
+
                 char prdt_int[5];
 			    char prdt_fl,prdt_fl2;
 				do
 				{
-		
+
 					gotoxy(47,y);
 			        printf("R$");
 			        gotoxy(50,y);
 			        fflush(stdin);
 			        fflush(stdin);
-		
+
 		            gotoxy(50,y);
 		            printf("             ");
 					gotoxy(50,y);
-		
-			 		for(i=0;i<5;i++)
+
+			 		for(i=0;i<3;i++)
 		            {
 			           prdt_int[i]=getch();
 			           gotoxy(50+i,y);
 			           printf("%c",prdt_int[i]);
 		        	}
-		
-		                gotoxy(55,y);
+
+		                gotoxy(53,y);
 		                printf(".");
-		
+
 		            	fflush(stdin);
 		                prdt_fl=getch();
-		                gotoxy(56,y);
+		                gotoxy(54,y);
 		                printf("%c",prdt_fl);
 		                fflush(stdin);
-		
+
 		                prdt_fl2=getch();
-		                gotoxy(57,y);
+		                gotoxy(55,y);
 		                printf("%c",prdt_fl2);
-		
+
 			    }while(!(isdigit(prdt_int[0])&&isdigit(prdt_int[1])&&
-		                   isdigit(prdt_int[2])&&isdigit(prdt_int[3])&&
-		                   isdigit(prdt_int[4])&&isdigit(prdt_fl)&&isdigit(prdt_fl2)));
+		                   isdigit(prdt_int[2])&&isdigit(prdt_fl)&&isdigit(prdt_fl2)));
 			  int intr[5];
-		      for(i=0;i<5;i++)
+		      for(i=0;i<3;i++)
 		      {
 		            intr[i]=prdt_int[i]-48;
 		      }
 		       int f1=prdt_fl-48;
 		       int f2=prdt_fl2-48;
-		
-		        produto.preco=intr[0]*10000+intr[1]*1000+intr[2]*100+intr[3]*10+intr[4]+f1*0.1+f2*0.01;
+
+		        produto.preco=intr[0]*100+intr[1]*10+intr[2]+f1*0.1+f2*0.01;
             }
               else if(y==18)
             {
@@ -4724,8 +4730,8 @@ int main()
        // Tela_de_Carregamento();
 
         //Login();
-     //   Data();
-        //Financeiro_saida_entrada_mensal();
+        Data();
+        Financeiro_saida_entrada_mensal();
         Area_de_Trabalho();
 
 
