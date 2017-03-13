@@ -2725,6 +2725,7 @@ int Cadastro_produto()
 {
 	TProduto produto;
 	FILE *p;
+	int i;
 	p = fopen("Produto", "rb");
 	if (p == NULL)
 	{
@@ -2770,18 +2771,102 @@ int Cadastro_produto()
     }
     else
 	{
-        gotoxy(48,7);
+		char prdt_int[5];
+	    char prdt_fl,prdt_fl2;
+		do
+		{
+
+			gotoxy(48,7);
+	        printf("R$");
+	        gotoxy(50,7);
+	        fflush(stdin);
+	        fflush(stdin);
+
+            gotoxy(50,7);
+            printf("             ");
+			gotoxy(50,7);
+
+	 		for(i=0;i<5;i++)
+            {
+	           prdt_int[i]=getch();
+	           gotoxy(50+i,7);
+	           printf("%c",prdt_int[i]);
+        	}
+
+                gotoxy(55,7);
+                printf(".");
+
+            	fflush(stdin);
+                prdt_fl=getch();
+                gotoxy(56,7);
+                printf("%c",prdt_fl);
+                fflush(stdin);
+
+                prdt_fl2=getch();
+                gotoxy(57,7);
+                printf("%c",prdt_fl2);
+
+	    }while(!(isdigit(prdt_int[0])&&isdigit(prdt_int[1])&&
+                   isdigit(prdt_int[2])&&isdigit(prdt_int[3])&&
+                   isdigit(prdt_int[4])&&isdigit(prdt_fl)&&isdigit(prdt_fl2)));
+	  int intr[5];
+      for(i=0;i<5;i++)
+      {
+            intr[i]=prdt_int[i]-48;
+      }
+       int f1=prdt_fl-48;
+       int f2=prdt_fl2-48;
+
+        produto.preco=intr[0]*10000+intr[1]*1000+intr[2]*100+intr[3]*10+intr[4]+f1*0.1+f2*0.01;
+
         fflush(stdin);
-        scanf("%f", &produto.preco);
 
         gotoxy(48,9);
         fflush(stdin);
         gets(produto.genero);
 
+
+	char dt_int[5];
+	int saida=0;
+	do{
+		do
+		{
+			gotoxy(60,11);
+            printf("           ");
+			gotoxy(60,11);
+
+			for(i=0;i<4;i++)
+            {
+	           dt_int[i]=getch();
+	           gotoxy(60+i,11);
+	           printf("%c",dt_int[i]);
+        	}
+
+      	    }while(!(isdigit(dt_int[0])&&isdigit(dt_int[1])&&
+                   isdigit(dt_int[2])&&isdigit(dt_int[3])));
+
+	      for(i=0;i<4;i++)
+	      {
+	            intr[i]=dt_int[i]-48;
+	      }
+
+	      produto.ano_lancamento=intr[0]*1000+intr[1]*100+intr[2]*10+intr[3];
+	        int ano=Ano();
+	        int valor=produto.ano_lancamento;
+	      if(valor>=1950 && valor<=ano)// nao quer sair aq
+		  {
+		  	 saida=1;
+		  }
+
+
+	}
+	while(saida!=1)	;
+	/*
+
         gotoxy(60,11);
         fflush(stdin);
         scanf("%i", &produto.ano_lancamento);
-
+*/
         gotoxy(52,13);
         fflush(stdin);
         gets(produto.categoria);
@@ -3004,6 +3089,7 @@ void Editar_Funcionario(fpos_t Byte)
 
     if(resp==13)
     {
+        int x=0;
         if(y==5)
         {
             gotoxy(45,5);
@@ -3011,7 +3097,14 @@ void Editar_Funcionario(fpos_t Byte)
         }
         else if(y==7)
         {
-             //TELEFONE
+             do
+            {
+                if(x>0)
+                {
+                    gotoxy(49,7);
+                    printf("                ");
+                }
+            //TELEFONE
             j=50;
             for(i=0;i<13;i++)
             {   gotoxy(j,7);
@@ -3085,6 +3178,13 @@ void Editar_Funcionario(fpos_t Byte)
 
                 }
                 }
+                x++;
+            }while(!(isdigit(funcionario.telefone[1])&&isdigit(funcionario.telefone[2])
+                   &&isdigit(funcionario.telefone[4])&&isdigit(funcionario.telefone[5])&&
+                   isdigit(funcionario.telefone[6])&&isdigit(funcionario.telefone[7])&&
+                   isdigit(funcionario.telefone[8])&&isdigit(funcionario.telefone[9])&&
+                   isdigit(funcionario.telefone[10])&&isdigit(funcionario.telefone[11])&&
+                   isdigit(funcionario.telefone[12])));
 
 
             fflush(stdin);
@@ -3104,10 +3204,55 @@ void Editar_Funcionario(fpos_t Byte)
             gotoxy(49,11);
             printf("R$");
             gotoxy(51,11);
-            scanf("%f",&funcionario.salario);
+            char sal_int[5];
+            char sal_fl,sal_fl2;
+
+            do
+            {
+                fflush(stdin);
+
+                gotoxy(51,11);
+                printf("             ");
+
+                gotoxy(51,11);
+
+                for(i=0;i<5;i++)
+                {
+                    sal_int[i]=getch();
+                    gotoxy(51+i,11);
+                    printf("%c",sal_int[i]);
+                }
+
+                gotoxy(56,11);
+                printf(".");
+
+                    fflush(stdin);
+                    sal_fl=getch();
+                    gotoxy(57,11);
+                    printf("%c",sal_fl);
+                    fflush(stdin);
+
+                    sal_fl2=getch();
+                    gotoxy(58,11);
+                    printf("%c",sal_fl2);
+
+            }while(!(isdigit(sal_int[0])&&isdigit(sal_int[1])&&
+                   isdigit(sal_int[2])&&isdigit(sal_int[3])&&
+                   isdigit(sal_int[4])&&isdigit(sal_fl)&&isdigit(sal_fl2)));
+
+
+                      int inte[5];
+                      for(i=0;i<5;i++)
+                      {
+                          inte[i]=sal_int[i]-48;
+                      }
+                       int f1=sal_fl-48;
+                       int f2=sal_fl2-48;
+
+                   funcionario.salario=inte[0]*10000+inte[1]*1000+inte[2]*100+inte[3]*10+inte[4]+f1*0.1+f2*0.01;
+
             fflush(stdin);
         }
-
         else if(y==13)
         {
              //USUARIO
@@ -3123,9 +3268,9 @@ void Editar_Funcionario(fpos_t Byte)
             gotoxy(49,15);
             gets(funcionario.senha);
         }
+
+
     }
-
-
         resp=' ';
     }while(1);
 
@@ -3385,9 +3530,18 @@ void Editar_Usuario(fpos_t Byte)
             }
             else if(y==12)
             {
-            	gotoxy(52,12);
-				fflush(stdin);
-				scanf("%i",&usuario.assinatura);
+
+				//PLANO
+
+                    do
+                    {
+                        gotoxy(52,12);
+                        printf("     ");
+                        fflush(stdin);
+                        gotoxy(52,12);
+                        scanf("%i",&usuario.assinatura);
+
+                    }while(usuario.assinatura!=1&&usuario.assinatura!=2);
 
 				    if(usuario.assinatura==1)
 				    {
@@ -4498,7 +4652,7 @@ int main()
         //Financeiro_saida_entrada_mensal();
         Area_de_Trabalho();
 
-   
+
     }
 
 }
