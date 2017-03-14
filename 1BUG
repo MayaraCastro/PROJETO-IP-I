@@ -4391,22 +4391,29 @@ void Financeiro_saida_entrada_mensal()
     if(relatorio.dia<1)
             {
                t=fopen("Funcionario","rb");
+               rewind(t);
+               fread(&funcionario,sizeof(funcionario),1,t);
+
                 while(!feof(t))
                 {
-                    fread(&funcionario,sizeof(funcionario),1,t);
                     if(funcionario.ativo==1)
                     {
                         relatorio.saida+=funcionario.salario;
+
+                        
                     }
+                    fread(&funcionario,sizeof(funcionario),1,t);
                 }
-                relatorio.saida=relatorio.saida/2;
+                relatorio.saida=relatorio.saida;
                 relatorio.dia++;
                 fclose(t);
 
                 t=fopen("Usuario","rb");
+                rewind( t );
+                fread(&usuario,sizeof(usuario),1,t);
                 while(!feof(t))
                 {
-                    fread(&usuario,sizeof(usuario),1,t);
+
                     if(usuario.ativo==1&&usuario.assinatura==1)
                     {
                         relatorio.entrada+=70;
@@ -4415,12 +4422,13 @@ void Financeiro_saida_entrada_mensal()
                     {
                         relatorio.entrada+=120;
                     }
+                    fread(&usuario,sizeof(usuario),1,t);
                 }
-                relatorio.entrada=relatorio.entrada/2;
+                relatorio.entrada=relatorio.entrada;
 
                 fclose(t);
 
-                fseek(p, -sizeof(relatorio), SEEK_END);
+                fseek(p,-sizeof(relatorio), SEEK_END);
                 fwrite(&relatorio,sizeof(relatorio),1,p);
             }
 
@@ -4655,6 +4663,7 @@ void Data(){
                     novo.lucro=novo.entrada=0;
                     novo.saida=0;
                     fwrite(&novo,sizeof(novo),1,p);
+
                     i++;
                 }
             }
@@ -4677,13 +4686,13 @@ void Data(){
 
        if(!achou)
        {
-               p=fopen(ano,"ab+");
+               p=fopen(ano,"rb+");
 
                int diferenca,i;
 
                diferenca=Mes()-relatorio.mes;
 
-               for(i=1;i<=diferenca;i++)
+               for(i=1;i<diferenca;i++)
                {
                    novo.mes=relatorio.mes+i;
                    novo.lucro=novo.entrada=0;
@@ -4692,6 +4701,12 @@ void Data(){
 
                    fwrite(&novo,sizeof(novo),1,p);
                }
+
+                    novo.mes=relatorio.mes+diferenca;
+                   novo.lucro=novo.entrada=0;
+                   novo.saida=0;
+                   novo.dia=0;
+                   fwrite(&novo,sizeof(novo),1,p);
        }
        fclose(p);
    }
@@ -4773,7 +4788,18 @@ int main()
        // Login();
         Data();
         Financeiro_saida_entrada_mensal();
-        Area_de_Trabalho();
+        //Area_de_Trabalho();
+
+
+        p=fopen("2017","rb+");
+
+        TRelatorio relatorio;
+        while(!feof(p))
+        {
+            fread(&relatorio,sizeof(relatorio),1,p);
+            printf("%i\n",relatorio.mes);
+        }
+        fclose(p);
 
 
     }
