@@ -4400,7 +4400,9 @@ void Financeiro_saida_entrada_mensal()
                     {
                         relatorio.saida+=funcionario.salario;
 
-                        
+                        gotoxy(1,1);
+                        printf("%f", relatorio.saida);
+                        system("pause");
                     }
                     fread(&funcionario,sizeof(funcionario),1,t);
                 }
@@ -4474,9 +4476,10 @@ void Grafico()
     int j,i=39,x;
 
     p=fopen(year,"rb");
+    fread(&relatorio,sizeof(relatorio),1,p);
     while(!feof(p))
     {
-        fread(&relatorio,sizeof(relatorio),1,p);
+
         if(relatorio.lucro>0)
         {
             x=15-(relatorio.lucro/100);
@@ -4493,6 +4496,7 @@ void Grafico()
         }
 
         i+=5;
+        fread(&relatorio,sizeof(relatorio),1,p);
 
     }
     fclose(p);
@@ -4664,6 +4668,10 @@ void Data(){
                     novo.saida=0;
                     fwrite(&novo,sizeof(novo),1,p);
 
+                    gotoxy(1,1);
+                        printf("%i", novo.mes);
+                        system("pause");
+
                     i++;
                 }
             }
@@ -4682,6 +4690,7 @@ void Data(){
        if(relatorio.mes==Mes())
            {
                achou=true;
+
            }
 
        if(!achou)
@@ -4707,6 +4716,10 @@ void Data(){
                    novo.saida=0;
                    novo.dia=0;
                    fwrite(&novo,sizeof(novo),1,p);
+
+                   gotoxy(1,1);
+                        printf("%i", novo.mes);
+                        system("pause");
        }
        fclose(p);
    }
@@ -4756,7 +4769,6 @@ int Dia(void){
 
    return(dia);
 }
-
 int main()
 {
     redefine();
@@ -4788,18 +4800,7 @@ int main()
        // Login();
         Data();
         Financeiro_saida_entrada_mensal();
-        //Area_de_Trabalho();
-
-
-        p=fopen("2017","rb+");
-
-        TRelatorio relatorio;
-        while(!feof(p))
-        {
-            fread(&relatorio,sizeof(relatorio),1,p);
-            printf("%i\n",relatorio.mes);
-        }
-        fclose(p);
+        Area_de_Trabalho();
 
 
     }
