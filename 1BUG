@@ -2000,7 +2000,7 @@ void Resultado_Produto_compra(fpos_t Byte)
     gotoxy(40,18);
     printf("DESCRICAO: %s", produto.descricao);
 
-    gotoxy(40,10);
+    gotoxy(40,20);
     if(produto.ativo==1)
     {
         printf("PRODUTO ATIVO");
