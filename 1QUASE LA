@@ -4198,15 +4198,17 @@ void Itens_mais_vendidos()
     int maior1=0,maior2=0,maior3=0, Reg1=0,Reg2=0;
     if(p!=NULL)
     {
+        fread(&produto,sizeof(produto),1,p);
         while(!feof(p))
         {
-            fread(&produto,sizeof(produto),1,p);
+
             if(produto.ativo==1&&produto.quantidade_comprado>maior1)
             {
                 maior1=produto.quantidade_comprado;
                 fgetpos(p,&Byte);
 
             }
+            fread(&produto,sizeof(produto),1,p);
         }
 
         if(maior1>0)
@@ -4219,9 +4221,10 @@ void Itens_mais_vendidos()
             printf("1- %s",produto.nome);
 
                 rewind(p);
+                fread(&produto,sizeof(produto),1,p);
                 while(!feof(p))
                 {
-                    fread(&produto,sizeof(produto),1,p);
+
                     if(produto.ativo==1&&produto.quantidade_comprado>maior2)
                     {
                         fgetpos(p,&Reg);
@@ -4235,6 +4238,7 @@ void Itens_mais_vendidos()
                         }
 
                     }
+                    fread(&produto,sizeof(produto),1,p);
 
                 }
 
@@ -4246,9 +4250,10 @@ void Itens_mais_vendidos()
                 printf("2- %s",produto.nome);
 
                     rewind(p);
+                    fread(&produto,sizeof(produto),1,p);
                     while(!feof(p))
                     {
-                        fread(&produto,sizeof(produto),1,p);
+
                         if(produto.ativo==1&&produto.quantidade_comprado>maior3)
                         {
                             fgetpos(p,&Reg);
@@ -4260,6 +4265,7 @@ void Itens_mais_vendidos()
                                 fgetpos(p,&Byte);
                             }
                         }
+                        fread(&produto,sizeof(produto),1,p);
                     }
                     if(maior3>0)
                     {
@@ -4294,15 +4300,17 @@ void Clientes_VIP()
     p=fopen("Usuario","rb");
     if(p!=NULL)
     {
+        fread(&cliente, sizeof(cliente),1,p);
         while(!feof(p))
         {
-            fread(&cliente, sizeof(cliente),1,p);
+
             if(cliente.ativo==1&&cliente.numero_de_compras>maior1)
             {
                 maior1=cliente.numero_de_compras;
                 fgetpos(p,&Byte);
                 Reg1=Byte=Byte-sizeof(cliente);
             }
+            fread(&cliente, sizeof(cliente),1,p);
         }
 
             if(maior1>0)
@@ -4315,9 +4323,10 @@ void Clientes_VIP()
 
 
                 rewind(p);
+                fread(&cliente, sizeof(cliente),1,p);
                 while(!feof(p))
                 {
-                    fread(&cliente, sizeof(cliente),1,p);
+
                     if(cliente.ativo==1&&cliente.numero_de_compras>maior2)
                     {
                         fgetpos(p,&Reg);
@@ -4331,6 +4340,7 @@ void Clientes_VIP()
                         }
 
                     }
+                    fread(&cliente, sizeof(cliente),1,p);
                 }
 
                 if(maior2>0)
@@ -4343,9 +4353,10 @@ void Clientes_VIP()
 
 
                     rewind(p);
+                    fread(&cliente, sizeof(cliente),1,p);
                     while(!feof(p))
                     {
-                        fread(&cliente, sizeof(cliente),1,p);
+
                         if(cliente.ativo==1&&cliente.numero_de_compras>maior3)
                         {
                             fgetpos(p,&Reg);
@@ -4359,6 +4370,7 @@ void Clientes_VIP()
                             }
 
                         }
+                        fread(&cliente, sizeof(cliente),1,p);
                     }
 
                     if(maior3>0)
@@ -4524,7 +4536,7 @@ void Grafico()
             {
                 x=5;
             }
-            for(j=15;j>=x;j--)
+            for(j=15;j>x;j--)
             {
                 gotoxy(i,j);
                 printf("%c",219);
@@ -4591,11 +4603,12 @@ void Top_Assinatura()
     int Gold=0,Platinum=0;
 
     p=fopen("Usuario","rb");
+     fread(&usuario,sizeof(usuario),1,p);
     if(p!=NULL)
     {
         while(!feof(p))
         {
-            fread(&usuario,sizeof(usuario),1,p);
+
             if(usuario.ativo==1 &&usuario.assinatura==1)
             {
                 Gold++;
@@ -4605,6 +4618,7 @@ void Top_Assinatura()
                 Platinum++;
 
             }
+             fread(&usuario,sizeof(usuario),1,p);
         }
             if(Gold>Platinum)
             {
@@ -4842,12 +4856,13 @@ int main()
     }
     else
     {
-       // Tela_de_Carregamento();
+       //Tela_de_Carregamento();
 
-       // Login();
+        //Login();
         Data();
         Financeiro_saida_entrada_mensal();
         Area_de_Trabalho();
+
 
 
     }
