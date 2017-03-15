@@ -4045,7 +4045,7 @@ int Comprar_produto(fpos_t Byte, fpos_t ByteUsuario)
 	}
 	//produto
     Financeiro_entrada(&compra);
-    Byte=Byte-sizeof(produto);
+    //Byte=Byte-sizeof(produto);
     fsetpos(p,&Byte);
 
     fwrite(&produto,sizeof(produto),1,p);
