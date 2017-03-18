@@ -1,0 +1,133 @@
+
+class Usuario():
+
+    usuario=None
+    nome=None
+    senha=None
+    ativo=0
+    numero_de_compras=0
+    assinatura=0
+    
+    def Comprar(self):
+        if(self.ativo is 0):
+            print("USUARIO INATIVO")
+        else:
+            print("")
+class Funcionario():
+    nome=None
+    telefone=0
+    endereco=None
+    salario=0
+    ativo=0
+    
+    usuario=None
+    senha=None
+    
+    def Cadastrar(self,f,funcionarios):
+        self.nome=input("NOME:")
+        self.telefone=input("TELEFONE:")
+        self.endereco=input("ENDERECO:")
+        self.salario=float(input("SALARIO:"))
+        self.ativo=1
+        self.usuario=input("USUARIO:")
+        self.senha=input("SENHA:")
+        
+        funcionarios[f]=self
+        f=f+1
+        return(f)
+    def Modificar(self,i,funcionarios):
+        resp=input("OPCAO:")
+        if(resp is'1'):
+            self.nome=input("NOME:")
+        elif(resp is'2'):
+            self.telefone=input("TELEFONE:")
+        elif(resp is '3'):
+            self.endereco=input("ENDERECO:")
+        elif(resp is '4'):
+            self.salario=float(input("SALARIO:"))
+        elif(resp is '5'):
+            self.usuario=input("USUARIO:")
+        elif(resp is '6'):
+            self.senha=input("SENHA:")
+        elif(resp is '7'):
+            self.ativo=0
+        else:
+            funcionarios[i].Modificar(i,funcionarios)
+        
+        funcionarios[i]=self
+class Produto():
+        a=None   
+
+def Consultar(tipo,x,funcionarios):
+    if(tipo is 1):
+        nome=input("NOME BUSCA:")
+        for i in range(x):
+            if(funcionarios[i].nome==nome):
+                entra=True
+                while(entra):
+                    print('\n1-NOME:', funcionarios[i].nome,'\n2-TELEFONE:',funcionarios[i].telefone ,'\n3-ENDERECO:',funcionarios[i].endereco,'\n4-SALARIO',funcionarios[i].salario,'\n5-USUARIO',funcionarios[i].usuario,'\n6-SENHA',funcionarios[i].senha)
+                    
+                    if(funcionarios[i].ativo is 1):
+                        print("\n7-ATIVO")
+                    else:
+                        print("\nINATIVO")
+                    resp=input("\nDESEJA MODIFICAR? 1-sim/ 2-nao")
+                    if(resp is'1'):
+                        funcionarios[i].Modificar(i,funcionarios)
+                    elif(resp is '2'):
+                        entra=False
+                break
+            
+            if(i is x-1):
+                print("NAO EXISTE")
+    return(tipo)
+def Salvar(x,funcionarios):
+    arquivo=open("funcionario","w")
+    
+    arquivo.write(str(funcionarios))
+    arquivo.close()
+def Abrir(funcionarios):
+    arquivo=open("funcionario","r")
+    funcionarios=arquivo.read()
+    arquivo.close()
+    print(funcionarios[0].nome)
+    
+def Menu(f,u,p,funcionarios=[Funcionario()for i in range(50)],usuarios=[Usuario()for i in range(50)],produtos=[Produto()for i in range(50)]):
+    resp=0
+    Abrir(funcionarios)
+    while(resp is not '5'):
+        resp=input("1-FUNCIONARIOS\n2-USUARIOS\n3-PRODUTOS\n4-FINANCEIRO\n5-SAIR\n") 
+        
+        if(resp is '1'):
+            resp=0
+            while(resp is not'1' and resp is not'2' and resp is not '3'):
+                resp=input("\nFUNCIONARIOS\n\t1-CADASTRAR\n\t2-CONSULTAR\n\t3-VOLTAR\n")
+                if(resp is '1'):
+                    fun=Funcionario()
+                    f=fun.Cadastrar(f,funcionarios)
+                elif(resp is '2'):
+                    Consultar(1,f,funcionarios)
+        elif(resp is '2'):
+            resp=0
+            while(resp is not'1' and resp is not'2'and resp is not '3'):
+                resp=input("\nUSUARIOS\n\t1-CADASTRAR\n\t2-CONSULTAR\n\t3-VOLTAR\n")
+                if(resp is '1'):
+                    usu=Usuario()
+                    u=usu.Cadastrar(u,usuarios)
+                elif(resp is '2'):
+                    Consultar(2)
+        elif(resp is '3'):
+            resp=0
+            while(resp is not'1' and resp is not'2'and resp is not '3'):
+                resp=input("\nPRODUTOS\n\t1-CADASTRAR\n\t2-CONSULTAR\n\t3-VOLTAR\n")
+                if(resp is '1'):
+                    pro=Produto()
+                    p=pro.Cadastrar(p,produtos)
+                elif(resp is '2'):
+                    Consultar(3)  
+        elif(resp is'4'):
+            print("\tFINANCEIRO") 
+        elif(resp is '5'):
+            Salvar(f,funcionarios)
+
+Menu(0,0,0)
